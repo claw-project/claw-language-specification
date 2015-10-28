@@ -85,7 +85,35 @@ according to their position.
 
 All the loop within a group must share the same range.
 
+##### Example 1 (without *group* option)
+###### Original code
+```fortran
+DO k=1, iend
+  !$claw loop-fusion
+  DO i=1, iend
+    ! loop #1 body here
+  ENDDO
 
+  !$claw loop-fusion
+  DO i=1, iend
+    ! loop #2 body here
+  ENDDO
+ENDDO
+```
+
+###### Transformed code
+```fortran
+DO k=1, iend
+  ! CLAW transformation (loop-fusion same block group)
+  DO i=1, iend
+    ! loop #1 body here
+    ! loop #2 body here
+  ENDDO
+ENDDO
+```
+
+
+##### Example 2 (with *group* option)
 ###### Original code
 ```fortran
 DO k=1, iend
@@ -113,7 +141,6 @@ ENDDO
 
 ###### Transformed code
 ```fortran
-
 DO k=1, iend
   ! CLAW transformation (loop-fusion group g1)
   DO i=1, iend
