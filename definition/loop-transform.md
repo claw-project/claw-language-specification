@@ -1,6 +1,6 @@
 # Transformation on loops
 [Back to root](https://github.com/clementval/claw-definition)
-### Loop interchange
+### Loop interchange/reordering
 #### Directive defintion
 <!--- TODO define a notion of dependency --->
 <!--- TODO define a notion of depth --->
@@ -58,7 +58,7 @@ ENDDO
 
 
 
-### Loop fusion
+### Loop jamming/fusion
 #### Directive defintion
 ```fortran
 !$claw loop-fusion [group(*group_id*:*pos*)]
