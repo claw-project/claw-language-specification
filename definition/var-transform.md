@@ -1,12 +1,13 @@
-## Transformation on variable
+# Transformation on variable
 <!--- TODO all reflexion and definition --->
-#### Demotion
-##### Directive defintion
+[Back to root](https://github.com/clementval/claw-definition)
+### Demotion
+#### Directive defintion
 ```fortran
 !$claw demote(variable_list) dim(dimension_from,dimension_to)
 ```
 
-##### Example 1
+#### Example 1
 ###### Original code
 ```fortran
 SUBROUTINE xyz(value1, value2)

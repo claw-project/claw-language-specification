@@ -1,7 +1,7 @@
-## Transformation on loops
-
-#### Loop interchange
-##### Directive defintion
+# Transformation on loops
+[Back to root](https://github.com/clementval/claw-definition)
+### Loop interchange
+#### Directive defintion
 <!--- TODO define a notion of dependency --->
 <!--- TODO define a notion of depth --->
 ```fortran
@@ -10,7 +10,7 @@
 
 The loop-interchange directive allows two loops to swap their place.
 
-##### Example 1
+#### Example 1
 ###### Original code
 ```fortran
 !$claw loop-interchange
@@ -31,7 +31,7 @@ DO k=1, kend
   ENDDO
 ENDDO
 ```
-##### Example 2
+#### Example 2
 ###### Original code
 ```fortran
 !$claw loop-interchange [new-order(k,i,j)]
@@ -58,8 +58,8 @@ ENDDO
 
 
 
-#### Loop fusion
-##### Directive defintion
+### Loop fusion
+#### Directive defintion
 ```fortran
 !$claw loop-fusion [group(*group_id*:*pos*)]
 ```
@@ -73,7 +73,7 @@ according to their position.
 
 All the loop within a group must share the same range.
 
-##### Example 1 (without *group* option)
+#### Example 1 (without *group* option)
 ###### Original code
 ```fortran
 DO k=1, iend
@@ -101,7 +101,7 @@ ENDDO
 ```
 
 
-##### Example 2 (with *group* option)
+#### Example 2 (with *group* option)
 ###### Original code
 ```fortran
 DO k=1, iend
