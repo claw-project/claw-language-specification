@@ -71,7 +71,7 @@ ENDDO
 
 
 #### Loop fusion
-###### Directive defintion
+##### Directive defintion
 ```fortran
 !$claw loop-fusion [group(*group_id*:*pos*)]
 ```
@@ -166,11 +166,12 @@ ENDDO
 ## Transformation on variable
 <!--- TODO all reflexion and definition --->
 #### Demotion
-###### Directive defintion
+##### Directive defintion
 ```fortran
 !$claw demote(variable_list) dim(dimension_from,dimension_to)
 ```
 
+##### Example 1
 ###### Original code
 ```fortran
 SUBROUTINE xyz(value1, value2)
