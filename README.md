@@ -7,6 +7,7 @@ project
 
 This language is separated in the followings sections:
 
-* [Loop transformation](https://github.com/clementval/claw-definition/blob/master/definition/loop-transform.md)
-* [Variable transformation](https://github.com/clementval/claw-definition/blob/master/definition/var-transform.md)
+* [Loop transformation](https://github.com/clementval/claw-definition/blob/master/definition/loop-transform.md) (loop fusion, loop interchange/reordering)
+* [Variable transformation](https://github.com/clementval/claw-definition/blob/master/definition/var-transform.md) (promotion/demtion, scalar replacement)
+* OpenACC abstraction
 * *More to come*
