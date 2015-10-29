@@ -5,7 +5,7 @@
 <!--- TODO define a notion of dependency --->
 <!--- TODO define a notion of depth --->
 ```fortran
-!$claw loop-interchange
+!$claw loop-interchange [new-order(loop-index1,loop-index2,loop-index3,...)]
 ```
 
 The loop-interchange directive allows two loops to swap their place.
@@ -34,7 +34,7 @@ ENDDO
 #### Example 2
 ###### Original code
 ```fortran
-!$claw loop-interchange [new-order(k,i,j)]
+!$claw loop-interchange new-order(k,i,j)
 DO i=1, iend     ! loop at depth 0
   DO j=1, jend   ! loop at depth 1
     DO k=1, kend ! loop at depth 2
