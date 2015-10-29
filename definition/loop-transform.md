@@ -15,9 +15,8 @@ The loop-interchange directive allows loops to be reordered.
 ```fortran
 !$claw loop-interchange
 DO i=1, iend
-    DO k=1, kend
-      ! loop body here
-    ENDDO
+  DO k=1, kend
+    ! loop body here
   ENDDO
 ENDDO
 ```
@@ -61,17 +60,15 @@ ENDDO
 ### Loop jamming/fusion
 #### Directive defintion
 ```fortran
-!$claw loop-fusion [group(*group_id*[:*pos*])]
+!$claw loop-fusion [group(*group_id*)]
 ```
 
 The loop-fusion directive allows to merge 2 to N loops in a single one. If no
 group option is given, all the loops decorated with the directive in the same
 block will be merged together as a single group.
 
-If the *group* option is given, the loops are merged within the given group
-according to their position. If two or more loops share the same position,
-the original order of the loops is taken into account. The same is applied
-if no position is given.
+If the *group* option is given, the loops are merged in-order within the
+given group.
 
 All the loop within a group must share the same range.
 
@@ -107,22 +104,22 @@ ENDDO
 ###### Original code
 ```fortran
 DO k=1, iend
-  !$claw loop-fusion group(g1:1)
+  !$claw loop-fusion group(g1)
   DO i=1, iend
     ! loop #1 body here
   ENDDO
 
-  !$claw loop-fusion group(g1:2)
+  !$claw loop-fusion group(g1)
   DO i=1, iend
     ! loop #2 body here
   ENDDO
 
-  !$claw loop-fusion group(g2:1)
+  !$claw loop-fusion group(g2)
   DO i=1, jend
     ! loop #3 body here
   ENDDO
 
-  !$claw loop-fusion group(g2:1)
+  !$claw loop-fusion group(g2)
   DO i=1, jend
     ! loop #4 body here
   ENDDO
