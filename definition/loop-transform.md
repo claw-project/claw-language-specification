@@ -67,10 +67,15 @@ The loop-fusion directive allows to merge 2 to N loops in a single one. If no
 group option is given, all the loops decorated with the directive in the same
 block will be merged together as a single group.
 
+All the loop within a group must share the same range.
+
 If the *group* option is given, the loops are merged in-order within the
 given group.
 
-All the loop within a group must share the same range.
+Variable:
+
+* *group_id*: A string label that identify a group of loops to be merged
+
 
 #### Example 1 (without *group* option)
 ###### Original code
