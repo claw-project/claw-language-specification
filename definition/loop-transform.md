@@ -61,15 +61,17 @@ ENDDO
 ### Loop jamming/fusion
 #### Directive defintion
 ```fortran
-!$claw loop-fusion [group(*group_id*:*pos*)]
+!$claw loop-fusion [group(*group_id*[:*pos*])]
 ```
 
-The loop-fuson directive allows to fusion 2 to N loops in a single one. If no
+The loop-fusion directive allows to merge 2 to N loops in a single one. If no
 group option is given, all the loops decorated with the directive in the same
-block will be fusioned together as a single group.
+block will be merged together as a single group.
 
-If the *group* option is given, the loops are fusioned within the given group
-according to their position.
+If the *group* option is given, the loops are merged within the given group
+according to their position. If two or more loops share the same position,
+the original order of the loops is taken into account. The same is applied
+if no position is given.
 
 All the loop within a group must share the same range.
 
