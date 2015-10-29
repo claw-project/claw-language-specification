@@ -3,12 +3,12 @@
 ### Loop interchange/reordering
 #### Directive defintion
 <!--- TODO define a notion of dependency --->
-<!--- TODO define a notion of depth --->
+<!--- TODO maybe define a definition of depth instead of a new ordering --->
 ```fortran
 !$claw loop-interchange [new-order(loop-index1,loop-index2,loop-index3,...)]
 ```
 
-The loop-interchange directive allows two loops to swap their place.
+The loop-interchange directive allows loops to be reordered.
 
 #### Example 1
 ###### Original code
