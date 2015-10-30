@@ -10,6 +10,15 @@
 
 The loop-interchange directive allows loops to be reordered.
 
+When two loops are nested, the directive can be used without option. In this configuration the inner loop is swapped with the outer loop (see example 1).
+
+If the *new-order* option is given, the loops are reordered with the given new
+order (see example 2).
+
+Variable
+
+* *loop-index-i*: the index of the loop
+
 #### Example 1
 ###### Original code
 ```fortran
