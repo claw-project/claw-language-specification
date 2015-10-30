@@ -1,5 +1,8 @@
 # Transformation on loops
 [Back to root](https://github.com/clementval/claw-definition)
+
+---
+
 ### Loop interchange/reordering
 #### Directive defintion
 <!--- TODO define a notion of dependency --->
@@ -15,9 +18,15 @@ When two loops are nested, the directive can be used without option. In this con
 If the *new-order* option is given, the loops are reordered with the given new
 order (see example 2).
 
-Variable
+###### Variable
 
 * *loop-index-i*: the index of the loop
+
+###### Behavior with other directives
+
+When the loops to be interchange are decorated with other directives, these
+directives stay in place in the code transformation. In other words, they are
+not interchange with the loop.
 
 #### Example 1
 ###### Original code
@@ -64,6 +73,7 @@ DO k=1, kend       ! loop at depth 2
 ENDDO
 ```
 
+---
 
 
 ### Loop jamming/fusion
@@ -81,9 +91,15 @@ All the loop within a group must share the same range.
 If the *group* option is given, the loops are merged in-order within the
 given group.
 
-Variable:
+###### Variable
 
 * *group_id*: A string label that identify a group of loops to be merged
+
+###### Behavior with other directives
+
+When the loops to be merged are decorated with other directives, only the
+directives on the first loop of the merge group are kept in the transformed
+code.
 
 
 #### Example 1 (without *group* option)
@@ -155,4 +171,40 @@ DO k=1, iend
     ! loop #4 body here
   ENDDO
 ENDDO
+```
+
+#### Example 3 (behavior with OpenACC or other directives)
+###### Original code
+```fortran
+!$acc parallel
+!$acc loop gang
+DO k=1, iend
+  !$acc loop seq
+  !$claw loop-fusion
+  DO i=1, iend
+    ! loop #1 body here
+  ENDDO
+
+  !$acc loop vector
+  !$claw loop-fusion
+  DO i=1, iend
+    ! loop #2 body here
+  ENDDO
+ENDDO
+!$acc end parallel
+```
+
+###### Transformed code
+```fortran
+!$acc parallel
+!$acc loop gang
+DO k=1, iend
+  ! CLAW transformation (loop-fusion same block group)
+  !$acc loop seq
+  DO i=1, iend
+    ! loop #1 body here
+    ! loop #2 body here
+  ENDDO
+ENDDO
+!$acc end parallel
 ```
