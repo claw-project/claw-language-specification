@@ -24,9 +24,9 @@ order (see example 2).
 
 ###### Behavior with other directives
 
-When the loops to be interchange are decorated with other directives, these
+When the loops to be interchange are decorated with other directives, those
 directives stay in place in the code transformation. In other words, they are
-not interchange with the loop.
+not interchange together with the loops (see example 3).
 
 #### Example 1
 ###### Original code
