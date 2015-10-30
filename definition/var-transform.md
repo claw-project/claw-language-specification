@@ -5,7 +5,7 @@
 ---
 
 ### Demotion
-#### Directive defintion
+#### Directive definition
 ```fortran
 !$claw demote(variable_list) dim(dimension_from,dimension_to)
 ```

@@ -1,7 +1,7 @@
 # OpenACC abstraction
 [Back to root](https://github.com/clementval/claw-definition)
 ### Abstraction 1
-#### Directive defintion
+#### Directive definition
 ```fortran
 !$claw ...
 ```

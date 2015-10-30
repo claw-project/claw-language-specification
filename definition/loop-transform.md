@@ -4,7 +4,7 @@
 ---
 
 ### Loop interchange/reordering
-#### Directive defintion
+#### Directive definition
 <!--- TODO define a notion of dependency --->
 <!--- TODO maybe define a definition of depth instead of a new ordering --->
 ```fortran
@@ -107,7 +107,7 @@ ENDDO
 
 
 ### Loop jamming/fusion
-#### Directive defintion
+#### Directive definition
 ```fortran
 !$claw loop-fusion [group(*group_id*)]
 ```
