@@ -48,6 +48,7 @@ DO k=1, kend
   ENDDO
 ENDDO
 ```
+
 #### Example 2
 ###### Original code
 ```fortran
@@ -71,6 +72,35 @@ DO k=1, kend       ! loop at depth 2
     ENDDO
   ENDDO
 ENDDO
+```
+
+#### Example 3 (behavior with OpenACC or other directives)
+###### Original code
+```fortran
+!$acc parallel
+!$acc loop gang
+!$claw loop-interchange
+DO i=1, iend
+  !$acc loop vector
+  DO k=1, kend
+    ! loop body here
+  ENDDO
+ENDDO
+!$acc end parallel
+```
+
+###### Transformed code
+```fortran
+! CLAW transformation (loop-interchange i < -- > k)
+!$acc parallel
+!$acc loop gang
+DO k=1, kend
+  !$acc loop vector
+  DO i=1, iend
+    ! loop body here
+  ENDDO
+ENDDO
+!$acc end parallel
 ```
 
 ---
