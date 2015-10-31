@@ -6,6 +6,7 @@
 
 ### Demotion
 #### Directive definition
+**Local directive**
 ```fortran
 !$claw demote(variable_list) dim(dimension_from,dimension_to)
 ```

@@ -7,6 +7,7 @@
 #### Directive definition
 <!--- TODO define a notion of dependency --->
 <!--- TODO maybe define a definition of depth instead of a new ordering --->
+**Local directive**
 ```fortran
 !$claw loop-interchange [new-order(loop-index1,loop-index2,loop-index3,...)]
 ```
@@ -108,6 +109,7 @@ ENDDO
 
 ### Loop jamming/fusion
 #### Directive definition
+**Local directive**
 ```fortran
 !$claw loop-fusion [group(*group_id*)]
 ```
