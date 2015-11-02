@@ -9,7 +9,7 @@
 <!--- TODO maybe define a definition of depth instead of a new ordering --->
 **Local directive**
 ```fortran
-!$claw loop-interchange [new-order(loop-index1,loop-index2,loop-index3,...)]
+!$claw loop-interchange [new-order(loop-index1,loop-index2,loop-index3)]
 ```
 
 The loop-interchange directive allows loops to be reordered.
@@ -28,6 +28,12 @@ order (see example 2).
 When the loops to be interchange are decorated with other directives, those
 directives stay in place in the code transformation. In other words, they are
 not interchange together with the loops (see example 3).
+
+###### Limitations
+
+Currently, the loop-interchange directive is limited to 3 level of loops. More
+level of loops can be declared but the transformation is limited to the first 3
+level from the directive declaration.
 
 #### Example 1
 ###### Original code
