@@ -58,9 +58,9 @@ DO i = 1, 10
   ! a(i) can be left in a register throughout the loop
   !$claw scalar t=a(i)
   DO j = 1, 10
-    a(i) = a(i) + b(i)
+    a(i) = a(i) + b(j)
   END DO
-ENDDO
+END DO
 ```
 
 ###### Transformed code
