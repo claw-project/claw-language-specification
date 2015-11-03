@@ -1,4 +1,5 @@
 # CLAW Code samples
 
-Code samples will be available in this directory once the language has evolved
-enough.
+* **loop_fusion.f90**: contains simple example of loop-fusion directive usage
+* **loop_interchange.f90**: contains simple example of loop-interchange directive
+usage
