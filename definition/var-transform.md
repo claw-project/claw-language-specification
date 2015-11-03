@@ -39,3 +39,39 @@ DO i = 0, iend
   CALL xyz_claw(value1_claw(i), value2_claw(i))
 END DO
 ```
+
+
+### Scalar replacement
+#### Directive definition
+**Local directive**
+```fortran
+!$claw scalar scalar_var=value
+```
+
+#### Example 1
+This example is really simple and will probably be handle perfectly by standard
+compiler. This much simplicity is used for the sake of comprehension of the
+directive.
+###### Original code
+```fortran
+DO i = 1, 10
+  ! a(i) can be left in a register throughout the loop
+  !$claw scalar t=a(i)
+  DO j = 1, 10
+    a(i) = a(i) + b(i)
+  END DO
+ENDDO
+```
+
+###### Transformed code
+```fortran
+DO i = 1, 10
+  !CLAW transformation add scalar t=a(i)
+  t = a(i)
+  DO j = 1, 10
+    t = t + b(j)
+  END DO
+  !CLAW transformation update from scalar t=a(i)
+  a(i) = t
+END DO
+```
