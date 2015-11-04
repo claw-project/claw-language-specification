@@ -5,32 +5,36 @@
 
 ### Loop interchange/reordering
 #### Directive definition
-<!--- TODO define a notion of dependency --->
-<!--- TODO maybe define a definition of depth instead of a new ordering --->
+<!--- TODO maybe find a way to abstract this concept for the specific climate
+case
+--->
 **Local directive**
 ```fortran
-!$claw loop-interchange [new-order(loop-index1,loop-index2,loop-index3)]
+!$claw loop-interchange [new-order(loop-index-1,loop-index-2,loop-index-3)]
 ```
 
-The loop-interchange directive allows loops to be reordered.
+Loop reordering is a common transformation applied on loops when adding
+parallelization. This transformation is mainly used to improve the data
+locality.
 
-When two loops are nested, the directive can be used without option. In this configuration the inner loop is swapped with the outer loop (see example 1).
+For this case, the **loop-interchange** directive allows nested loops to be
+reordered.
+
+When two loops are nested, the directive can be used without option. In this
+configuration the inner loop is swapped with the outer loop (see example 1).
 
 If the *new-order* option is given, the loops are reordered with the given new
 order (see example 2).
 
 ###### Variable
-
-* *loop-index-i*: the index of the loop
+* *loop-index-i*: the iteration variable of the loop
 
 ###### Behavior with other directives
-
 When the loops to be interchange are decorated with other directives, those
 directives stay in place in the code transformation. In other words, they are
 not interchange together with the loops (see example 3).
 
 ###### Limitations
-
 Currently, the loop-interchange directive is limited to 3 level of loops. More
 level of loops can be declared but the transformation is limited to the first 3
 level from the directive declaration.
@@ -120,8 +124,13 @@ END DO
 !$claw loop-fusion [group(*group_id*)]
 ```
 
-The loop-fusion directive allows to merge 2 to N loops in a single one. If no
-group option is given, all the loops decorated with the directive in the same
+Loop jamming or fusion is used to merge 2 or more loops. Sometime, the work
+performed in a loop is too small to create significant impact on performance
+when it is parallelized. Merging some loops together create bigger block
+to be parallelized.
+
+The **loop-fusion** directive allows to merge 2 to N loops in a single one. If
+no group option is given, all the loops decorated with the directive in the same
 block will be merged together as a single group.
 
 All the loop within a group must share the same range.
