@@ -1,11 +1,11 @@
 # CLAW language definition
 
-*CURRENTLY IN CONSTRUCTION*
+*CURRENTLY UNDER CONSTRUCTION* language will evolve under several iteration
 
-This reposition contains the draft of the directive language of the CLAW
+This repository contains the draft of the directive language of the CLAW
 project
 
-CLAW is a directive language. The directive are either local or global directive.
+The directives are either local or global.
 
 * Local directive: those directives have a limited impact on a local block of
 code (for example, only in a subroutine)
