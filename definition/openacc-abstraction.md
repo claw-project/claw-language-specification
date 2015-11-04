@@ -1,21 +1,39 @@
 # OpenACC abstraction
 [Back to root](https://github.com/clementval/claw-definition)
-### Abstraction 1
+### All present
 #### Directive definition
 ```fortran
-!$claw ...
+!$claw data all-present
 ```
 
-Explanation
+This directive allows to generate OpenACC present directives for the parameters
+of a subroutine.
 
 #### Example 1
+###### OpenACC code
+```fortran
+SUBROUTINE claw(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
+  REAL, INTENT (IN) :: a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p
+  !$acc data present(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
+  ! Body of the subroutine
+END SUBROUTINE claw
+```
+
 ###### Original code
 ```fortran
-!$claw
+!$claw data all-present
+SUBROUTINE claw(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
+  REAL, INTENT (IN) :: a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p
+  ! Body of the subroutine
+END SUBROUTINE claw
 ```
 
 ###### Transformed code
 ```fortran
-! CLAW transformation
-
+SUBROUTINE claw(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
+  REAL, INTENT (IN) :: a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p
+  ! CLAW transformation data all present
+  !$acc data present(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
+  ! Body of the subroutine
+END SUBROUTINE claw
 ```
