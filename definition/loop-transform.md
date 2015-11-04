@@ -42,8 +42,8 @@ level from the directive declaration.
 DO i=1, iend
   DO k=1, kend
     ! loop body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 ```
 
 ###### Transformed code
@@ -52,8 +52,8 @@ ENDDO
 DO k=1, kend
   DO i=1, iend
     ! loop body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 ```
 
 #### Example 2
@@ -64,9 +64,9 @@ DO i=1, iend     ! loop at depth 0
   DO j=1, jend   ! loop at depth 1
     DO k=1, kend ! loop at depth 2
       ! loop body here
-    ENDDO
-  ENDDO
-ENDDO
+    END DO
+  END DO
+END DO
 ```
 
 ###### Transformed code
@@ -76,9 +76,9 @@ DO k=1, kend       ! loop at depth 2
   DO i=1, iend     ! loop at depth 0
     DO j=1, jend   ! loop at depth 1
       ! loop body here
-    ENDDO
-  ENDDO
-ENDDO
+    END DO
+  END DO
+END DO
 ```
 
 #### Example 3 (behavior with OpenACC or other directives)
@@ -91,8 +91,8 @@ DO i=1, iend
   !$acc loop vector
   DO k=1, kend
     ! loop body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 !$acc end parallel
 ```
 
@@ -105,8 +105,8 @@ DO k=1, kend
   !$acc loop vector
   DO i=1, iend
     ! loop body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 !$acc end parallel
 ```
 
@@ -147,13 +147,13 @@ DO k=1, iend
   !$claw loop-fusion
   DO i=1, iend
     ! loop #1 body here
-  ENDDO
+  END DO
 
   !$claw loop-fusion
   DO i=1, iend
     ! loop #2 body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 ```
 
 ###### Transformed code
@@ -163,8 +163,8 @@ DO k=1, iend
   DO i=1, iend
     ! loop #1 body here
     ! loop #2 body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 ```
 
 
@@ -175,23 +175,23 @@ DO k=1, iend
   !$claw loop-fusion group(g1)
   DO i=1, iend
     ! loop #1 body here
-  ENDDO
+  END DO
 
   !$claw loop-fusion group(g1)
   DO i=1, iend
     ! loop #2 body here
-  ENDDO
+  END DO
 
   !$claw loop-fusion group(g2)
   DO i=1, jend
     ! loop #3 body here
-  ENDDO
+  END DO
 
   !$claw loop-fusion group(g2)
   DO i=1, jend
     ! loop #4 body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 ```
 
 ###### Transformed code
@@ -201,14 +201,14 @@ DO k=1, iend
   DO i=1, iend
     ! loop #1 body here
     ! loop #2 body here
-  ENDDO
+  END DO
 
   ! CLAW tranformation (loop-fusion group g2)
   DO i=1, jend
     ! loop #3 body here
     ! loop #4 body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 ```
 
 #### Example 3 (behavior with OpenACC or other directives)
@@ -221,14 +221,14 @@ DO k=1, iend
   !$claw loop-fusion
   DO i=1, iend
     ! loop #1 body here
-  ENDDO
+  END DO
 
   !$acc loop vector
   !$claw loop-fusion
   DO i=1, iend
     ! loop #2 body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 !$acc end parallel
 ```
 
@@ -242,7 +242,7 @@ DO k=1, iend
   DO i=1, iend
     ! loop #1 body here
     ! loop #2 body here
-  ENDDO
-ENDDO
+  END DO
+END DO
 !$acc end parallel
 ```
