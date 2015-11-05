@@ -31,6 +31,7 @@ The interpretation order of the directives is the following:
 1. loop-fusion
 2. loop-interchange
 3. ...
+
 <!--- TODO Add directives in correct order --->
 
 Users must be aware that directives transformation are applied successfully and
