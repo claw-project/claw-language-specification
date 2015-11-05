@@ -255,3 +255,89 @@ DO k=1, iend
 END DO
 !$acc end parallel
 ```
+
+
+### Vector notation to loop
+#### Directive definition
+**Local directive**
+```fortran
+!$claw to-loop [acc]
+```
+
+###### Options
+* *acc*: add the acc loop directive to the generated loop
+
+###### Behavior with other directives
+Directives declared before the **to-loop** directive will be kept in the
+generated code.
+
+###### Limitations
+TODO
+
+#### Example 1 (simple)
+###### Original code
+```fortran
+SUBROUTINE vector_add
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  !$claw to-loop
+  vec1(0:i) = vec1(0:i) + 10;
+END SUBROUTINE vector_add
+```
+
+###### Transformed code
+```fortran
+SUBROUTINE vector_add
+  INTEGER :: claw_i
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  !CLAW transformation vec1(0:i) to Loop
+  DO claw_i=0, i
+    vec1(claw_i) = vec1(claw_i) + 10;
+  END DO
+END SUBROUTINE vector_add
+```
+
+#### Example 2 (with acc option)
+###### Original code
+```fortran
+SUBROUTINE vector_add
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  !$acc parallel
+  !$claw to-loop acc
+  vec1(0:i) = vec1(0:i) + 10;
+
+  !$claw to-loop acc
+  vec1(0:i) = vec1(0:i) + 1;
+  !$acc end parallel
+END SUBROUTINE vector_add
+```
+
+###### Transformed code
+```fortran
+SUBROUTINE vector_add
+  INTEGER :: claw_i
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  !$acc parallel
+
+  !CLAW transformation vec1(0:i) to Loop
+  !$acc loop
+  DO claw_i=0, i
+    vec1(claw_i) = vec1(claw_i) + 10;
+  END DO
+
+  !CLAW transformation vec1(0:i) to Loop
+  !$acc loop
+  DO claw_i=0, i
+    vec1(claw_i) = vec1(claw_i) + 1;
+  END DO
+
+  !$acc end parallel
+END SUBROUTINE vector_add
+```
