@@ -20,3 +20,18 @@ This language is separated in the followings sections:
 * [Variable transformation](https://github.com/clementval/claw-definition/blob/master/definition/var-transform.md) (promotion/demtion, scalar replacement)
 * [OpenACC abstraction](https://github.com/clementval/claw-definition/blob/master/definition/openacc-abstraction.md)
 * *More to come*
+
+
+##### Interpretation order of the CLAW directives
+The claw directives can be combined together. For example, loop-fusion and
+loop-interchange can be used together in a group of nested loops for example.
+
+The interpretation order of the directives is the following:
+
+1. loop-fusion
+2. loop-interchange
+3. ...
+<!--- TODO Add directives in correct order --->
+
+Users must be aware that directives transformation are applied successfully and
+therefore, a transformation can be performed on already transformed code.
