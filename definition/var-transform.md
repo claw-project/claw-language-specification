@@ -6,6 +6,12 @@
 
 ### Demotion
 #### Directive definition
+<!---
+TODO think again this problematic the directive should include a notion of
+loop-extraction/creation with an iteration range
+include a notion of loop-fusion in it. The resulting loop-extraction/creation
+can be then merge with loops on the same level
+--->
 **Local directive**
 ```fortran
 !$claw demote(variable_list) dim(dimension_from,dimension_to)
