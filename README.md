@@ -14,11 +14,11 @@ application.
 
 
 This language is separated in the followings sections:
-* [CLAW abstraction](https://github.com/clementval/claw-definition/blob/master/definition/claw-abstraction.md) (specific abstraction for climate system modeling build
+* [CLAW abstraction](https://github.com/C2SM-RCM/claw-definition/blob/master/definition/claw-abstraction.md) (specific abstraction for climate system modeling build
   on the top of other directives)
-* [Loop transformation](https://github.com/clementval/claw-definition/blob/master/definition/loop-transform.md) (loop fusion, loop interchange/reordering, vector to loop)
-* [Variable transformation](https://github.com/clementval/claw-definition/blob/master/definition/var-transform.md) (promotion/demtion, scalar replacement)
-* [OpenACC abstraction](https://github.com/clementval/claw-definition/blob/master/definition/openacc-abstraction.md)
+* [Loop transformation](https://github.com/C2SM-RCM/claw-definition/blob/master/definition/loop-transform.md) (loop fusion, loop interchange/reordering, vector to loop)
+* [Variable transformation](https://github.com/C2SM-RCM/claw-definition/blob/master/definition/var-transform.md) (promotion/demtion, scalar replacement)
+* [OpenACC abstraction](https://github.com/C2SM-RCM/claw-definition/blob/master/definition/openacc-abstraction.md)
 * *More to come*
 
 
