@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CLAW language definition
 
 *CURRENTLY UNDER CONSTRUCTION* language will evolve under several iteration
@@ -36,3 +37,6 @@ The interpretation order of the directives is the following:
 
 Users must be aware that directives transformation are applied successfully and
 therefore, a transformation can be performed on already transformed code.
+=======
+# claw-samples
+>>>>>>> 8ff321f80ad866c84bf18a14ec94cda7128a7b19
