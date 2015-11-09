@@ -16,8 +16,8 @@ application.
 This language is separated in the followings sections:
 * [CLAW abstraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/claw-abstraction.md) (specific abstraction for climate system modeling build
   on the top of other directives)
-* [Loop transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/loop-transform.md) (loop fusion, loop interchange/reordering, vector to loop)
-* [Variable transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/var-transform.md) (promotion/demtion, scalar replacement)
+* [Loop transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/loop-transform.md) (loop fusion, loop interchange/reordering, vector to loop, loop extraction)
+* [Variable transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/var-transform.md) (scalar replacement)
 * [OpenACC abstraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/openacc-abstraction.md)
 * *More to come*
 
@@ -28,11 +28,16 @@ loop-interchange can be used together in a group of nested loops for example.
 
 The interpretation order of the directives is the following:
 
-1. loop-fusion
-2. loop-interchange
-3. ...
+1. loop-extract
+2. loop-fusion
+3. loop-interchange
+4. ...
 
-<!--- TODO Add directives in correct order --->
+<!--- TODO --->
+```
+TODO
+# Think about directives interpretation order and complete this list
+```
 
 Users must be aware that directives transformation are applied successfully and
 therefore, a transformation can be performed on already transformed code.
