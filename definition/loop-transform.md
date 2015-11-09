@@ -7,6 +7,7 @@ Transformation on loops are defined by the following directives
 * [Loop jamming/fusion](#loop-jammingfusion)
 * [Loop extraction](loop-extraction)
 * [Vector notation to loop](#vector-notation-to-loop)
+
 ---
 
 ### Loop interchange/reordering
