@@ -4,14 +4,26 @@
 
 ---
 
+### Demotion/promotion of variable
+
+For the moment, those notions are part of the loop extraction directive.
+
+--> [Loop extraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/loop-transform.md#loop-extraction)
+
+<!---
+TODO maybe remove all of this if we do not see the point to have this directive
+
+Notion moved to the loop-extract directive. If we see advantage to have this
+notion as a standalone, we can bring this back.
+
+
 ### Demotion
 #### Directive definition
-<!---
 TODO think again this problematic the directive should include a notion of
 loop-extraction/creation with an iteration range
 include a notion of loop-fusion in it. The resulting loop-extraction/creation
 can be then merge with loops on the same level
---->
+
 **Local directive**
 ```fortran
 !$claw demote(variable_list) dim(dimension_from,dimension_to)
@@ -45,7 +57,7 @@ DO i = 0, iend
   CALL xyz_claw(value1_claw(i), value2_claw(i))
 END DO
 ```
-
+--->
 
 ### Scalar replacement
 #### Directive definition
