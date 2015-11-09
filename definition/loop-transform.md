@@ -289,10 +289,16 @@ on the subroutine parameters.
 
 
 ###### Behavior with other directives
-
+<!--- TODO --->
+```
+TODO
+```
 
 ###### Limitations
+<!--- TODO --->
+```
 TODO
+```
 
 #### Example 1 (simple)
 ###### Original code
@@ -379,7 +385,12 @@ Directives declared before the **to-loop** directive will be kept in the
 generated code.
 
 ###### Limitations
+<!--- TODO --->
+```
 TODO
+How to map the range on the parameters, how to define the notion of demotion
+on the subroutine parameters.
+```
 
 #### Example 1 (simple)
 ###### Original code
