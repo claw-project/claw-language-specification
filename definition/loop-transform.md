@@ -268,7 +268,6 @@ END DO
 ### Loop extraction
 #### Directive definition
 **Local directive**
-<!--- TODO how to map the range on the parameters --->
 ```fortran
 !$claw loop-extract(range) [fusion [group(group_id)]]
 ```
@@ -276,6 +275,14 @@ Loop extraction can be performed on a subroutine call. The loop corresponding
 to the defined range is extracted from the subroutine and is wrapped around the
 subroutine call. In the transformation, a copy of the subroutine is created
 with the corresponding demotion for the parameters.
+
+<!--- TODO --->
+```
+TODO
+How to map the range on the parameters, how to define the notion of demotion
+on the subroutine parameters.
+```
+
 
 ###### Options
 * *fusion*: Allow the extracted loop to be merged with other loops.
