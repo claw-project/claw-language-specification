@@ -341,3 +341,54 @@ SUBROUTINE vector_add
   !$acc end parallel
 END SUBROUTINE vector_add
 ```
+
+### Loop extraction
+#### Directive definition
+**Local directive**
+<!--- TODO how to map the range on the parameters --->
+```fortran
+!$claw loop-extract(range) [fusion [group(group_id)]]
+```
+Loop extraction can be performed on a subroutine call. The loop corresponding
+to the defined range is extracted from the subroutine and is wrapped around the
+subroutine call. In the transformation, a copy of the subroutine is created
+with the corresponding demotion for the parameters.
+
+###### Options
+* *fusion*: Allow the extracted loop to be merged with other loops.
+
+
+###### Behavior with other directives
+
+
+###### Limitations
+TODO
+
+#### Example 1 (simple)
+###### Original code
+```fortran
+SUBROUTINE xyz(value1, value2)
+  REAL, INTENT (IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(i) here
+  END DO
+END SUBROUTINE xyz
+
+!$claw loop-extract(i=istart,iend)
+CALL xyz(value1, value2)
+```
+
+###### Transformed code
+```fortran
+!CLAW extracted loop new subroutine
+SUBROUTINE xyz_claw(value1_claw, value2_claw)
+  REAL, INTENT (IN) :: value1_claw, value2_claw
+  ! some computation with value here
+END SUBROUTINE
+
+!CLAW extracted loop
+DO i = istart, iend
+  CALL xyz_claw(value1_claw(i), value2_claw(i))
+END DO
+```
