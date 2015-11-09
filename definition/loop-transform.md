@@ -392,3 +392,41 @@ DO i = istart, iend
   CALL xyz_claw(value1_claw(i), value2_claw(i))
 END DO
 ```
+
+
+#### Example 2 (with fusion option)
+###### Original code
+```fortran
+SUBROUTINE xyz(value1, value2)
+  REAL, INTENT (IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(i) here
+  END DO
+END SUBROUTINE xyz
+
+!$claw loop-extract(i=istart,iend) fusion group(g1)
+CALL xyz(value1, value2)
+
+!$claw loop-fusion group(g1)
+DO i = istart, iend
+  ! some computation here
+  print*,'Inside loop', i
+END DO
+```
+
+###### Transformed code
+```fortran
+!CLAW extracted loop new subroutine
+SUBROUTINE xyz_claw(value1_claw, value2_claw)
+  REAL, INTENT (IN) :: value1_claw, value2_claw
+  ! some computation with value here
+END SUBROUTINE
+
+!CLAW extracted loop
+DO i = istart, iend
+  CALL xyz_claw(value1_claw(i), value2_claw(i))
+  ! some computation here
+  print*,'Inside loop', i
+END DO
+```
