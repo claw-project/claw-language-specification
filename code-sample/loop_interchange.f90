@@ -8,7 +8,7 @@ END
 ! Before the transformation
 SUBROUTINE clawloop
   INTEGER :: i, j, k
-  !$claw loop-interchange new-order(k,i,j)
+  !$claw loop-interchange (k,i,j)
   DO i=1,4
     DO j=1,3
       DO k=1,2
@@ -21,7 +21,7 @@ END
 ! After the transformation
 SUBROUTINE clawloop_transformed
   INTEGER :: i, j, k
-  !$claw loop-interchange new-order(k,i,j)
+  !$claw loop-interchange (k,i,j)
   DO k=1,2
     DO i=1,4
       DO j=1,3

@@ -12,12 +12,9 @@ Transformation on loops are defined by the following directives
 
 ### Loop interchange/reordering
 #### Directive definition
-<!--- TODO maybe find a way to abstract this concept for the specific climate
-case
---->
 **Local directive**
 ```fortran
-!$claw loop-interchange [new-order(loop-index-1,loop-index-2,loop-index-3)]
+!$claw loop-interchange [(loop-index-1,loop-index-2,loop-index-3)]
 ```
 
 Loop reordering is a common transformation applied on loops when adding
@@ -30,8 +27,8 @@ reordered.
 When two loops are nested, the directive can be used without option. In this
 configuration the inner loop is swapped with the outer loop (see example 1).
 
-If the *new-order* option is given, the loops are reordered with the given new
-order (see example 2).
+If the list option is given, the loops are reordered with the given order
+defined in the list (see example 2).
 
 ###### Variable
 * *loop-index-i*: the iteration variable of the loop
@@ -70,7 +67,7 @@ END DO
 #### Example 2
 ###### Original code
 ```fortran
-!$claw loop-interchange new-order(k,i,j)
+!$claw loop-interchange (k,i,j)
 DO i=1, iend     ! loop at depth 0
   DO j=1, jend   ! loop at depth 1
     DO k=1, kend ! loop at depth 2
@@ -82,7 +79,7 @@ END DO
 
 ###### Transformed code
 ```fortran
-! CLAW transformation (loop-interchange new-order(k,i,j))
+! CLAW transformation (loop-interchange (k,i,j))
 DO k=1, kend       ! loop at depth 2
   DO i=1, iend     ! loop at depth 0
     DO j=1, jend   ! loop at depth 1
