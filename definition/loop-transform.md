@@ -14,9 +14,11 @@ Transformation on loops are defined by the following directives
 #### Directive definition
 **Local directive**
 
+<pre>
 <code>
 !$claw loop-interchange [(<i>loop-index[,loop-index] ...</i>)]
 </code>
+</pre>
 
 Loop reordering is a common transformation applied on loops when adding
 parallelization. This transformation is mainly used to improve the data
@@ -128,8 +130,8 @@ END DO
 <pre>
 <code>
 !$claw loop-fusion [group(<i>group_id</i>)]
-</pre>
 </code>
+</pre>
 
 Loop jamming or fusion is used to merge 2 or more loops. Sometime, the work
 performed in a loop is too small to create significant impact on performance
@@ -273,6 +275,7 @@ END DO
 !$claw loop-extract(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping</i>)[map(<i>var[,var]...</i>:<i>mapping</i>)] ...]</i> [fusion [group(<i>group_id</i>)]]
 </code>
 </pre>
+
 Loop extraction can be performed on a subroutine call. The loop corresponding
 to the defined range is extracted from the subroutine and is wrapped around the
 subroutine call. In the transformation, a copy of the subroutine is created
@@ -376,8 +379,8 @@ END DO
 <pre>
 <code>
 !$claw to-loop [acc(<i>[clause [[,] clause]...]</i>)]
-</pre>
 </code>
+</pre>
 
 ###### Options
 * *acc*: Define OpenACC clauses that will be applied to the loop.
