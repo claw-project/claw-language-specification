@@ -26,8 +26,8 @@ CLAW directives can be defined on several line. The syntax is described in the
 listing below:
 
 ```Fortran
-!$claw  directive options &
-!$claw& options
+!$claw directive options &
+!$claw options
 ```
 
 
