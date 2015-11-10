@@ -14,7 +14,7 @@ Transformation on loops are defined by the following directives
 #### Directive definition
 **Local directive**
 ```fortran
-!$claw loop-interchange [(loop-index-1,loop-index-2,loop-index-3)]
+!$claw loop-interchange [(loop-index[,loop-index] ...)]
 ```
 
 Loop reordering is a common transformation applied on loops when adding
@@ -31,7 +31,7 @@ If the list option is given, the loops are reordered with the given order
 defined in the list (see example 2).
 
 ###### Variable
-* *loop-index-i*: the iteration variable of the loop
+* *loop-index*: the iteration variable of the loop
 
 ###### Behavior with other directives
 When the loops to be interchange are decorated with other directives, those
@@ -125,7 +125,7 @@ END DO
 #### Directive definition
 **Local directive**
 ```fortran
-!$claw loop-fusion [group(*group_id*)]
+!$claw loop-fusion [group(group_id)]
 ```
 
 Loop jamming or fusion is used to merge 2 or more loops. Sometime, the work
@@ -265,31 +265,29 @@ END DO
 ### Loop extraction
 #### Directive definition
 **Local directive**
-```fortran
-!$claw loop-extract(range) [fusion [group(group_id)]]
-```
+<pre>
+<code>
+!$claw loop-extract(range) <i>[map(var[,var]...:mapping)[map(var[,var]...:mapping)] ...]</i> [fusion [group(group_id)]]
+</code>
+</pre>
 Loop extraction can be performed on a subroutine call. The loop corresponding
 to the defined range is extracted from the subroutine and is wrapped around the
 subroutine call. In the transformation, a copy of the subroutine is created
 with the corresponding demotion for the parameters.
 
-<!--- TODO --->
-```
-TODO
-How to map the range on the parameters, how to define the notion of demotion
-on the subroutine parameters.
-```
-
 
 ###### Options
 * *fusion*: Allow the extracted loop to be merged with other loops.
+* *map*: Define the mapping of variable that are demoted during the loop
+extraction. As seen in the example 1, the two parameters (1 dimensional array)
+are mapped to a scalar with the iteration variable _i_.
+  * Each variable in the list is separated by a comma
+  * The mapping clause can be defined as a list. For example, `i,j`
 
 
 ###### Behavior with other directives
-<!--- TODO --->
-```
-TODO
-```
+If the loop was decorated with directives prior to its extraction, those
+directives are extracted with the loop.
 
 ###### Limitations
 <!--- TODO --->
@@ -308,7 +306,7 @@ SUBROUTINE xyz(value1, value2)
   END DO
 END SUBROUTINE xyz
 
-!$claw loop-extract(i=istart,iend)
+!$claw loop-extract(i=istart,iend) map(value1,value2:i)
 CALL xyz(value1, value2)
 ```
 
@@ -338,7 +336,7 @@ SUBROUTINE xyz(value1, value2)
   END DO
 END SUBROUTINE xyz
 
-!$claw loop-extract(i=istart,iend) fusion group(g1)
+!$claw loop-extract(i=istart,iend) map(value1,value2:i) fusion group(g1)
 CALL xyz(value1, value2)
 
 !$claw loop-fusion group(g1)
@@ -371,11 +369,11 @@ END DO
 #### Directive definition
 **Local directive**
 ```fortran
-!$claw to-loop [acc]
+!$claw to-loop [acc([clause [[,] clause]...])]
 ```
 
 ###### Options
-* *acc*: add the acc loop directive to the generated loop
+* *acc*: Define OpenACC clauses that will be applied to the loop.
 
 ###### Behavior with other directives
 Directives declared before the **to-loop** directive will be kept in the
@@ -385,8 +383,7 @@ generated code.
 <!--- TODO --->
 ```
 TODO
-How to map the range on the parameters, how to define the notion of demotion
-on the subroutine parameters.
+How to convert when several vector are involved --> nested loops.
 ```
 
 #### Example 1 (simple)
@@ -423,10 +420,10 @@ SUBROUTINE vector_add
   INTEGER, DIMENSION(0:9) :: vec1
 
   !$acc parallel
-  !$claw to-loop acc
+  !$claw to-loop acc(loop)
   vec1(0:i) = vec1(0:i) + 10;
 
-  !$claw to-loop acc
+  !$claw to-loop acc(loop)
   vec1(0:i) = vec1(0:i) + 1;
   !$acc end parallel
 END SUBROUTINE vector_add
