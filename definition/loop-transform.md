@@ -267,7 +267,7 @@ END DO
 **Local directive**
 <pre>
 <code>
-!$claw loop-extract(range) <i>[map(var[,var]...:mapping)[map(var[,var]...:mapping)] ...]</i> [fusion [group(group_id)]]
+!$claw loop-extract(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping</i>)[map(<i>var[,var]...</i>:<i>mapping</i>)] ...]</i> [fusion [group(<i>group_id</i>)]]
 </code>
 </pre>
 Loop extraction can be performed on a subroutine call. The loop corresponding
