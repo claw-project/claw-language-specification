@@ -6,7 +6,7 @@ Transformation on loops are defined by the following directives
 * [Loop interchange/reordering](#loop-interchangereordering)
 * [Loop jamming/fusion](#loop-jammingfusion)
 * [Loop extraction](#loop-extraction)
-* [Vector notation to loop](#vector-notation-to-loop)
+* [Vector notation to loop](#vector-to-loop-transformation)
 
 ---
 
@@ -373,12 +373,12 @@ END DO
 ---
 
 
-### Vector notation to loop
+### Vector to loop transformation
 #### Directive definition
 **Local directive**
 <pre>
 <code>
-!$claw to-loop [acc(<i>[clause [[,] clause]...]</i>)]
+!$claw loop-vector [acc(<i>[clause [[,] clause]...]</i>)]
 </code>
 </pre>
 
@@ -386,7 +386,7 @@ END DO
 * *acc*: Define OpenACC clauses that will be applied to the loop.
 
 ###### Behavior with other directives
-Directives declared before the **to-loop** directive will be kept in the
+Directives declared before the **loop-vector** directive will be kept in the
 generated code.
 
 ###### Limitations
@@ -403,7 +403,7 @@ SUBROUTINE vector_add
   INTEGER :: i = 10
   INTEGER, DIMENSION(0:9) :: vec1
 
-  !$claw to-loop
+  !$claw loop-vector
   vec1(0:i) = vec1(0:i) + 10;
 END SUBROUTINE vector_add
 ```
@@ -430,10 +430,10 @@ SUBROUTINE vector_add
   INTEGER, DIMENSION(0:9) :: vec1
 
   !$acc parallel
-  !$claw to-loop acc(loop)
+  !$claw loop-vector acc(loop)
   vec1(0:i) = vec1(0:i) + 10;
 
-  !$claw to-loop acc(loop)
+  !$claw loop-vector acc(loop)
   vec1(0:i) = vec1(0:i) + 1;
   !$acc end parallel
 END SUBROUTINE vector_add
