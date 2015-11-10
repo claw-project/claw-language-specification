@@ -13,9 +13,11 @@ Transformation on loops are defined by the following directives
 ### Loop interchange/reordering
 #### Directive definition
 **Local directive**
-```fortran
-!$claw loop-interchange [(loop-index[,loop-index] ...)]
-```
+<pre>
+<code>
+!$claw loop-interchange [(<i>loop-index[,loop-index] ...</i>)]
+</pre>
+</code>
 
 Loop reordering is a common transformation applied on loops when adding
 parallelization. This transformation is mainly used to improve the data
@@ -124,9 +126,11 @@ END DO
 ### Loop jamming/fusion
 #### Directive definition
 **Local directive**
-```fortran
-!$claw loop-fusion [group(group_id)]
-```
+<pre>
+<code>
+!$claw loop-fusion [group(<i>group_id</i>)]
+</pre>
+</code>
 
 Loop jamming or fusion is used to merge 2 or more loops. Sometime, the work
 performed in a loop is too small to create significant impact on performance
@@ -370,9 +374,11 @@ END DO
 ### Vector notation to loop
 #### Directive definition
 **Local directive**
-```fortran
-!$claw to-loop [acc([clause [[,] clause]...])]
-```
+<pre>
+<code>
+!$claw to-loop [acc(<i>[clause [[,] clause]...]</i>)]
+</pre>
+</code>
 
 ###### Options
 * *acc*: Define OpenACC clauses that will be applied to the loop.
