@@ -13,10 +13,9 @@ Transformation on loops are defined by the following directives
 ### Loop interchange/reordering
 #### Directive definition
 **Local directive**
-<pre>
+
 <code>
 !$claw loop-interchange [(<i>loop-index[,loop-index] ...</i>)]
-</pre>
 </code>
 
 Loop reordering is a common transformation applied on loops when adding
