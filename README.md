@@ -21,6 +21,15 @@ This language is separated in the followings sections:
 * [OpenACC abstraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/openacc-abstraction.md)
 * *More to come*
 
+##### Line continuation
+CLAW directives can be defined on several line. The syntax is described in the
+listing below:
+
+```Fortran
+!$claw  directive options &
+!$claw& options
+```
+
 
 ##### Interpretation order of the CLAW directives
 The claw directives can be combined together. For example, loop-fusion and
