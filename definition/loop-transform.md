@@ -276,11 +276,13 @@ subroutine call. In the transformation, a copy of the subroutine is created
 with the corresponding demotion for the parameters.
 
 
-###### Options
+###### Options and details
+* *range*: Correspond to the range of the loop to be extracted. Notation
+  `i = istart, iend, istep`
 * *fusion*: Allow the extracted loop to be merged with other loops.
 * *map*: Define the mapping of variable that are demoted during the loop
-extraction. As seen in the example 1, the two parameters (1 dimensional array)
-are mapped to a scalar with the iteration variable _i_.
+  extraction. As seen in the example 1, the two parameters (1 dimensional array)
+  are mapped to a scalar with the iteration variable _i_.
   * Each variable in the list is separated by a comma
   * The mapping clause can be defined as a list. For example, `i,j`
 
