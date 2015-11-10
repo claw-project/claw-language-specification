@@ -48,5 +48,5 @@ TODO
 # Think about directives interpretation order and complete this list
 ```
 
-Users must be aware that directives transformation are applied successfully and
+Users must be aware that directives transformation are applied sequentially and
 therefore, a transformation can be performed on already transformed code.
