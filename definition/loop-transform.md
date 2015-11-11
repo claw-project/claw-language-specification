@@ -292,7 +292,7 @@ is created with the corresponding transformation (demotion) for the parameters.
 
 If the directive **loop-extract** is used for more than one call to the same
 subroutine, the extraction can generate 1 to N dedicated subroutines. When the
-`range` and the `map`option are identical, only one dedicated subroutine is
+`range` and the `map` options are identical, only one dedicated subroutine is
 generated and used by the different calls.  
 
 ###### Behavior with other directives
@@ -308,7 +308,7 @@ TODO
 #### Example 1 (simple)
 ###### Original code
 ```fortran
-PROGAM main
+PROGRAM main
   !$claw loop-extract(i=istart,iend) map(value1,value2:i)
   CALL xyz(value1, value2)
 END PROGRAM main
@@ -324,7 +324,7 @@ END SUBROUTINE xyz
 
 ###### Transformed code
 ```fortran
-PROGAM main
+PROGRAM main
   !CLAW extracted loop
   DO i = istart, iend
     CALL xyz_claw(value1(i), value2(i))
@@ -350,7 +350,7 @@ END SUBROUTINE xyz_claw
 #### Example 2 (with fusion option)
 ###### Original code
 ```fortran
-PROGAM main
+PROGRAM main
   !$claw loop-extract(i=istart,iend) map(value1,value2:i) fusion group(g1)
   CALL xyz(value1, value2)
 
@@ -372,14 +372,14 @@ END SUBROUTINE xyz
 
 ###### Transformed code
 ```fortran
-ROGAM main
+PROGRAM main
   !CLAW extracted loop
   DO i = istart, iend
     CALL xyz_claw(value1(i), value2(i))
     ! some computation here
     print*,'Inside loop', i
   END DO
-END PROGAM main
+END PROGRAM main
 
 SUBROUTINE xyz(value1, value2)
   REAL, INTENT (IN) :: value2(x:y), value2(x:y)
