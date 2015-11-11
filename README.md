@@ -16,8 +16,13 @@ application.
 This language is separated in the followings sections:
 * [CLAW abstraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/claw-abstraction.md) (specific abstraction for climate system modeling build
   on the top of other directives)
-* [Loop transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/loop-transform.md) (loop fusion, loop interchange/reordering, vector to loop, loop extraction)
-* [Variable transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/var-transform.md) (scalar replacement)
+* [Loop transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/loop-transform.md)
+  * loop fusion
+  * loop interchange/reordering
+  * loop extraction
+  * vector to loop
+* [Variable transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/var-transform.md)
+  * scalar replacement
 * [OpenACC abstraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/openacc-abstraction.md)
 * *More to come*
 
