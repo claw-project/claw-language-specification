@@ -69,11 +69,11 @@ END DO
 </code>
 </pre>
 
-The goal of scalar replacement is to reduce memory references by using register
-references.
+The goal of scalar replacement is to reduce memory references by trying to
+improve register usage.
 
 The **scalar-replace** directive allows to extract a memory reference from a
-loop.
+loop and be placed into a scalar variable.
 
 ###### Options and details
 * *scalar_var*: name of the replacement variable after code transformation
