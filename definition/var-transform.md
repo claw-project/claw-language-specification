@@ -6,7 +6,8 @@
 
 ### Demotion/promotion of variable
 
-For the moment, those notions are part of the loop extraction directive.
+For the moment, those notions are part of the loop extraction directive. There
+is no plan to expose those notions for the moment.
 
 --> [Loop extraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/loop-transform.md#loop-extraction)
 
@@ -62,8 +63,32 @@ END DO
 ### Scalar replacement
 #### Directive definition
 **Local directive**
-```fortran
-!$claw scalar scalar_var=value
+<pre>
+<code>
+!$claw scalar-replace <i>scalar_var</i>=<i>value</i>
+</code>
+</pre>
+
+The goal of scalar replacement is to reduce memory references by using register
+references.
+
+The **scalar-replace** directive allows to extract a memory reference from a
+loop.
+
+###### Options and details
+* *scalar_var*: name of the replacement variable after code transformation
+* *value*: memory reference to be replaced
+
+###### Behavior with other directives
+<!--- TODO --->
+```
+TODO
+```
+
+###### Limitations
+<!--- TODO --->
+```
+TODO
 ```
 
 #### Example 1

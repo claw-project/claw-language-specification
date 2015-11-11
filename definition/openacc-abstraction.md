@@ -9,6 +9,22 @@
 This directive allows to generate OpenACC present directives for the parameters
 of a subroutine.
 
+
+###### Options and details
+This directive has no option.
+
+###### Behavior with other directives
+<!--- TODO --->
+```
+TODO
+```
+
+###### Limitations
+<!--- TODO --->
+```
+TODO
+```
+
 #### Example 1
 ###### OpenACC code
 ```fortran

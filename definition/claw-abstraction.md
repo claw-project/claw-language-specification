@@ -11,6 +11,8 @@
 ```
 <!---  Description of the directive --->
 
+###### Options and details
+
 ###### Behavior with other directives
 
 ###### Limitations
