@@ -312,22 +312,27 @@ SUBROUTINE xyz(value1, value2)
   END DO
 END SUBROUTINE xyz
 
-!$claw loop-extract(i=istart,iend) map(value1,value2:i)
-CALL xyz(value1, value2)
+
+PROGAM main
+  !$claw loop-extract(i=istart,iend) map(value1,value2:i)
+  CALL xyz(value1, value2)
+END PROGRAM main
 ```
 
 ###### Transformed code
 ```fortran
 !CLAW extracted loop new subroutine
-SUBROUTINE xyz_claw(value1_claw, value2_claw)
-  REAL, INTENT (IN) :: value1_claw, value2_claw
+SUBROUTINE xyz_claw(value1, value2)
+  REAL, INTENT (IN) :: value1, value2
   ! some computation with value here
 END SUBROUTINE
 
-!CLAW extracted loop
-DO i = istart, iend
-  CALL xyz_claw(value1_claw(i), value2_claw(i))
-END DO
+PROGAM main
+  !CLAW extracted loop
+  DO i = istart, iend
+    CALL xyz_claw(value1(i), value2(i))
+  END DO
+END PROGRAM main
 ```
 
 
@@ -342,30 +347,35 @@ SUBROUTINE xyz(value1, value2)
   END DO
 END SUBROUTINE xyz
 
-!$claw loop-extract(i=istart,iend) map(value1,value2:i) fusion group(g1)
-CALL xyz(value1, value2)
 
-!$claw loop-fusion group(g1)
-DO i = istart, iend
-  ! some computation here
-  print*,'Inside loop', i
-END DO
+PROGAM main
+  !$claw loop-extract(i=istart,iend) map(value1,value2:i) fusion group(g1)
+  CALL xyz(value1, value2)
+
+  !$claw loop-fusion group(g1)
+  DO i = istart, iend
+    ! some computation here
+    print*,'Inside loop', i
+  END DO
+END PROGRAM main
 ```
 
 ###### Transformed code
 ```fortran
 !CLAW extracted loop new subroutine
-SUBROUTINE xyz_claw(value1_claw, value2_claw)
-  REAL, INTENT (IN) :: value1_claw, value2_claw
+SUBROUTINE xyz_claw(value1, value2)
+  REAL, INTENT (IN) :: value1, value2
   ! some computation with value here
 END SUBROUTINE
 
-!CLAW extracted loop
-DO i = istart, iend
-  CALL xyz_claw(value1_claw(i), value2_claw(i))
-  ! some computation here
-  print*,'Inside loop', i
-END DO
+PROGAM main
+  !CLAW extracted loop
+  DO i = istart, iend
+    CALL xyz_claw(value1(i), value2(i))
+    ! some computation here
+    print*,'Inside loop', i
+  END DO
+END PROGAM main
 ```
 
 ---
