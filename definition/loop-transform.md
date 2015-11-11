@@ -272,7 +272,7 @@ END DO
 **Local directive**
 <pre>
 <code>
-!$claw loop-extract(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping</i>)[map(<i>var[,var]...</i>:<i>mapping</i>)] ...]</i> [fusion [group(<i>group_id</i>)]]
+!$claw loop-extract range(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping</i>)[map(<i>var[,var]...</i>:<i>mapping</i>)] ...]</i> [fusion [group(<i>group_id</i>)]]
 </code>
 </pre>
 
