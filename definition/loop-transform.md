@@ -282,7 +282,7 @@ is created with the corresponding transformation (demotion) for the parameters.
 
 ###### Options and details
 * *range*: Correspond to the iteration range of the loop to be extracted.
-Notation `i = istart, iend, istep`
+  Notation `i = istart, iend, istep`
 * *map*: Define the mapping of variable that are demoted during the loop
   extraction. As seen in the example 1, the two parameters (1 dimensional array)
   are mapped to a scalar with the iteration variable _i_.
@@ -290,6 +290,10 @@ Notation `i = istart, iend, istep`
   * The *mapping* clause can be defined as a list. For example, `i,j`
 * *fusion*: Allow the extracted loop to be merged with other loops.
 
+If the directive **loop-extract** is used for more than one call to the same
+subroutine, the extraction can generate 1 to N dedicated subroutines. When the
+`range` and the `map`option are identical, only one dedicated subroutine is
+generated and used by the different calls.  
 
 ###### Behavior with other directives
 If the loop was decorated with directives prior to its extraction, those
@@ -304,6 +308,11 @@ TODO
 #### Example 1 (simple)
 ###### Original code
 ```fortran
+PROGAM main
+  !$claw loop-extract(i=istart,iend) map(value1,value2:i)
+  CALL xyz(value1, value2)
+END PROGRAM main
+
 SUBROUTINE xyz(value1, value2)
   REAL, INTENT (IN) :: value2(x:y), value2(x:y)
 
@@ -311,34 +320,17 @@ SUBROUTINE xyz(value1, value2)
     ! some computation with value1(i) here
   END DO
 END SUBROUTINE xyz
-
-
-PROGAM main
-  !$claw loop-extract(i=istart,iend) map(value1,value2:i)
-  CALL xyz(value1, value2)
-END PROGRAM main
 ```
 
 ###### Transformed code
 ```fortran
-!CLAW extracted loop new subroutine
-SUBROUTINE xyz_claw(value1, value2)
-  REAL, INTENT (IN) :: value1, value2
-  ! some computation with value here
-END SUBROUTINE
-
 PROGAM main
   !CLAW extracted loop
   DO i = istart, iend
     CALL xyz_claw(value1(i), value2(i))
   END DO
 END PROGRAM main
-```
 
-
-#### Example 2 (with fusion option)
-###### Original code
-```fortran
 SUBROUTINE xyz(value1, value2)
   REAL, INTENT (IN) :: value2(x:y), value2(x:y)
 
@@ -347,7 +339,17 @@ SUBROUTINE xyz(value1, value2)
   END DO
 END SUBROUTINE xyz
 
+!CLAW extracted loop new subroutine
+SUBROUTINE xyz_claw(value1, value2)
+  REAL, INTENT (IN) :: value1, value2
+  ! some computation with value here
+END SUBROUTINE xyz_claw
+```
 
+
+#### Example 2 (with fusion option)
+###### Original code
+```fortran
 PROGAM main
   !$claw loop-extract(i=istart,iend) map(value1,value2:i) fusion group(g1)
   CALL xyz(value1, value2)
@@ -358,17 +360,19 @@ PROGAM main
     print*,'Inside loop', i
   END DO
 END PROGRAM main
+
+SUBROUTINE xyz(value1, value2)
+  REAL, INTENT (IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(i) here
+  END DO
+END SUBROUTINE xyz
 ```
 
 ###### Transformed code
 ```fortran
-!CLAW extracted loop new subroutine
-SUBROUTINE xyz_claw(value1, value2)
-  REAL, INTENT (IN) :: value1, value2
-  ! some computation with value here
-END SUBROUTINE
-
-PROGAM main
+ROGAM main
   !CLAW extracted loop
   DO i = istart, iend
     CALL xyz_claw(value1(i), value2(i))
@@ -376,6 +380,20 @@ PROGAM main
     print*,'Inside loop', i
   END DO
 END PROGAM main
+
+SUBROUTINE xyz(value1, value2)
+  REAL, INTENT (IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(i) here
+  END DO
+END SUBROUTINE xyz
+
+!CLAW extracted loop new subroutine
+SUBROUTINE xyz_claw(value1, value2)
+  REAL, INTENT (IN) :: value1, value2
+  ! some computation with value here
+END SUBROUTINE xyz_claw
 ```
 
 ---
