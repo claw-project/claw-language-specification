@@ -404,7 +404,7 @@ END SUBROUTINE xyz_claw
 **Local directive**
 <pre>
 <code>
-!$claw loop-vector [acc(<i>[clause [[,] clause]...]</i>)]
+!$claw loop-vector [acc(<i>[clause [[,] clause]...]</i>)] [fusion [group(<i>group_id</i>)]]
 </code>
 </pre>
 
@@ -415,6 +415,7 @@ parallelization.
 
 ###### Options and details
 * *acc*: Define OpenACC clauses that will be applied to the generated loops.
+* *fusion*: Allow the extracted loop to be merged with other loops.
 
 ###### Behavior with other directives
 Directives declared before the **loop-vector** directive will be kept in the
@@ -492,5 +493,41 @@ SUBROUTINE vector_add
   END DO
 
   !$acc end parallel
+END SUBROUTINE vector_add
+```
+
+#### Example 3 (with fusion option)
+###### Original code
+```fortran
+SUBROUTINE vector_add
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+  INTEGER, DIMENSION(0:9) :: vec2
+
+  !$claw loop-vector fusion
+  vec1(0:i) = vec1(0:i) + 10;
+
+  !$claw loop-vector fusion
+  vec2(0:i) = vec2(0:i) + 1;
+
+END SUBROUTINE vector_add
+```
+
+###### Transformed code
+```fortran
+SUBROUTINE vector_add
+  INTEGER :: claw_i
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+  INTEGER, DIMENSION(0:9) :: vec2
+
+  !CLAW transformation vec1(0:i) to loop
+  !CLAW transformation vec2(0:i) to loop
+  !CLAW transformation fusion
+  DO claw_i=0, i
+    vec1(claw_i) = vec1(claw_i) + 10;
+    vec2(claw_i) = vec2(claw_i) + 1;
+  END DO
+
 END SUBROUTINE vector_add
 ```
