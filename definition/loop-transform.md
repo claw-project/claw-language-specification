@@ -34,7 +34,7 @@ If the list option is given, the loops are reordered according to the order
 defined in the list (see example 2).
 
 ###### Options and details
-* *loop-index*: the iteration variable of the loop
+* *loop-index*: the induction variable of the loop
 
 ###### Behavior with other directives
 When the loops to be reordered are decorated with additional directives, those
@@ -285,7 +285,7 @@ is created with the corresponding transformation (demotion) for the parameters.
   Notation `i = istart, iend, istep`
 * *map*: Define the mapping of variable that are demoted during the loop
   extraction. As seen in the example 1, the two parameters (1 dimensional array)
-  are mapped to a scalar with the iteration variable _i_.
+  are mapped to a scalar with the induction variable _i_.
   * Each variable in the list is separated by a comma
   * The *mapping* clause can be defined as a list. For example, `i,j`
 * *fusion*: Allow the extracted loop to be merged with other loops.
