@@ -24,7 +24,7 @@ Loop reordering is a common transformation applied on loops when adding
 parallelization. This transformation is mainly used to improve the data
 locality.
 
-In this case, the **loop-interchange** directive allows nested loops to be
+In this case, the `loop-interchange` directive allows nested loops to be
 reordered.
 
 When two loops are nested, the directive can be used without option. In this
@@ -42,7 +42,7 @@ directives stay in place during the code transformation. In other words, they
 are not reordered together with the loops (see example 3).
 
 ###### Limitations
-Currently, the **loop-interchange** directive is limited to 3 level of loops.
+Currently, the `loop-interchange` directive is limited to 3 level of loops.
 More level of loops can be declared but the transformation is limited to the
 first 3 levels from the directive declaration.
 
@@ -138,7 +138,7 @@ work performed in a loop is too small to create significant impact on
 performance when it is parallelized. Merging some loops together create bigger
 blocks (kernels) to be parallelized.
 
-The **loop-fusion** directive allows to merge 2 to N loops in a single one. If
+The `loop-fusion` directive allows to merge 2 to N loops in a single one. If
 no *group* option is given, all the loops decorated with the directive in the
 same block will be merged together as a single group.
 
@@ -281,16 +281,17 @@ is created with the corresponding transformation (demotion) for the parameters.
 
 
 ###### Options and details
-* *range*: Correspond to the iteration range of the loop to be extracted.
+* `range`: Correspond to the iteration range of the loop to be extracted.
   Notation `i = istart, iend, istep`
-* *map*: Define the mapping of variable that are demoted during the loop
+* `map`: Define the mapping of variable that are demoted during the loop
   extraction. As seen in the example 1, the two parameters (1 dimensional array)
   are mapped to a scalar with the induction variable _i_.
   * Each variable in the list is separated by a comma
   * The *mapping* clause can be defined as a list. For example, `i,j`
-* *fusion*: Allow the extracted loop to be merged with other loops.
+* `fusion`: Allow the extracted loop to be merged with other loops.
+  * Options are identical with the `loop-fusion` directive
 
-If the directive **loop-extract** is used for more than one call to the same
+If the directive `loop-extract` is used for more than one call to the same
 subroutine, the extraction can generate 1 to N dedicated subroutines. When the
 `range` and the `map` options are identical, only one dedicated subroutine is
 generated and used by the different calls.  
@@ -409,16 +410,17 @@ END SUBROUTINE xyz_claw
 </pre>
 
 Computations using the vector notation are not suitable to be parallelized with
-language like OpenACC. The **loop-vector** directive allows to transform those
+language like OpenACC. The `loop-vector` directive allows to transform those
 notation with the corresponding loops which are more suitable for
 parallelization.
 
 ###### Options and details
-* *acc*: Define OpenACC clauses that will be applied to the generated loops.
-* *fusion*: Allow the extracted loop to be merged with other loops.
+* `acc`: Define OpenACC clauses that will be applied to the generated loops.
+* `fusion`: Allow the extracted loop to be merged with other loops.
+  * Options are identical with the `loop-fusion` directive
 
 ###### Behavior with other directives
-Directives declared before the **loop-vector** directive will be kept in the
+Directives declared before the `loop-vector` directive will be kept in the
 generated code.
 
 ###### Limitations
