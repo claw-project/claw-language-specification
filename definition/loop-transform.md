@@ -270,7 +270,7 @@ END DO
 **Local directive**
 <pre>
 <code>
-!$claw loop-extract range(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping</i>)[map(<i>var[,var]...</i>:<i>mapping</i>)] ...]</i> [fusion [group(<i>group_id</i>)]]
+!$claw loop-extract range(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping</i>) [map(<i>var[,var]...</i>:<i>mapping</i>)] ...]</i> [fusion [group(<i>group_id</i>)]]
 </code>
 </pre>
 
@@ -400,7 +400,9 @@ END SUBROUTINE xyz_claw
 ---
 
 
-### Vector to loop transformation
+### Vector to loop transformation (on hold)
+<!--- Not sure this directives will be very useful in the end. Waiting for more
+input from Jon --->
 #### Directive definition
 **Local directive**
 <pre>
