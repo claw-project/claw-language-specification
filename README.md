@@ -24,7 +24,7 @@ This language is separated in the followings sections:
 * [Variable transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/var-transform.md)
   * scalar replacement
 * [OpenACC abstraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/openacc-abstraction.md)
-* *More to come*
+* [On the fly computation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/on-the-fly.md)
 
 ##### Line continuation
 CLAW directives can be defined on several line. The syntax is described in the
