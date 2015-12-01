@@ -2,6 +2,10 @@
 
 *CURRENTLY UNDER CONSTRUCTION* language will evolve under several iteration
 
+* **Iteration 1**: Define low-level block transformation
+* **Iteration 2 to n**: Refine the definition and try to abstract the
+transformations from iteration 1 for domain specific use cases
+
 This repository contains the draft of the directive language of the CLAW
 project
 
