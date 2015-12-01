@@ -38,7 +38,7 @@ listing below:
 
 ##### Interpretation order of the CLAW directives
 The claw directives can be combined together. For example, loop-fusion and
-loop-interchange can be used together in a group of nested loops for example.
+loop-interchange can be used together in a group of nested loops.
 
 The interpretation order of the directives is the following:
 
