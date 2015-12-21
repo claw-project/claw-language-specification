@@ -3,6 +3,10 @@
 
 ---
 
+Sometimes, replacing pre-computed arrays with computation on the fly can
+increase the performance. It can reduce the memory access for memory-bound
+kernel and exploit some unused resource to perform the computation on the fly.
+
 ### Abstraction 1
 #### Directive definition
 **Local directive**
