@@ -33,7 +33,7 @@ DO k=1, kend
   END DO
 
   !$claw remove
-  IF (k > 1)
+  IF (k > 1) THEN
     PRINT*, k
   END IF
 
