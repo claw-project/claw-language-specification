@@ -27,12 +27,12 @@ None
 #### Example 1
 ###### Original code
 ```fortran
-DO k=1, iend
+DO k=1, kend
   DO i=1, iend
     ! loop #1 body here
   END DO
 
-  $claw remove
+  !$claw remove
   IF (k > 1)
     PRINT*, k
   END IF
@@ -45,7 +45,7 @@ END DO
 
 ###### Transformed code
 ```fortran
-DO k=1, iend
+DO k=1, kend
   DO i=1, iend
     ! loop #1 body here
   END DO
@@ -60,15 +60,15 @@ END DO
 #### Example 2
 ###### Original code
 ```fortran
-DO k=1, iend
+DO k=1, kend
   DO i=1, iend
     ! loop #1 body here
   END DO
 
-  $claw remove
+  !$claw remove
   PRINT*, k
   PRINT*, k+1
-  $claw end remove
+  !$claw end remove
 
   DO i=1, iend
     ! loop #2 body here
@@ -78,7 +78,7 @@ END DO
 
 ###### Transformed code
 ```fortran
-DO k=1, iend
+DO k=1, kend
   DO i=1, iend
     ! loop #1 body here
   END DO
