@@ -270,7 +270,7 @@ END DO
 **Local directive**
 <pre>
 <code>
-!$claw loop-extract range(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping</i>) [map(<i>var[,var]...</i>:<i>mapping</i>)] ...]</i> [fusion [group(<i>group_id</i>)]]
+!$claw loop-extract range(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping[,mapping]...</i>) [map(<i>var[,var]...</i>:<i>mapping[,mapping]...</i>)] ...]</i> [fusion [group(<i>group_id</i>)]]
 </code>
 </pre>
 
@@ -287,7 +287,13 @@ is created with the corresponding transformation (demotion) for the parameters.
   extraction. As seen in the example 1, the two parameters (1 dimensional array)
   are mapped to a scalar with the induction variable _i_.
   * Each variable in the list is separated by a comma
-  * The *mapping* clause can be defined as a list. For example, `i,j`
+  * The *mapping* clause can be defined as a list. For example, `i,j`. Each
+    mapping var can have an argument and a function part separated by a `/`sign
+    . For example, in the mapping `i/j1`, `i`is the argument part and will be
+    used as mapping variable with the function call parameters. `j1`is the
+    function part and will be used as mapping variable in the extracted function
+    itself. If the mapping variable has only one part, the same mapping variable
+    is used in the function call and the function body.
 * `fusion`: Allow the extracted loop to be merged with other loops.
   * Options are identical with the `loop-fusion` directive
 
@@ -318,7 +324,7 @@ SUBROUTINE xyz(value1, value2)
   REAL, INTENT (IN) :: value2(x:y), value2(x:y)
 
   DO i = istart, iend
-    ! some computation with value1(i) here
+    ! some computation with value1(i) and value2(i) here
   END DO
 END SUBROUTINE xyz
 ```
@@ -336,14 +342,14 @@ SUBROUTINE xyz(value1, value2)
   REAL, INTENT (IN) :: value2(x:y), value2(x:y)
 
   DO i = istart, iend
-    ! some computation with value1(i) here
+    ! some computation with value1(i) and value2(i) here
   END DO
 END SUBROUTINE xyz
 
 !CLAW extracted loop new subroutine
 SUBROUTINE xyz_claw(value1, value2)
   REAL, INTENT (IN) :: value1, value2
-  ! some computation with value here
+  ! some computation with value1 and value2 here
 END SUBROUTINE xyz_claw
 ```
 
@@ -366,7 +372,7 @@ SUBROUTINE xyz(value1, value2)
   REAL, INTENT (IN) :: value2(x:y), value2(x:y)
 
   DO i = istart, iend
-    ! some computation with value1(i) here
+    ! some computation with value1(i) and value2(i) here
   END DO
 END SUBROUTINE xyz
 ```
@@ -386,14 +392,58 @@ SUBROUTINE xyz(value1, value2)
   REAL, INTENT (IN) :: value2(x:y), value2(x:y)
 
   DO i = istart, iend
-    ! some computation with value1(i) here
+    ! some computation with value1(i) and value2(i) here
   END DO
 END SUBROUTINE xyz
 
 !CLAW extracted loop new subroutine
 SUBROUTINE xyz_claw(value1, value2)
   REAL, INTENT (IN) :: value1, value2
-  ! some computation with value here
+  ! some computation with value1 and value2 here
+END SUBROUTINE xyz_claw
+```
+
+#### Example 3 (advanced mapping)
+###### Original code
+```fortran
+PROGRAM main
+  !$claw loop-extract(i=istart,iend) map(value1,value2:i/j)
+  CALL xyz(value1, value2)
+END PROGRAM main
+
+SUBROUTINE xyz(value1, value2, j)
+  INTGER, INTENT(IN) :: j
+  REAL  , INTENT(IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(j) and value2(j) here
+  END DO
+END SUBROUTINE xyz
+```
+
+###### Transformed code
+```fortran
+PROGRAM main
+  !CLAW extracted loop
+  DO i = istart, iend
+    CALL xyz_claw(value1(i), value2(i))
+  END DO
+END PROGRAM main
+
+SUBROUTINE xyz(value1, value2, j)
+  INTGER, INTENT(IN) :: j
+  REAL  , INTENT(IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(j) and value2(j) here
+  END DO
+END SUBROUTINE xyz
+
+!CLAW extracted loop new subroutine
+SUBROUTINE xyz_claw(value1, value2, j)
+  INTGER, INTENT(IN) :: j
+  REAL, INTENT (IN) :: value1, value2
+  ! some computation with value1 and value2 here
 END SUBROUTINE xyz_claw
 ```
 
