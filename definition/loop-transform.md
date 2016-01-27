@@ -270,7 +270,7 @@ END DO
 **Local directive**
 <pre>
 <code>
-!$claw loop-extract range(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping[,mapping]...</i>) [map(<i>var[,var]...</i>:<i>mapping[,mapping]...</i>)] ...]</i> [fusion [group(<i>group_id</i>)]]
+!$claw loop-extract range(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping[,mapping]...</i>) [map(<i>var[,var]...</i>:<i>mapping[,mapping]...</i>)] ...]</i> [fusion [group(<i>group_id</i>)] [parallel] [acc(<i>directives</i>)]]
 </code>
 </pre>
 
@@ -296,6 +296,8 @@ is created with the corresponding transformation (demotion) for the parameters.
     is used in the function call and the function body.
 * `fusion`: Allow the extracted loop to be merged with other loops.
   * Options are identical with the `loop-fusion` directive
+* `parallel`: Wrap the extracted loop in a parallel region.
+* `acc`: Add the accelerator directives to the extracted loop.
 
 If the directive `loop-extract` is used for more than one call to the same
 subroutine, the extraction can generate 1 to N dedicated subroutines. When the
