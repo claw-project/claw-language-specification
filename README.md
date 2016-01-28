@@ -1,14 +1,28 @@
-# CLAW language definition
+# CLAW language specification
 
-*CURRENTLY UNDER CONSTRUCTION* language will evolve under several iteration
+#### Versions
+##### Stable
+The current stable version is the version 0.1 and can be find in the branch
+`v0.1` or as a packaged release in the releases tab.
 
-* **Iteration 1**: Define low-level block transformation
-* **Iteration 2 to n**: Refine the definition and try to abstract the
-transformations from iteration 1 for domain specific use cases
+##### On going
+Currently designing version 0.2 of the language specification. This work is done
+in the `master` branch.
 
-This repository contains the draft of the directive language of the CLAW
-project
+##### History
+* **Iteration 0.1**:
+  * Define low-level block transformation.
+    * Loop transformations.
+    * Remove transformation.
+* **Iteration 0.2**:
+  * Refine low-level transformation from 0.1 if needed.
+  * Add missing low-level transformation from the requirements.  
+  * Start to abstract low-level transformation.
+* **Next iterations**:
+  * Refine previous iterations
+  * Getting higher abstraction
 
+#### General information about the CLAW language
 The directives are either local or global.
 
 * Local directive: those directives have a limited impact on a local block of
