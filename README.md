@@ -61,16 +61,10 @@ loop-interchange can be used together in a group of nested loops.
 
 The interpretation order of the directives is the following:
 
-1. loop-extract
-2. loop-fusion
-3. loop-interchange
-4. ...
-
-<!--- TODO --->
-```
-TODO
-# Think about directives interpretation order and complete this list
-```
+1. remove
+2. loop-extract
+3. loop-fusion
+4. loop-interchange
 
 Users must be aware that directives transformation are applied sequentially and
 therefore, a transformation can be performed on already transformed code.
