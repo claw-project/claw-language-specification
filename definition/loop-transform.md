@@ -286,23 +286,27 @@ is created with the corresponding transformation (demotion) for the parameters.
 * `map`: Define the mapping of variable that are demoted during the loop
   extraction. As seen in the example 1, the two parameters (1 dimensional array)
   are mapped to a scalar with the induction variable _i_.
-  * Each variable in the list is separated by a comma
-  * The *mapping* clause can be defined as a list. For example, `i,j`. Each
-    mapping var can have an argument and a function part separated by a `/`sign
-    . For example, in the mapping `i/j1`, `i`is the argument part and will be
-    used as mapping variable with the function call parameters. `j1`is the
-    function part and will be used as mapping variable in the extracted function
-    itself. If the mapping variable has only one part, the same mapping variable
-    is used in the function call and the function body.
+  * The *var* clause can be defined as two parts variable (e.g. `a/a1`). The
+    first part is the function call part and refers to the variable as it is
+    defined in the function call. The second part is the function definition
+    part and refers to the name of the variable to be mapped as it defined in
+    the function declaration. If a *var* is defined as a single part variable,
+    the same name is used for both the function call and function definition
+    part.
+  * The *mapping* clause can be defined as two parts variable (e.g. `i/i1`). The
+    first part is the function call part and refers to the mapping variable as
+    it is defined in the function call. The second part is the function
+    definition part and refers to the name of the mapping variable as it defined
+    in the function declaration. If a *mapping* is defined as a single part
+    mapping variable, the same name is used for both the function call and
+    function definition part.
 * `fusion`: Allow the extracted loop to be merged with other loops.
   * Options are identical with the `loop-fusion` directive
 * `parallel`: Wrap the extracted loop in a parallel region.
 * `acc`: Add the accelerator directives to the extracted loop.
 
 If the directive `loop-extract` is used for more than one call to the same
-subroutine, the extraction can generate 1 to N dedicated subroutines. When the
-`range` and the `map` options are identical, only one dedicated subroutine is
-generated and used by the different calls.  
+subroutine, the extraction can generate 1 to N dedicated subroutines.
 
 ###### Behavior with other directives
 If the loop was decorated with directives prior to its extraction, those
