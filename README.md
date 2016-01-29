@@ -1,26 +1,4 @@
-# CLAW language specification
-
-#### Versions
-##### Stable
-The current stable version is the version 0.1 and can be find in the branch
-`v0.1` or as a packaged release in the releases tab.
-
-##### On going
-Currently designing version 0.2 of the language specification. This work is done
-in the `master` branch.
-
-##### History
-* **Iteration 0.1**:
-  * Define low-level block transformation.
-    * Loop transformations.
-    * Remove transformation.
-* **Iteration 0.2**:
-  * Refine low-level transformation from 0.1 if needed.
-  * Add missing low-level transformation from the requirements.  
-  * Start to abstract low-level transformation.
-* **Next iterations**:
-  * Refine previous iterations
-  * Getting higher abstraction
+# CLAW language specification v0.1
 
 #### General information about the CLAW language
 The directives are either local or global.
@@ -39,11 +17,6 @@ This language is separated in the followings sections:
   * loop fusion
   * loop interchange/reordering
   * loop extraction
-  * vector to loop
-* [Variable transformation](./definition/var-transform.md)
-  * scalar replacement
-* [OpenACC abstraction](./definition/openacc-abstraction.md)
-* [On the fly computation](./definition/on-the-fly.md)
 * [Utilities](./definition/utilities.md)
 
 ##### Line continuation
