@@ -1,5 +1,5 @@
 # CLAW abstraction
-[Back to root](https://github.com/C2SM-RCM/claw-language-definition)
+[Back to root](../README.md)
 
 ---
 

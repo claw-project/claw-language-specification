@@ -32,18 +32,19 @@ application.
 
 
 This language is separated in the followings sections:
-* [CLAW abstraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/claw-abstraction.md) (specific abstraction for climate system modeling build
-  on the top of other directives)
-* [Loop transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/loop-transform.md)
+* [CLAW abstraction](./definition/claw-abstraction.md)
+  (specific abstraction for climate system modeling build on the top of other
+  directives)
+* [Loop transformation](./definition/loop-transform.md)
   * loop fusion
   * loop interchange/reordering
   * loop extraction
   * vector to loop
-* [Variable transformation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/var-transform.md)
+* [Variable transformation](./definition/var-transform.md)
   * scalar replacement
-* [OpenACC abstraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/openacc-abstraction.md)
-* [On the fly computation](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/on-the-fly.md)
-* [Utilities](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/utilities.md)
+* [OpenACC abstraction](./definition/openacc-abstraction.md)
+* [On the fly computation](./definition/on-the-fly.md)
+* [Utilities](./definition/utilities.md)
 
 ##### Line continuation
 CLAW directives can be defined on several line. The syntax is described in the

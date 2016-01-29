@@ -1,6 +1,6 @@
 # Transformation on variable
 <!--- TODO all reflexion and definition --->
-[Back to root](https://github.com/C2SM-RCM/claw-language-definition)
+[Back to root](../README.md)
 
 ---
 
@@ -9,7 +9,7 @@
 For the moment, those notions are part of the loop extraction directive. There
 is no plan to expose those notions for the moment.
 
---> [Loop extraction](https://github.com/C2SM-RCM/claw-language-definition/blob/master/definition/loop-transform.md#loop-extraction)
+--> [Loop extraction](./loop-transform.md#loop-extraction)
 
 <!---
 TODO maybe remove all of this if we do not see the point to have this directive
