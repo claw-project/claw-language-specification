@@ -2,12 +2,11 @@
 [Back to root](../README.md)
 
 ---
-
-### Abstraction 1
+## On going work
+### <Directive name>
 #### Directive definition
 **Local directive**
 ```fortran
-!$claw
 ```
 <!---  Description of the directive --->
 
