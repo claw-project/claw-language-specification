@@ -5,9 +5,12 @@
 ### K caching (_DEFINITION ON GOING_)
 #### Directive definition
 **Local directive**
-```fortran
+<pre>
+<code>
 !$claw kcache [plus|minus] [<i><offset></i>]  
-```
+</code>
+</pre>
+
 <!---  Description of the directive --->
 In memory-bound problem, it might be useful to cache array values used several
 times during loop computation.
