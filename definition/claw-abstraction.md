@@ -7,7 +7,7 @@
 **Local directive**
 <pre>
 <code>
-!$claw kcache [plus|minus] [<i>offset</i>]  
+!$claw kcache [plus|minus [<i>offset</i>]]
 </code>
 </pre>
 
@@ -19,6 +19,8 @@ times during loop computation.
 The `kcache` directive must be place just before an assignment. It will cache
 the corresponding assigned value and update the array index in the following
 loop body according to the given plus/minus offset.
+
+If the _offset_ value is omitted, it is set to 1 by default.
 
 ###### Behavior with other directives
 This directive has no impact with other directives at the moment.
