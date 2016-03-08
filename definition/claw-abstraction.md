@@ -6,13 +6,16 @@
 #### Directive definition
 **Local directive**
 ```fortran
-!$claw kcache [plus|minus] [<i><value></i>]  
+!$claw kcache [plus|minus] [<i><offset></i>]  
 ```
 <!---  Description of the directive --->
-In memory-bound problem, it might be useful to cache some information used
-during loop computation.
+In memory-bound problem, it might be useful to cache array values used several
+times during loop computation.
 
 ###### Options and details
+The `kcache` directive must be place just before an assignment. It will cache
+the corresponding assigned value and update the array index in the following
+loop body according to the given plus/minus offset.
 
 ###### Behavior with other directives
 This directive has no impact with other directives at the moment.
