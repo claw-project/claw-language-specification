@@ -15,6 +15,9 @@
 In memory-bound problem, it might be useful to cache array values used several
 times during loop computation.
 
+<!--- TODO the directive is missing an information to know which index in the
+array indexes is touched by the plus/minus offset --->
+
 ###### Options and details
 The `kcache` directive must be place just before an assignment. It will cache
 the corresponding assigned value and update the array index in the following
