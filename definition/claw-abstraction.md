@@ -7,7 +7,7 @@
 **Local directive**
 <pre>
 <code>
-!$claw kcache [plus|minus] [<i><offset></i>]  
+!$claw kcache [plus|minus] [<i>offset</i>]  
 </code>
 </pre>
 
