@@ -7,7 +7,7 @@
 **Local directive**
 <pre>
 <code>
-!$claw kcache [plus|minus [<i>offset</i>]]
+!$claw kcache [<i>(offset[,offset] ...)</i>]]
 </code>
 </pre>
 
@@ -19,11 +19,12 @@ times during loop computation.
 array indexes is touched by the plus/minus offset --->
 
 ###### Options and details
-The `kcache` directive must be place just before an assignment. It will cache
-the corresponding assigned value and update the array index in the following
-loop body according to the given plus/minus offset.
+The `kcache` directive must be place just before an assignment of an array
+indexed variable. It will cache the corresponding assigned value and update
+the array index in the following loop body according to the given plus/minus
+offset.
 
-If the _offset_ value is omitted, it is set to 1 by default.
+If the _offset_ value is omitted, it is set to 0 by default.
 
 ###### Behavior with other directives
 This directive has no impact with other directives at the moment.
@@ -34,7 +35,7 @@ This directive has no impact with other directives at the moment.
 #### Example 1
 ###### Original code
 ```fortran
-!$claw kcache minus 1
+!$claw kcache 0 -1
 ztu6(j1,ki3sc) = x * y * z
 DO j3 = ki3sc+1, ki3ec
   var1 = x * y - ztu6(j1, j3-1)
