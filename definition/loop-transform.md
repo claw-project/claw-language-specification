@@ -6,7 +6,7 @@ Transformation on loops are defined by the following directives
 * [Loop interchange/reordering](#loop-interchangereordering)
 * [Loop jamming/fusion](#loop-jammingfusion)
 * [Loop extraction](#loop-extraction)
-* [Vector notation to loop](#vector-to-loop-transformation)
+* [Array notation to do statement](#array-notation-to-do-statement)
 
 ---
 
@@ -129,7 +129,7 @@ END DO
 **Local directive**
 <pre>
 <code>
-!$claw loop-fusion [group(<i>group_id</i>)]
+!$claw loop-fusion [group(<i>group_id</i>)] [collapse(<i>n</i>)]
 </code>
 </pre>
 
@@ -139,14 +139,21 @@ performance when it is parallelized. Merging some loops together create bigger
 blocks (kernels) to be parallelized.
 
 The `loop-fusion` directive allows to merge 2 to N loops in a single one. If
-no *group* option is given, all the loops decorated with the directive in the
+no `group` option is given, all the loops decorated with the directive in the
 same block will be merged together as a single group.
 
-If the *group* option is given, the loops are merged in-order within the
+If the `group` option is given, the loops are merged in-order within the
 given group.
+
+The `collapse` clause is used to specify how many tightly nested loops are
+associated with the `loop-fusion` construct. The argument to the `collapse`
+clause must be a constant positive integer expression. If no collapse clause
+is present, only the immediately following loop is associated with the
+`loop-fusion` construct.
 
 ###### Options and details
 * *group_id*: A string label that identify a group of loops to be merged
+* *n*: A constant positive integer expression
 
 ###### Behavior with other directives
 When the loops to be merged are decorated with other directives, only the
@@ -154,7 +161,9 @@ directives on the first loop of the merge group are kept in the transformed
 code.
 
 ###### Limitations
-All the loop within a group must share the same iteration range.
+All the loop within a group must share the same iteration range. If the
+`collapse` clause is used, the loops must share the same iteration range at the
+corresponding depth (see example 4).
 
 #### Example 1 (without *group* option)
 ###### Original code
@@ -261,6 +270,39 @@ DO k=1, iend
   END DO
 END DO
 !$acc end parallel
+```
+
+#### Example 4 (without *collapse* option)
+###### Original code
+```fortran
+DO k=1, iend
+  !$claw loop-fusion collapse(2)
+  DO i=0, iend
+    DO j=0, jend
+      ! nested loop #1 body here
+    END FO
+  END DO
+
+  !$claw loop-fusion collapse(2)
+  DO i=0, iend
+    DO j=0, jend
+      ! loop #2 body here
+    END DO
+  END DO
+END DO
+```
+
+###### Transformed code
+```fortran
+DO k=1, iend
+  ! CLAW transformation (loop-fusion collapse(2))
+  DO i=0, iend
+    DO j=0, jend
+      ! nested loop #1 body here
+      ! nested loop #2 body here
+    END DO
+  END DO
+END DO
 ```
 
 ---
@@ -456,7 +498,7 @@ END SUBROUTINE xyz_claw
 ---
 
 
-### Array notation to loop transformation
+### Array notation to do statement
 #### Directive definition
 **Local directive**
 <pre>
