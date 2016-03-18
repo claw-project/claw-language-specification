@@ -35,16 +35,18 @@ This language is separated in the followings sections:
 * [CLAW abstraction](./definition/claw-abstraction.md)
   (specific abstraction for climate system modeling build on the top of other
   directives)
+  * k caching (column caching)
 * [Loop transformation](./definition/loop-transform.md)
   * loop fusion
   * loop interchange/reordering
   * loop extraction
-  * vector to loop
+  * array notation to do statement
 * [Variable transformation](./definition/var-transform.md)
   * scalar replacement
 * [OpenACC abstraction](./definition/openacc-abstraction.md)
 * [On the fly computation](./definition/on-the-fly.md)
 * [Utilities](./definition/utilities.md)
+  * remove
 
 ##### Line continuation
 CLAW directives can be defined on several line. The syntax is described in the
@@ -63,9 +65,11 @@ loop-interchange can be used together in a group of nested loops.
 The interpretation order of the directives is the following:
 
 1. remove
-2. loop-extract
-3. loop-fusion
-4. loop-interchange
+2. array-transform
+3. loop-extract
+4. loop-fusion
+5. loop-interchange
+6. formatting transformation (internal transformation only)
 
 Users must be aware that directives transformation are applied sequentially and
 therefore, a transformation can be performed on already transformed code.
