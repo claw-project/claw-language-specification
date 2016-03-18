@@ -461,7 +461,7 @@ END SUBROUTINE xyz_claw
 **Local directive**
 <pre>
 <code>
-!$claw array-transform [fusion [group(<i>group_id</i>)]] [acc(<i>[clause [[,] clause]...]</i>)]
+!$claw array-transform [fusion [group(<i>group_id</i>)]] [parallel] [acc(<i>[clause [[,] clause]...]</i>)]
 </code>
 </pre>
 
@@ -487,9 +487,11 @@ END DO
 
 
 ###### Options and details
-* `acc`: Define OpenACC clauses that will be applied to the generated loops.
 * `fusion`: Allow the extracted loop to be merged with other loops.
   * Options are identical with the `loop-fusion` directive
+* `parallel`: Wrap the extracted loop in a parallel region.
+* `acc`: Define OpenACC clauses that will be applied to the generated loops.
+
 
 ###### Behavior with other directives
 Directives declared before the `array-transform` directive will be kept in the
