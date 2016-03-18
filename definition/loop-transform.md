@@ -456,21 +456,35 @@ END SUBROUTINE xyz_claw
 ---
 
 
-### Vector to loop transformation (on hold)
-<!--- Not sure this directives will be very useful in the end. Waiting for more
-input from Jon --->
+### Array notation to loop transformation
 #### Directive definition
 **Local directive**
 <pre>
 <code>
-!$claw loop-vector [acc(<i>[clause [[,] clause]...]</i>)] [fusion [group(<i>group_id</i>)]]
+!$claw array-transform [fusion [group(<i>group_id</i>)]] [acc(<i>[clause [[,] clause]...]</i>)]
 </code>
 </pre>
 
-Computations using the vector notation are not suitable to be parallelized with
-language like OpenACC. The `loop-vector` directive allows to transform those
+Computations using the array notation are not suitable to be parallelized with
+language like OpenACC. The `array-transform` directive allows to transform those
 notation with the corresponding loops which are more suitable for
 parallelization.
+
+The goal of this directive is to pass from an array notation assignment like
+this:
+
+```Fortran
+A(1:n) = A(1+m:n+m) + B(1:n) * C(n+1:n+n)
+```
+
+To a do loop statement like this:
+
+```Fortran
+DO i=1,n
+  A(i) = A(i+m) + B(i) * C(n+i)
+END DO
+```
+
 
 ###### Options and details
 * `acc`: Define OpenACC clauses that will be applied to the generated loops.
@@ -478,7 +492,7 @@ parallelization.
   * Options are identical with the `loop-fusion` directive
 
 ###### Behavior with other directives
-Directives declared before the `loop-vector` directive will be kept in the
+Directives declared before the `array-transform` directive will be kept in the
 generated code.
 
 ###### Limitations
@@ -495,7 +509,7 @@ SUBROUTINE vector_add
   INTEGER :: i = 10
   INTEGER, DIMENSION(0:9) :: vec1
 
-  !$claw loop-vector
+  !$claw array-transform
   vec1(0:i) = vec1(0:i) + 10;
 END SUBROUTINE vector_add
 ```
@@ -507,8 +521,8 @@ SUBROUTINE vector_add
   INTEGER :: i = 10
   INTEGER, DIMENSION(0:9) :: vec1
 
-  !CLAW transformation vec1(0:i) to Loop
-  DO claw_i=0, i
+  ! CLAW transformation array notation to do loop
+  DO claw_i = 0, i
     vec1(claw_i) = vec1(claw_i) + 10;
   END DO
 END SUBROUTINE vector_add
@@ -522,10 +536,10 @@ SUBROUTINE vector_add
   INTEGER, DIMENSION(0:9) :: vec1
 
   !$acc parallel
-  !$claw loop-vector acc(loop)
+  !$claw array-transform acc(loop)
   vec1(0:i) = vec1(0:i) + 10;
 
-  !$claw loop-vector acc(loop)
+  !$claw array-transform acc(loop)
   vec1(0:i) = vec1(0:i) + 1;
   !$acc end parallel
 END SUBROUTINE vector_add
@@ -540,15 +554,15 @@ SUBROUTINE vector_add
 
   !$acc parallel
 
-  !CLAW transformation vec1(0:i) to Loop
+  ! CLAW transformation array notation vec1(0:i) to do loop
   !$acc loop
-  DO claw_i=0, i
+  DO claw_i = 0, i
     vec1(claw_i) = vec1(claw_i) + 10;
   END DO
 
-  !CLAW transformation vec1(0:i) to Loop
+  ! CLAW transformation array notation vec1(0:i) to do loop
   !$acc loop
-  DO claw_i=0, i
+  DO claw_i = 0, i
     vec1(claw_i) = vec1(claw_i) + 1;
   END DO
 
@@ -564,12 +578,11 @@ SUBROUTINE vector_add
   INTEGER, DIMENSION(0:9) :: vec1
   INTEGER, DIMENSION(0:9) :: vec2
 
-  !$claw loop-vector fusion
+  !$claw array-transform fusion
   vec1(0:i) = vec1(0:i) + 10;
 
-  !$claw loop-vector fusion
+  !$claw array-transform fusion
   vec2(0:i) = vec2(0:i) + 1;
-
 END SUBROUTINE vector_add
 ```
 
@@ -581,13 +594,46 @@ SUBROUTINE vector_add
   INTEGER, DIMENSION(0:9) :: vec1
   INTEGER, DIMENSION(0:9) :: vec2
 
-  !CLAW transformation vec1(0:i) to loop
-  !CLAW transformation vec2(0:i) to loop
-  !CLAW transformation fusion
+  ! CLAW transformation array notation vec1(0:i) to do loop
+  ! CLAW transformation array notation vec2(0:i) to do loop
+  ! CLAW transformation fusion
   DO claw_i=0, i
     vec1(claw_i) = vec1(claw_i) + 10;
     vec2(claw_i) = vec2(claw_i) + 1;
   END DO
+END SUBROUTINE vector_add
+```
 
+### Example 4 (with 2-dimensional arrays)
+##### Original code
+```fortran
+SUBROUTINE vector_add
+INTEGER :: i = 10
+INTEGER, DIMENSION(0:10,0:10) :: vec1
+INTEGER, DIMENSION(0:10,0:10) :: vec2
+
+vec1(0:i,0:i) = 0;
+vec2(0:i,0:i) = 100;
+
+!$claw array-transform
+vec1(0:i,0:i) = vec2(0:i,0:i) + 10
+END SUBROUTINE vector_add
+```
+
+##### Transformed code
+```fortran
+SUBROUTINE vector_add
+INTEGER :: i = 10
+INTEGER, DIMENSION(0:10,0:10) :: vec1
+INTEGER, DIMENSION(0:10,0:10) :: vec2
+
+vec1(0:i,0:i) = 0;
+vec2(0:i,0:i) = 100;
+
+DO claw_i = 0, i, 1
+  DO claw_j = 0, i, 1
+    vec1(claw_i,claw_j) = vec2(claw_i, claw_j) + 10    
+  END DO
+END DO
 END SUBROUTINE vector_add
 ```
