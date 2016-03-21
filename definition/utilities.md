@@ -6,11 +6,13 @@
 ### Remove
 #### Directive definition
 **Local directive**
-```fortran
+<pre>
+<code>
 !$claw remove
 <i>structured block</i>
 !$claw end remove
-```
+</pre>
+</code>
 <!---  Description of the directive --->
 
 ###### Options and details
