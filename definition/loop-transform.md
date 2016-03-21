@@ -6,6 +6,7 @@ Transformation on loops are defined by the following directives
 * [Loop interchange/reordering](#loop-interchangereordering)
 * [Loop jamming/fusion](#loop-jammingfusion)
 * [Loop extraction](#loop-extraction)
+* [Loop hoisting](#loop-hoisting)
 * [Array notation to do statement](#array-notation-to-do-statement)
 
 ---
@@ -16,7 +17,7 @@ Transformation on loops are defined by the following directives
 
 <pre>
 <code>
-!$claw loop-interchange [(<i>loop-index[,loop-index] ...</i>)]
+!$claw loop-interchange [(<i>induction_var[, induction_var] ...</i>)]
 </code>
 </pre>
 
@@ -34,7 +35,7 @@ If the list option is given, the loops are reordered according to the order
 defined in the list (see example 2).
 
 ###### Options and details
-* *loop-index*: the induction variable of the loop
+* *induction_var*: the induction variable of the loop
 
 ###### Behavior with other directives
 When the loops to be reordered are decorated with additional directives, those
@@ -493,6 +494,81 @@ SUBROUTINE xyz_claw(value1, value2, j)
   REAL, INTENT (IN) :: value1, value2
   ! some computation with value1 and value2 here
 END SUBROUTINE xyz_claw
+```
+
+---
+
+
+
+### Loop hoisting (DRAFT)
+#### Directive definition
+**Local directive**
+<pre>
+<code>
+!$claw loop-hoist(<i>induction_var[[, induction_var] ...]</i>) [interchange [(<i>induction_var[[, induction_var] ...]</i>)]]
+<i>structured block</i>
+!$claw end loop-hoist
+</code>
+</pre>
+
+<!--- TODO insert the array demotion clause --->
+
+The `loop-hoist` directive allows nested loops in a defined structured block to
+be merged together and to hoist the beginning of those nested loop just after
+the directive declaration. Loops with slightly different lower-bound indexes
+are also merged with the addition of an `IF` statement.
+
+
+###### Options and details
+* `interchange`: Allow the group of hoisted loops to be reordered.
+  * Options are identical with the `loop-interchange` directive.
+
+###### Behavior with other directives
+<!--- TODO --->
+
+###### Limitations
+
+
+
+#### Example 1 (simple)
+###### Original code
+```fortran
+!$acc parallel loop gang vector collapse(2)
+DO jt=1,jtend
+  !$claw loop-hoist(j,i) interchange
+  IF ( .TRUE. ) CYCLE
+    ! outside loop statement
+  END IF
+  DO j=1,jend
+    DO i=1,iend
+      ! first nested loop body
+    END DO
+  END DO
+  DO j=2,jend
+    DO i=1,iend
+      ! second nested loop body
+    END DO
+  END DO
+  !$claw end loop-hoist
+END DO
+```
+
+###### Transformed code
+```fortran
+!$acc parallel loop gang vector collapse(2)
+DO jt=1,jtend
+  DO i=1,iend
+    DO j=1,jend
+      IF ( .TRUE. ) CYCLE
+        ! outside loop statement
+      END IF
+      ! first nested loop body
+      IF(j>1) THEN
+        ! second nested loop body
+      END IF
+    END DO
+  END DO
+END DO
 ```
 
 ---
