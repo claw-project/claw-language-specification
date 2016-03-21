@@ -6,7 +6,7 @@ Transformation on loops are defined by the following directives
 * [Loop interchange/reordering](#loop-interchangereordering)
 * [Loop jamming/fusion](#loop-jammingfusion)
 * [Loop extraction](#loop-extraction)
-* [Loop hoisting](#loop-hoisting)
+* [Loop hoisting](#loop-hoisting-draft)
 * [Array notation to do statement](#array-notation-to-do-statement)
 
 ---
