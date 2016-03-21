@@ -16,7 +16,12 @@ in the `master` branch.
     * Remove transformation.
 * **Iteration 0.2**:
   * Refine low-level transformation from 0.1 if needed.
+    * Add `collapse` clause to loop-fusion directive.
   * Add missing low-level transformation from the requirements.  
+    * Add loop transformation `loop-hoist`.
+    * Add array notation transformation `array-transform`.
+    * Add claw transformation `kcache` for column caching.
+    * Add claw transformation `` for on the fly computation.
   * Start to abstract low-level transformation.
 * **Next iterations**:
   * Refine previous iterations
@@ -40,10 +45,8 @@ This language is separated in the followings sections:
   * loop fusion
   * loop interchange/reordering
   * loop extraction
+  * loop hoisting
   * array notation to do statement
-* [Variable transformation](./definition/var-transform.md)
-  * scalar replacement
-* [OpenACC abstraction](./definition/openacc-abstraction.md)
 * [On the fly computation](./definition/on-the-fly.md)
 * [Utilities](./definition/utilities.md)
   * remove
