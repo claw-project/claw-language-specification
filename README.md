@@ -71,8 +71,9 @@ The interpretation order of the directives is the following:
 2. array-transform
 3. loop-extract
 4. loop-fusion
-5. loop-interchange
-6. formatting transformation (internal transformation only)
+5. loop-hoist
+6. loop-interchange
+7. formatting transformation (internal transformation only)
 
 Users must be aware that directives transformation are applied sequentially and
 therefore, a transformation can be performed on already transformed code.
