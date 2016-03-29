@@ -46,7 +46,8 @@ This language is separated in the followings sections:
   * loop interchange/reordering
   * loop extraction
   * loop hoisting
-  * array notation to do statement
+* [OpenACC abstractions/helpers](./definition/openacc-abstraction.md)
+  * * array notation to do statement  
 * [On the fly computation](./definition/on-the-fly.md)
 * [Utilities](./definition/utilities.md)
   * remove
