@@ -13,7 +13,9 @@ OpenACC abstractions/helpers are defined by the followings directives:
 **Local directive**
 <pre>
 <code>
-!$claw array-transform [fusion [group(<i>group_id</i>)]] [parallel] [acc(<i>[clause [[,] clause]...]</i>)]
+!$claw array-transform [induction(<i>name</i>)] [fusion [group(<i>group_id</i>)]] [parallel] [acc(<i>[clause [[,] clause]...]</i>)]
+<i>array notation assignment(s)</i>
+[!$claw end remove]
 </code>
 </pre>
 
@@ -37,12 +39,30 @@ DO i=1,n
 END DO
 ```
 
+If the directive is used as a block directive, the assignments are wrapped in
+a single do statement if their induction range match.
+
+```Fortran
+A(1:n) = A(1+m:n+m) + B(1:n) * C(n+1:n+n)
+B(1:n) = B(1:n) * 0.5
+```
+
+To
+
+```Fortran
+DO i=1,n
+  A(i) = A(i+m) + B(i) * C(n+i)
+  B(i) = B(i) * 0.5
+END DO
+```
+
 
 ###### Options and details
+* `induction`: Allow to name the induction variable.
 * `fusion`: Allow the extracted loop to be merged with other loops.
   * Options are identical with the `loop-fusion` directive
 * `parallel`: Wrap the extracted loop in a parallel region.
-* `acc`: Define OpenACC clauses that will be applied to the generated loops.
+* `acc`: Define accelerator clauses that will be applied to the generated loops.
 
 
 ###### Behavior with other directives
@@ -82,7 +102,7 @@ SUBROUTINE vector_add
 END SUBROUTINE vector_add
 ```
 
-#### Example 2 (with acc option)
+#### Example 2 (with induction and acc option)
 ###### Original code
 ```fortran
 SUBROUTINE vector_add
@@ -90,7 +110,7 @@ SUBROUTINE vector_add
   INTEGER, DIMENSION(0:9) :: vec1
 
   !$acc parallel
-  !$claw array-transform acc(loop)
+  !$claw array-transform induction(myinduc) acc(loop)
   vec1(0:i) = vec1(0:i) + 10;
 
   !$claw array-transform acc(loop)
@@ -103,6 +123,7 @@ END SUBROUTINE vector_add
 ```fortran
 SUBROUTINE vector_add
   INTEGER :: claw_i
+  INTEGER :: myinduc
   INTEGER :: i = 10
   INTEGER, DIMENSION(0:9) :: vec1
 
@@ -110,8 +131,8 @@ SUBROUTINE vector_add
 
   ! CLAW transformation array notation vec1(0:i) to do loop
   !$acc loop
-  DO claw_i = 0, i
-    vec1(claw_i) = vec1(claw_i) + 10;
+  DO myinduc = 0, i
+    vec1(myinduc) = vec1(myinduc) + 10;
   END DO
 
   ! CLAW transformation array notation vec1(0:i) to do loop
