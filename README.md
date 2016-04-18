@@ -41,14 +41,14 @@ This language is separated in the followings sections:
   (specific abstraction for climate system modeling build on the top of other
   directives)
   * k caching (column caching)
+  * on the fly computation (array access to function call)
 * [Loop transformation](./definition/loop-transform.md)
   * loop fusion
   * loop interchange/reordering
   * loop extraction
   * loop hoisting
 * [OpenACC abstractions/helpers](./definition/openacc-abstraction.md)
-  * * array notation to do statement  
-* [On the fly computation](./definition/on-the-fly.md)
+  * array notation to do statement  
 * [Utilities](./definition/utilities.md)
   * remove
 
