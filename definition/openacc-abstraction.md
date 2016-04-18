@@ -13,7 +13,7 @@ OpenACC abstractions/helpers are defined by the followings directives:
 **Local directive**
 <pre>
 <code>
-!$claw array-transform [induction(<i>name</i>)] [fusion [group(<i>group_id</i>)]] [parallel] [acc(<i>[clause [[,] clause]...]</i>)]
+!$claw array-transform [induction(<i>name [[,] name]...</i>)] [fusion [group(<i>group_id</i>)]] [parallel] [acc(<i>[clause [[,] clause]...]</i>)]
 <i>array notation assignment(s)</i>
 [!$claw end remove]
 </code>
