@@ -21,7 +21,8 @@ in the `master` branch.
     * Add loop transformation `loop-hoist`.
     * Add array notation transformation `array-transform`.
     * Add claw transformation `kcache` for column caching.
-    * Add claw transformation `` for on the fly computation.
+    * Add claw transformation `call` for on the fly computation (array acess to
+      function call).
   * Start to abstract low-level transformation.
 * **Next iterations**:
   * Refine previous iterations
