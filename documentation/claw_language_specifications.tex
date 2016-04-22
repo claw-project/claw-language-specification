@@ -123,19 +123,20 @@ kernel and exploit some unused resource to execute the computation.
 !$claw loop-interchange [(induction_var[, induction_var] ...)]
 \end{lstlisting}
 
-Loop reordering is a common transformation applied on loops when adding parallelization. This transformation is mainly used to improve the data locality.
-In this case, the loop-interchange directive allows nested loops to be reordered.
-When two loops are nested, the directive can be used without option. In this configuration the inner loop is swapped with the outer loop (see example 1).
-If the list option is given, the loops are reordered according to the order defined in the list (see example 2).
+Loop reordering is a common transformation applied on do statements when adding parallelization. This transformation is mainly used to improve the data locality and avoid the need to transpose the arrays.
+
+The \textbf{loop-interchange} directive must be placed just before the first do statement composing the nested do statements group. With a group of two nested do statements, the induction variable and iteration range of the first statement is swap with the information of the second statement (see example \ref{loop-interchange1}). 
+
+If the list of induction variables is specified, the do statements are reordered according to the order defined in the list (see example \ref{loop-interchange2}).
 
 \textbf{Options and details}\\
-\textit{induction\_var}: the induction variable of the loop
+\textit{induction\_var}: induction variable of the do statement. The list gives the new order of the do statement after the transformation. For group of 2 nested do statements, this information is optional. 
 
 \textbf{Behavior with other directives}\\
 When the loops to be reordered are decorated with additional directives, those directives stay in place during the code transformation. In other words, they are not reordered together with the loops (see example \ref{loop-interchange3}).
 
 \textbf{Limitations}\\
-Currently, the loop-interchange directive is limited to 3 level of loops. More level of loops can be declared but the transformation is limited to the first 3 levels from the directive declaration.
+Currently, the loop-interchange directive is limited to 3 level of nested do statements. More nested levels can be declared but the transformation is limited to the first 3 levels from the directive declaration.
 
 \subsection{Loop jamming/fusion}
 \begin{lstlisting}
