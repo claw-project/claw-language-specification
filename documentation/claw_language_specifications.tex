@@ -140,40 +140,39 @@ Currently, the loop-interchange directive is limited to 3 level of nested do sta
 
 \subsection{Loop jamming/fusion}
 \begin{lstlisting}
-!$claw loop-fusion [group(<i>group_id</i>)] [collapse(<i>n</i>)]
+!$claw loop-fusion [group(group_id)] [collapse(n)]
 \end{lstlisting}
 
-Loop jamming or fusion is used to merge 2 or more loops together. Sometimes, the
-work performed in a loop is too small to create significant impact on
-performance when it is parallelized. Merging some loops together create bigger
+Loop jamming or fusion is used to merge 2 or more do statements together. Sometimes, the
+work performed in a do statement is too small to create significant impact on
+performance when it is parallelized. Merging some do statements together create bigger
 blocks (kernels) to be parallelized.
 
-The \textbf{loop-fusion} directive allows to merge 2 to N loops in a single one. If
-no \textit{group} clause is given, all the loops decorated with the directive in the
-same block will be merged together as a single group.
+If the \textit{group} clause is not specified, all the do statements decorated with the directive in the
+same block will be merged together as a single do statement.
 
-If the \textit{group} clause is specified, the loops are merged in-order within the
-given group.
+If the \textit{group} clause is specified, the loops are merged in-order with do statements sharing 
+the same group in the current structured block.
 
-The \textit{collapse} clause is used to specify how many tightly nested loops are
+The \textit{collapse} clause is used to specify how many tightly nested do statements are
 associated with the \textbf{loop-fusion} construct. The argument to the \textit{collapse}
 clause is a constant positive integer. If no \textit{collapse} clause
-is specified, only the immediate following loop is associated with the
+is specified, only the immediate following do statement is associated with the
 \textbf{loop-fusion} construct.
 
 \textbf{Options and details}
 \begin{itemize}
-\item \textit{group\_id}: A string label that identify a group of loops to be merged
-\item \textit{n}: A constant positive integer:
+\item \textit{group\_id}: A string label that identify a group of do statement in a structured block. 
+\item \textit{n}: A constant positive integer.
 \end{itemize}
 
 \textbf{Behavior with other directives}\\
-When the loops to be merged are decorated with other directives, only the
-directives on the first loop of the merge group are kept in the transformed
+When the do statement to be merged are decorated with other directives, only the
+directives on the first do statement of the merge group are kept in the transformed
 code.
 
 \textbf{Limitations}\\
-All the loop within a group must share the same iteration range. If the
+All the do statement within a group must share the same iteration range. If the
 \textit{collapse} clause is specified, the loops must share the same iteration range at the
 corresponding depth (see example \ref{loop-fusion4}).
 
