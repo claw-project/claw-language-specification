@@ -178,10 +178,10 @@ corresponding depth (see example \ref{loop-fusion4}).
 
 \subsection{Loop extraction}
 \begin{lstlisting}
-!$claw loop-extract range(<i>range</i>) [map(<i>var[,var]...</i>:<i>mapping[,mapping]...</i>) [map(<i>var[,var]...</i>:<i>mapping[,mapping]...</i>)] ...]</i> [fusion [group(<i>group_id</i>)] [parallel] [acc(<i>directives</i>)]]
+!$claw loop-extract range(range) [map(var[,var]...:mapping[,mapping]...) [map(var[,var]...:mapping[,mapping]...)] ...] [fusion [group(group_id)]] [parallel] [acc(directives)]
 \end{lstlisting}
 
-Loop extraction can be performed on a subroutine call. The loop corresponding
+Loop extraction can be performed on a subroutine call. The do statement corresponding
 to the defined iteration range is extracted from the subroutine and is wrapped
 around the subroutine call. In the transformation, a copy of the subroutine
 is created with the corresponding transformation (demotion) for the parameters.
@@ -211,7 +211,7 @@ is created with the corresponding transformation (demotion) for the parameters.
     function definition part.
     \end{enumerate}
 \item \textit{fusion}: Allow the extracted loop to be merged with other loops.
-  * Options are identical with the `loop-fusion` directive
+Options are identical with the \lstinline!loop-fusion! directive.
 \item \textit{parallel}: Wrap the extracted loop in a parallel region.
 \item \textit{acc}: Add the accelerator directives to the extracted loop.
 \end{enumerate}
@@ -260,7 +260,7 @@ Options are identical with the \textbf{loop-interchange} directive.
 \end{lstlisting}
 
 Computations using the array notation are not suitable to be parallelized with
-language like OpenACC. The `array-transform` directive allows to transform those
+language like OpenACC. The \textbf{array-transform} directive allows to transform those
 notation with the corresponding loops which are more suitable for
 parallelization.
 
