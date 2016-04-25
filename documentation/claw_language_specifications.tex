@@ -181,9 +181,9 @@ corresponding depth (see example \ref{loop-fusion4}).
 !$claw loop-extract range(range) [map(var[,var]...:mapping[,mapping]...) [map(var[,var]...:mapping[,mapping]...)] ...] [fusion [group(group_id)]] [parallel] [acc(directives)]
 \end{lstlisting}
 
-Loop extraction can be performed on a subroutine call. The do statement corresponding
-to the defined iteration range is extracted from the subroutine and is wrapped
-around the subroutine call. In the transformation, a copy of the subroutine
+Loop extraction can be performed on a subroutine/function call. The do statement corresponding
+to the defined iteration range is extracted from the subroutine/function and is wrapped
+around the subroutine/function call. In the transformation, a copy of the subroutine/function
 is created with the corresponding transformation (demotion) for the parameters.
 
 
