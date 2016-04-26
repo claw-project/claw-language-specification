@@ -5,6 +5,14 @@
 The current stable version is the version 0.1 and can be find in the branch
 `v0.1` or as a packaged release in the releases tab.
 
+##### Generating the specification document
+The specification is written using LaTeX. To generate the PDF document, you
+can use `pdflatex` with the following command:
+
+```
+pdflatex ./documentation/claw_language_specifications.tex
+```
+
 ##### On going
 Currently designing version 0.2 of the language specification. This work is done
 in the `master` branch.
@@ -38,19 +46,19 @@ application.
 
 
 This language is separated in the followings sections:
-* [CLAW abstraction](./definition/claw-abstraction.md)
+* CLAW abstraction
   (specific abstraction for climate system modeling build on the top of other
   directives)
   * k caching (column caching)
   * on the fly computation (array access to function call)
-* [Loop transformation](./definition/loop-transform.md)
+* Loop transformation
   * loop fusion
   * loop interchange/reordering
   * loop extraction
   * loop hoisting
-* [OpenACC abstractions/helpers](./definition/openacc-abstraction.md)
+* OpenACC abstractions/helpers
   * array notation to do statement  
-* [Utilities](./definition/utilities.md)
+* Utilities
   * remove
 
 ##### Line continuation
