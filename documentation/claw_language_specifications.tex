@@ -21,7 +21,7 @@
 
 \title{CLAW language specification}
 \author{Center for Climate System Modeling (C2SM)\\http://www.c2sm.ethz.ch\\Valentin Clement}
-\date{April 21, 2016\\\vspace{1em}v0.2}
+\date{April 26, 2016\\\vspace{1em}v0.2}
 
 \setlength\parindent{0pt}
 \setlength{\parskip}{1em}
@@ -37,22 +37,21 @@ The directives are either local or global.
 
 \begin{itemize}
 \item Local directive: those directives have a limited impact on a local block of
-code (for example, only in a subroutine)
+code (for example, only in a subroutine or only in a do statement)
 \item Global directive: those directives can have an impact on the whole
-application.
+program.
 \end{itemize}
 
-This language is separated in the followings sections:
+The CLAW transformation are separated in the followings sections:
 \begin{itemize}
-\item CLAW abstraction
+\item CLAW abstraction transformation
 \item Loop transformation
-\item Accelerator abstractions/helpers
-\item Utilities
+\item Accelerator abstractions/helpers transformation
+\item Utility transformation
 \end{itemize}
 
 \subsection{Line continuation}
-CLAW directives can be defined on several line. The syntax is described in the
-listing below:
+CLAW directives can be defined on several lines. The syntax is described as follows:
 
 \begin{lstlisting}
 !$claw directive clause &
@@ -61,49 +60,48 @@ listing below:
 
 
 \subsection{Interpretation order of the CLAW directives}
-The claw directives can be combined together. For example, loop-fusion and
-loop-interchange can be used together in a group of nested loops.
+The CLAW transformations can be combined together. For example, \lstinline!loop-fusion! and \lstinline!loop-interchange! can be used together in a group of nested loops.
 
 The standard interpretation order of the directives is the following:
 
 \begin{enumerate}
-\item remove
-\item array-transform
-\item loop-extract
-\item loop-fusion
-\item loop-hoist
-\item loop-interchange
-\item call
-\item kcache
-\item formatting transformation (internal transformation only)
+\item \lstinline!remove!
+\item \lstinline!array-transform!
+\item \lstinline!loop-extract!
+\item \lstinline!loop-fusion!
+\item \lstinline!loop-hoist!
+\item \lstinline!loop-interchange!
+\item \lstinline!call!
+\item \lstinline!kcache!
+\item formatting transformation (internal use transformation)
 \end{enumerate}
 
-Users must be aware that directives transformation are applied sequentially and
+Users must be aware that transformations are applied sequentially and
 therefore, a transformation can be performed on code that is already transformed.
 
 \section{CLAW abstraction}
 
 \subsection{K caching (column caching)}
 \begin{lstlisting}
-!$claw kcache data((var_1[,var_2] ...)) [offset(offset_1[ offset_2] ...)]] [init] [private]
+!$claw kcache data(var_1[,var_2] ...) [offset(offset_1[ offset_2] ...)]] [init] [private]
 \end{lstlisting}
 
 In memory-bound problem, it might be useful to cache array values used several times during the current do statement iteration or for the next one.
 
 The \textbf{kcache} directive is applied in a limited do statement block. It will cache the corresponding assigned value and update
-the array index in the block according to the given plus/minus offset. If the array referenced in the data clause is assigned in the block, 
-the caching will take its place (see example \ref{kcache1}). Otherwise, an assignment is created (see example \ref{kcache2}). 
+the array index in the block according to the given plus/minus offsets. If the array referenced in the data clause is assigned in the block, 
+the caching will take its place (see example \ref{kcache1}). Otherwise, an assignment statement is created to start the caching (see example \ref{kcache2}). 
 
-If the offset value is omitted, there are inferred from the dimension of the variable to be cached and set to 0.
+If the offset values are omitted, there are inferred from the dimension of the variable to be cached and set to 0.
 
 \textbf{Options and details}
 \begin{itemize}
-\item \textit{data}: The data clause specifies which array will be impacted by the column caching transformation. 
+\item \textit{data}: The data clause specifies which array will be impacted by the column caching transformation. List of array identifiers. 
 \item \textit{offset}: Integer value separated by a space that represents the offset at each dimension. 
 \item \textit{init}: If the \textit{init} clause is specified, the cache variable will be initialized with the corresponding array value at the given offset during the 1st loop iteration. 
 \item \textit{private}: it declares that a copy of each item on the list will be created
 for each parallel gang on the accelerator. The list is the one specified on
-the `data` clause or inferred with assignment cache.
+the \textit{data} clause.
 \end{itemize}
 
 
