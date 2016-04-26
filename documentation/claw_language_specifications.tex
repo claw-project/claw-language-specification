@@ -155,25 +155,24 @@ Currently, the \textbf{loop-interchange} directive is limited to 3 level of nest
 \end{lstlisting}
 
 Loop jamming or fusion is used to merge 2 or more do statements together. Sometimes, the
-work performed in a do statement is too small to create significant impact on
+work performed in a single do statement is too small to create significant impact on
 performance when it is parallelized. Merging some do statements together create bigger
 blocks (kernels) to be parallelized.
 
 If the \textit{group} clause is not specified, all the do statements decorated with the directive in the
-same block will be merged together as a single do statement.
+same structured block will be merged together as a single do statement.
 
 If the \textit{group} clause is specified, the loops are merged in-order with do statements sharing 
 the same group in the current structured block.
 
 The \textit{collapse} clause is used to specify how many tightly nested do statements are
-associated with the \textbf{loop-fusion} construct. The argument to the \textit{collapse}
-clause is a constant positive integer. If no \textit{collapse} clause
-is specified, only the immediate following do statement is associated with the
-\textbf{loop-fusion} construct.
+associated with the \textbf{loop-fusion} construct (see example \ref{loop-fusion4}. The argument to the \textit{collapse}
+clause is a constant positive integer. If the \textit{collapse} clause
+is not specified, only the do statement that follows immediately the directive is associated with the \textbf{loop-fusion} construct.
 
 \textbf{Options and details}
 \begin{itemize}
-\item \textit{group\_id}: A string label that identify a group of do statement in a structured block. 
+\item \textit{group\_id}: An identifier that represents a group of do statement in a structured block. 
 \item \textit{n}: A constant positive integer.
 \end{itemize}
 
@@ -184,7 +183,7 @@ code.
 
 \textbf{Limitations}\\
 All the do statement within a group must share the same iteration range. If the
-\textit{collapse} clause is specified, the loops must share the same iteration range at the
+\textit{collapse} clause is specified, the do statements must share the same iteration range at the
 corresponding depth (see example \ref{loop-fusion4}).
 
 \subsection{Loop extraction}
