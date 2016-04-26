@@ -1,0 +1,743 @@
+
+\section{Code examples}
+
+\subsection{kcache 1}
+\label{kcache1}
+Where caching takes assignment place. 
+
+\textbf{Original code}
+\begin{lstlisting}
+DO j3 = ki3sc+1, ki3ec
+  !$claw kcache data(array1) offset(0 -1)
+  array1(j1,ki3sc) = x * y * z
+  var1 = x * y - array1(j1, j3-1)
+  var2 = z * array1(j1, j3-1)
+END DO
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+DO j3 = ki3sc+1, ki3ec
+  array1_k_m1 = x * y * z
+  array1(j1,ki3sc) = array1_k_m1
+  var1 = x * y - array1_k_m1
+  var2 = z * array1_k_m1
+END DO
+\end{lstlisting}
+
+
+\subsection{kcache 2}
+\label{kcache2}
+Assignment is created during the transformation. 
+
+\textbf{Original code}
+\begin{lstlisting}
+DO j3 = ki3sc+1, ki3ec
+  !$claw kcache data(array2)
+  var1 = x * y - array2(j1, j3)
+  var2 = z * array2(j1, j3)
+END DO
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+DO j3 = ki3sc+1, ki3ec
+  array2_k = array2(j1,j3)
+  var1 = x * y - array2_k
+  var2 = z * array2_k
+END DO
+\end{lstlisting}
+
+\subsection{kcache 3}
+\label{kcache3}
+Using \lstinline!init! and \lstinline!private! clause
+
+\textbf{Original code}
+\begin{lstlisting}
+!$acc parallel
+DO j3 = ki3sc+1, ki3ec
+  var3 = array1(j1,j3-1)
+
+  !$claw kcache data(array1) offset(0 -1) init private
+  array1(j1,ki3sc) = x * y * z
+  var1 = x * y - array1(j1, j3-1)
+  var2 = z * array1(j1, j3-1)
+END DO
+!$acc end parallel
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+!$acc parallel private(array1_k_m1)
+DO j3 = ki3sc+1, ki3ec
+  IF (j3 == ki3sc+1) THEN
+    array1_k_m1 = array1(j1,j3-1)
+  END IF
+  var3 = array1_k_m1
+  array1_k_m1 = x * y * z
+  array1(j1,ki3sc) = array1_k_m1
+  var1 = x * y - array1_k_m1
+  var2 = z * array1_k_m1
+END DO
+!$acc end parallel
+\end{lstlisting}
+
+
+\subsection{loop-interchange 1}
+\label{loop-interchange1}
+Example with 2 levels of loop. 
+
+\textbf{Original code}
+\begin{lstlisting}
+!$claw loop-interchange
+DO i=1, iend
+  DO k=1, kend
+    ! loop body here
+  END DO
+END DO
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+! CLAW transformation (loop-interchange i < -- > k)
+DO k=1, kend
+  DO i=1, iend
+    ! loop body here
+  END DO
+END DO
+\end{lstlisting}
+
+\subsection{loop-interchange 2}
+\label{loop-interchange2}
+Example with 3 levels of loop. 
+
+\textbf{Original code}
+\begin{lstlisting}
+!$claw loop-interchange (k,i,j)
+DO i=1, iend     ! loop at depth 0
+  DO j=1, jend   ! loop at depth 1
+    DO k=1, kend ! loop at depth 2
+      ! loop body here
+    END DO
+  END DO
+END DO
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+! CLAW transformation (loop-interchange (k,i,j))
+DO k=1, kend       ! loop at depth 2
+  DO i=1, iend     ! loop at depth 0
+    DO j=1, jend   ! loop at depth 1
+      ! loop body here
+    END DO
+  END DO
+END DO
+\end{lstlisting}
+
+\subsection{loop-interchange 3}
+\label{loop-interchange3}
+Example with OpenACC directives. 
+
+\textbf{Original code}
+\begin{lstlisting}
+!$acc parallel
+!$acc loop gang
+!$claw loop-interchange
+DO i=1, iend
+  !$acc loop vector
+  DO k=1, kend
+    ! loop body here
+  END DO
+END DO
+!$acc end parallel
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+! CLAW transformation (loop-interchange i < -- > k)
+!$acc parallel
+!$acc loop gang
+DO k=1, kend
+  !$acc loop vector
+  DO i=1, iend
+    ! loop body here
+  END DO
+END DO
+!$acc end parallel
+\end{lstlisting}
+
+\subsection{loop-fusion 1}
+Example without clauses. 
+
+\textbf{Original code}
+\begin{lstlisting}
+DO k=1, iend
+  !$claw loop-fusion
+  DO i=1, iend
+    ! loop #1 body here
+  END DO
+
+  !$claw loop-fusion
+  DO i=1, iend
+    ! loop #2 body here
+  END DO
+END DO
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+DO k=1, iend
+  ! CLAW transformation (loop-fusion same block group)
+  DO i=1, iend
+    ! loop #1 body here
+    ! loop #2 body here
+  END DO
+END DO
+\end{lstlisting}
+
+\subsection{loop-fusion 2}
+\label{loop-fusion2}
+Example using the \textit{group} clause.
+
+\textbf{Original code}
+\begin{lstlisting}
+DO k=1, iend
+  !$claw loop-fusion group(g1)
+  DO i=1, iend
+    ! loop #1 body here
+  END DO
+
+  !$claw loop-fusion group(g1)
+  DO i=1, iend
+    ! loop #2 body here
+  END DO
+
+  !$claw loop-fusion group(g2)
+  DO i=1, jend
+    ! loop #3 body here
+  END DO
+
+  !$claw loop-fusion group(g2)
+  DO i=1, jend
+    ! loop #4 body here
+  END DO
+END DO
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+DO k=1, iend
+  ! CLAW transformation (loop-fusion group g1)
+  DO i=1, iend
+    ! loop #1 body here
+    ! loop #2 body here
+  END DO
+
+  ! CLAW tranformation (loop-fusion group g2)
+  DO i=1, jend
+    ! loop #3 body here
+    ! loop #4 body here
+  END DO
+END DO
+\end{lstlisting}
+
+\subsection{loop-fusion 3}
+\label{loop-fusion3}
+Example showing behavior with other directives (OpenACC). 
+
+\textbf{Original code}
+\begin{lstlisting}
+!$acc parallel
+!$acc loop gang
+DO k=1, iend
+  !$acc loop seq
+  !$claw loop-fusion
+  DO i=1, iend
+    ! loop #1 body here
+  END DO
+
+  !$acc loop vector
+  !$claw loop-fusion
+  DO i=1, iend
+    ! loop #2 body here
+  END DO
+END DO
+!$acc end parallel
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+!$acc parallel
+!$acc loop gang
+DO k=1, iend
+  ! CLAW transformation (loop-fusion same block group)
+  !$acc loop seq
+  DO i=1, iend
+    ! loop #1 body here
+    ! loop #2 body here
+  END DO
+END DO
+!$acc end parallel
+\end{lstlisting}
+
+\subsection{loop-fusion 4}
+\label{loop-fusion4}
+Example using the \textit{collapse} clause. 
+
+\textbf{Original code}
+\begin{lstlisting}
+DO k=1, iend
+  !$claw loop-fusion collapse(2)
+  DO i=0, iend
+    DO j=0, jend
+      ! nested loop #1 body here
+    END FO
+  END DO
+
+  !$claw loop-fusion collapse(2)
+  DO i=0, iend
+    DO j=0, jend
+      ! loop #2 body here
+    END DO
+  END DO
+END DO
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+DO k=1, iend
+  ! CLAW transformation (loop-fusion collapse(2))
+  DO i=0, iend
+    DO j=0, jend
+      ! nested loop #1 body here
+      ! nested loop #2 body here
+    END DO
+  END DO
+END DO
+\end{lstlisting}
+
+
+
+\subsection{loop-extract 1}
+\label{loop-extract1}
+Example without additional clauses. 
+
+\textbf{Original code}
+\begin{lstlisting}
+PROGRAM main
+  !$claw loop-extract(i=istart,iend) map(value1,value2:i)
+  CALL xyz(value1, value2)
+END PROGRAM main
+
+SUBROUTINE xyz(value1, value2)
+  REAL, INTENT (IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(i) and value2(i) here
+  END DO
+END SUBROUTINE xyz
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+PROGRAM main
+  !CLAW extracted loop
+  DO i = istart, iend
+    CALL xyz_claw(value1(i), value2(i))
+  END DO
+END PROGRAM main
+
+SUBROUTINE xyz(value1, value2)
+  REAL, INTENT (IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(i) and value2(i) here
+  END DO
+END SUBROUTINE xyz
+
+!CLAW extracted loop new subroutine
+SUBROUTINE xyz_claw(value1, value2)
+  REAL, INTENT (IN) :: value1, value2
+  ! some computation with value1 and value2 here
+END SUBROUTINE xyz_claw
+\end{lstlisting}
+
+\subsection{loop-extract 2}
+\label{loop-extract2}
+Example with \textit{fusion} clause. 
+
+\textbf{Original code}
+\begin{lstlisting}
+PROGRAM main
+  !$claw loop-extract(i=istart,iend) map(value1,value2:i) fusion group(g1)
+  CALL xyz(value1, value2)
+
+  !$claw loop-fusion group(g1)
+  DO i = istart, iend
+    ! some computation here
+    print*,'Inside loop', i
+  END DO
+END PROGRAM main
+
+SUBROUTINE xyz(value1, value2)
+  REAL, INTENT (IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(i) and value2(i) here
+  END DO
+END SUBROUTINE xyz
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+PROGRAM main
+  !CLAW extracted loop
+  DO i = istart, iend
+    CALL xyz_claw(value1(i), value2(i))
+    ! some computation here
+    print*,'Inside loop', i
+  END DO
+END PROGRAM main
+
+SUBROUTINE xyz(value1, value2)
+  REAL, INTENT (IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(i) and value2(i) here
+  END DO
+END SUBROUTINE xyz
+
+!CLAW extracted loop new subroutine
+SUBROUTINE xyz_claw(value1, value2)
+  REAL, INTENT (IN) :: value1, value2
+  ! some computation with value1 and value2 here
+END SUBROUTINE xyz_claw
+\end{lstlisting}
+
+
+\subsection{loop-extract 3}
+\label{loop-extract3}
+Example with more complicated mapping. 
+
+\textbf{Original code}
+\begin{lstlisting}
+PROGRAM main
+  !$claw loop-extract(i=istart,iend) map(value1,value2:i/j)
+  CALL xyz(value1, value2)
+END PROGRAM main
+
+SUBROUTINE xyz(value1, value2, j)
+  INTGER, INTENT(IN) :: j
+  REAL  , INTENT(IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(j) and value2(j) here
+  END DO
+END SUBROUTINE xyz
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+PROGRAM main
+  !CLAW extracted loop
+  DO i = istart, iend
+    CALL xyz_claw(value1(i), value2(i))
+  END DO
+END PROGRAM main
+
+SUBROUTINE xyz(value1, value2, j)
+  INTGER, INTENT(IN) :: j
+  REAL  , INTENT(IN) :: value2(x:y), value2(x:y)
+
+  DO i = istart, iend
+    ! some computation with value1(j) and value2(j) here
+  END DO
+END SUBROUTINE xyz
+
+!CLAW extracted loop new subroutine
+SUBROUTINE xyz_claw(value1, value2, j)
+  INTGER, INTENT(IN) :: j
+  REAL, INTENT (IN) :: value1, value2
+  ! some computation with value1 and value2 here
+END SUBROUTINE xyz_claw
+\end{lstlisting}
+
+\subsection{loop-hoist 1}
+\label{loop-hoist1}
+Example without clauses. 
+
+\textbf{Original code}
+\begin{lstlisting}
+!$acc parallel loop gang vector collapse(2)
+DO jt=1,jtend
+  !$claw loop-hoist(j,i) interchange
+  IF ( .TRUE. ) CYCLE
+    ! outside loop statement
+  END IF
+  DO j=1,jend
+    DO i=1,iend
+      ! first nested loop body
+    END DO
+  END DO
+  DO j=2,jend
+    DO i=1,iend
+      ! second nested loop body
+    END DO
+  END DO
+  !$claw end loop-hoist
+END DO
+!$acc end parallel
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+!$acc parallel loop gang vector collapse(2)
+DO jt=1,jtend
+  DO i=1,iend
+    DO j=1,jend
+      IF ( .TRUE. ) CYCLE
+        ! outside loop statement
+      END IF
+      ! first nested loop body
+      IF(j>1) THEN
+        ! second nested loop body
+      END IF
+    END DO
+  END DO
+END DO
+!$acc end parallel
+\end{lstlisting}
+
+
+\subsection{array-transform 1}
+\label{array-transform1}
+Example with array notation following the pragma statement. 
+
+\textbf{Original code}
+\begin{lstlisting}
+SUBROUTINE vector_add
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  !$claw array-transform
+  vec1(0:i) = vec1(0:i) + 10;
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+SUBROUTINE vector_add
+  INTEGER :: claw_i
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  ! CLAW transformation array notation to do loop
+  DO claw_i = 0, i
+    vec1(claw_i) = vec1(claw_i) + 10;
+  END DO
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+
+\subsection{array-transform 2}
+\label{array-transform2}
+Example with \textit{induction} and \textit{acc} clauses
+
+\textbf{Original code}
+\begin{lstlisting}
+SUBROUTINE vector_add
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  !$acc parallel
+  !$claw array-transform induction(myinduc) acc(loop)
+  vec1(0:i) = vec1(0:i) + 10;
+
+  !$claw array-transform acc(loop)
+  vec1(0:i) = vec1(0:i) + 1;
+  !$acc end parallel
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+SUBROUTINE vector_add
+  INTEGER :: claw_i
+  INTEGER :: myinduc
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  !$acc parallel
+
+  ! CLAW transformation array notation vec1(0:i) to do loop
+  !$acc loop
+  DO myinduc = 0, i
+    vec1(myinduc) = vec1(myinduc) + 10;
+  END DO
+
+  ! CLAW transformation array notation vec1(0:i) to do loop
+  !$acc loop
+  DO claw_i = 0, i
+    vec1(claw_i) = vec1(claw_i) + 1;
+  END DO
+  
+  !$acc end parallel
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+\subsection{array-transform 3}
+\label{array-transform3}
+Example with fusion clause
+ 
+\textbf{Original code}
+\begin{lstlisting}
+SUBROUTINE vector_add
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+  INTEGER, DIMENSION(0:9) :: vec2
+
+  !$claw array-transform induction(claw_i) fusion
+  vec1(0:i) = vec1(0:i) + 10;
+
+  !$claw array-transform induction(claw_i) fusion
+  vec2(0:i) = vec2(0:i) + 1;
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+SUBROUTINE vector_add
+  INTEGER :: claw_i
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+  INTEGER, DIMENSION(0:9) :: vec2
+
+  ! CLAW transformation array notation vec1(0:i) to do loop
+  ! CLAW transformation array notation vec2(0:i) to do loop
+  ! CLAW transformation fusion
+  DO claw_i=0, i
+    vec1(claw_i) = vec1(claw_i) + 10;
+    vec2(claw_i) = vec2(claw_i) + 1;
+  END DO
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+
+\subsection{array-transform 4}
+\label{array-transform4}
+Example with 2-dimensional arrays
+
+\textbf{Original code}
+\begin{lstlisting}
+SUBROUTINE vector_add
+INTEGER :: i = 10
+INTEGER, DIMENSION(0:10,0:10) :: vec1
+INTEGER, DIMENSION(0:10,0:10) :: vec2
+
+vec1(0:i,0:i) = 0;
+vec2(0:i,0:i) = 100;
+
+!$claw array-transform
+vec1(0:i,0:i) = vec2(0:i,0:i) + 10
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+SUBROUTINE vector_add
+INTEGER :: i = 10
+INTEGER, DIMENSION(0:10,0:10) :: vec1
+INTEGER, DIMENSION(0:10,0:10) :: vec2
+
+vec1(0:i,0:i) = 0;
+vec2(0:i,0:i) = 100;
+
+DO claw_i = 0, i, 1
+  DO claw_j = 0, i, 1
+    vec1(claw_i,claw_j) = vec2(claw_i, claw_j) + 10    
+  END DO
+END DO
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+\subsection{remove 1}
+\label{remove1}
+
+\textbf{Original code}
+\begin{lstlisting}
+DO k=1, kend
+  DO i=1, iend
+    ! loop #1 body here
+  END DO
+
+  !$claw remove
+  IF (k > 1) THEN
+    PRINT*, k
+  END IF
+
+  DO i=1, iend
+    ! loop #2 body here
+  END DO
+END DO
+\end{lstlisting}
+
+\textbf{Transformed code}
+\begin{lstlisting}
+DO k=1, kend
+  DO i=1, iend
+    ! loop #1 body here
+  END DO
+
+  DO i=1, iend
+    ! loop #2 body here
+  END DO
+END DO
+\end{lstlisting}
+
+
+
+
+\subsection{remove 2}
+\label{remove2}
+
+\textbf{Original code}
+\begin{lstlisting}
+DO k=1, kend
+  DO i=1, iend
+    ! loop #1 body here
+  END DO
+
+  !$claw remove
+  PRINT*, k
+  PRINT*, k+1
+  !$claw end remove
+
+  DO i=1, iend
+    ! loop #2 body here
+  END DO
+END DO
+\end{lstlisting}
+
+
+\textbf{Transformed code}
+\begin{lstlisting}
+DO k=1, kend
+  DO i=1, iend
+    ! loop #1 body here
+  END DO
+
+  DO i=1, iend
+    ! loop #2 body here
+  END DO
+END DO
+\end{lstlisting}

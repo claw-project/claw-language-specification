@@ -1,0 +1,18 @@
+\section{Utilities}
+
+\subsection{Remove}
+\begin{lstlisting}
+!$claw remove
+
+  ! code block
+  
+[!$claw end remove]
+\end{lstlisting}
+
+The \textbf{remove} directive allows the user to discard section of code
+during the transformation process. 
+
+\textbf{Options and details}\\
+If the directive is directly followed by a structured block (\lstinline!IF! or \lstinline!DO!), the
+end directive is not mandatory (see example \ref{remove1}). In any other cases, the end
+directive is mandatory.

@@ -1,0 +1,65 @@
+\section{Accelerator abstractions/helpers}
+
+\subsection{Array notation to do statements}
+
+\begin{lstlisting}
+!$claw array-transform [induction(name [[,] name]...)] [fusion [group(group_id)]] [parallel] [acc([clause [[,] clause]...])]
+
+  ! array notation assignment(s) 
+  
+[!$claw end remove]
+\end{lstlisting}
+
+Computations using the array notation are not suitable to be parallelized with
+language like OpenACC. The \textbf{array-transform} directive allows to transform those
+notation with the corresponding do statements which are more suitable for
+parallelization.
+
+The goal of this directive is to pass from an array notation assignment like
+this:
+
+\begin{lstlisting}
+!$claw array-transform
+A(1:n) = A(1+m:n+m) + B(1:n) * C(n+1:n+n)
+\end{lstlisting}
+
+To a do statement statement like this:
+
+\begin{lstlisting}
+DO i=1,n
+  A(i) = A(i+m) + B(i) * C(n+i)
+END DO
+\end{lstlisting}
+
+If the directive is used as a block directive, the assignments are wrapped in
+a single do statement if their induction range match.
+
+\begin{lstlisting}
+!$claw array-transform
+A(1:n) = A(1+m:n+m) + B(1:n) * C(n+1:n+n)
+B(1:n) = B(1:n) * 0.5
+!$claw end array-transform
+\end{lstlisting}
+
+To
+
+\begin{lstlisting}
+DO i=1,n
+  A(i) = A(i+m) + B(i) * C(n+i)
+  B(i) = B(i) * 0.5
+END DO
+\end{lstlisting}
+
+
+\textbf{Options and details}
+\begin{enumerate}
+\item \textit{induction}: Allow to name the induction variable created for the do statement.
+\item \textit{fusion}: Allow the extracted loop to be merged with other loops. Options 
+are identical with the \textbf{loop-fusion} directive
+\item \textit{parallel}: Wrap the extracted loop in a parallel region.
+\item \textit{acc}: Define accelerator clauses that will be applied to the generated loops.
+\end{enumerate}
+
+\textbf{Behavior with other directives}\\
+Directives declared before the \textbf{array-transform} directive will be kept in the
+generated code.

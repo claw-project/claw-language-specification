@@ -1,0 +1,131 @@
+\section{Loop transformation}
+\subsection{Loop interchange/reordering}
+\begin{lstlisting}
+!$claw loop-interchange [(induction_var[, induction_var] ...)]
+\end{lstlisting}
+
+Loop reordering is a common transformation applied on do statements when adding parallelization. This transformation is mainly used to improve the data locality and avoid the need to transpose the arrays.
+
+The \textbf{loop-interchange} directive must be placed just before the first do statement composing the nested do statements group. With a group of two nested do statements, the induction variable and iteration range of the first statement is swap with the information of the second statement (see example \ref{loop-interchange1}). 
+
+If the list of induction variables is specified, the do statements are reordered according to the order defined in the list (see example \ref{loop-interchange2}).
+
+\textbf{Options and details}
+\begin{enumerate}
+\item \textit{induction\_var}: induction variable of the do statement. The list gives the new order of the do statement after the transformation. For group of 2 nested do statements, this information is optional. 
+\end{enumerate}
+
+
+\textbf{Behavior with other directives}\\
+When the do statements to be reordered are decorated with additional directives, those directives stay in place during the code transformation. In other words, they are not reordered together with the do statements iteration ranges (see example \ref{loop-interchange3}).
+
+\textbf{Limitations}\\
+Currently, the \textbf{loop-interchange} directive is limited to 3 level of nested do statements. More nested levels can be declared but the transformation is limited to the first 3 levels from the directive declaration.
+
+\subsection{Loop jamming/fusion}
+\begin{lstlisting}
+!$claw loop-fusion [group(group_id)] [collapse(n)]
+\end{lstlisting}
+
+Loop jamming or fusion is used to merge 2 or more do statements together. Sometimes, the
+work performed in a single do statement is too small to create significant impact on
+performance when it is parallelized. Merging some do statements together create bigger
+blocks (kernels) to be parallelized.
+
+If the \textit{group} clause is not specified, all the do statements decorated with the directive in the
+same structured block will be merged together as a single do statement.
+
+If the \textit{group} clause is specified, the loops are merged in-order with do statements sharing 
+the same group in the current structured block.
+
+The \textit{collapse} clause is used to specify how many tightly nested do statements are
+associated with the \textbf{loop-fusion} construct (see example \ref{loop-fusion4}. The argument to the \textit{collapse}
+clause is a constant positive integer. If the \textit{collapse} clause
+is not specified, only the do statement that follows immediately the directive is associated with the \textbf{loop-fusion} construct.
+
+\textbf{Options and details}
+\begin{itemize}
+\item \textit{group\_id}: An identifier that represents a group of do statement in a structured block. 
+\item \textit{n}: A constant positive integer.
+\end{itemize}
+
+\textbf{Behavior with other directives}\\
+When the do statement to be merged are decorated with other directives, only the
+directives on the first do statement of the merge group are kept in the transformed
+code.
+
+\textbf{Limitations}\\
+All the do statement within a group must share the same iteration range. If the
+\textit{collapse} clause is specified, the do statements must share the same iteration range at the
+corresponding depth (see example \ref{loop-fusion4}).
+
+\subsection{Loop extraction}
+\begin{lstlisting}
+!$claw loop-extract range(range) [map(var[,var]...:mapping[,mapping]...) [map(var[,var]...:mapping[,mapping]...)] ...] [fusion [group(group_id)]] [parallel] [acc(directives)]
+\end{lstlisting}
+
+Loop extraction can be performed on a subroutine/function call. The do statement corresponding
+to the defined iteration range is extracted from the subroutine/function and is wrapped
+around the subroutine/function call. In the transformation, a copy of the subroutine/function
+is created with the corresponding transformation (demotion) for the parameters.
+
+
+\textbf{Options and details}
+\begin{enumerate}
+\item \textit{range}: Correspond to the iteration range of the loop to be extracted.
+  Notation \lstinline!i = istart, iend, istep!. Step value is optional. 
+\item \textit{map}: Define the mapping of variable that are demoted during the loop
+  extraction. As seen in the example \ref{loop-extract1}, the two parameters (1 dimensional array)
+  are mapped to a scalar with the induction variable \textit{i}.
+  \begin{enumerate}
+    \item The \textit{var} can be defined as two parts variable (e.g. \lstinline!a/a1!). The
+    first part is the function call part and refers to the variable as it is
+    defined in the function call. The second part is the function definition
+    part and refers to the name of the variable to be mapped as it defined in
+    the function declaration. If a \textit{var} is defined as a single part variable,
+    the same name is used for both the function call and function definition
+    part.
+    \item The \textit{mapping} can be defined as two parts variable (e.g. \lstinline!i/i1!). The
+    first part is the function call part and refers to the mapping variable as
+    it is defined in the function call. The second part is the function
+    definition part and refers to the name of the mapping variable as it defined
+    in the function declaration. If a \textit{mapping} is defined as a single part
+    mapping variable, the same name is used for both the function call and
+    function definition part.
+    \end{enumerate}
+\item \textit{fusion}: Allow the extracted loop to be merged with other loops.
+Options are identical with the \lstinline!loop-fusion! directive.
+\item \textit{parallel}: Wrap the extracted loop in a parallel region.
+\item \textit{acc}: Add the accelerator directives to the extracted loop.
+\end{enumerate}
+
+If the directive \textbf{loop-extract} is used for more than one call to the same
+subroutine, the extraction can generate 1 to N dedicated subroutines.
+
+\textbf{Behavior with other directives}\\
+Accelerator directives are generated by the transformation. If the function call was decorated 
+with accelerator directives prior to the transformation, those directives stay in place. 
+
+\subsection{Loop hoisting}
+\begin{lstlisting}
+!$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimension]))] [interchange [(induction_var[[, induction_var] ...])]]
+
+  ! structured block of code
+  
+!$claw end loop-hoist
+\end{lstlisting}
+
+The \textbf{loop-hoist} directive allows nested loops in a defined structured block to
+be merged together and to hoist the beginning of those nested loop just after
+the directive declaration. Loops with different lower-bound indexes
+can also be merged with the addition of an \lstinline!IF! statement. This feature works 
+only when the lower-bound are integer constant. 
+
+
+\textbf{Options and details}
+\begin{enumerate}
+\item \textit{induction\_var}: List of induction variables of the do statements to be hoisted. 
+\item \textit{interchange}: Allow the group of hoisted loops to be reordered.
+Options are identical with the \textbf{loop-interchange} directive.
+\item \textit{reshape}: Reshape arrays to scalar or to array with fewer dimensions. The original declaration is replaced with the corresponding demoted declaration in the current block (function/module). 
+\end{enumerate}
