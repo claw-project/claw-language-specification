@@ -137,14 +137,17 @@ The \textbf{loop-interchange} directive must be placed just before the first do 
 
 If the list of induction variables is specified, the do statements are reordered according to the order defined in the list (see example \ref{loop-interchange2}).
 
-\textbf{Options and details}\\
-\textit{induction\_var}: induction variable of the do statement. The list gives the new order of the do statement after the transformation. For group of 2 nested do statements, this information is optional. 
+\textbf{Options and details}
+\begin{enumerate}
+\item \textit{induction\_var}: induction variable of the do statement. The list gives the new order of the do statement after the transformation. For group of 2 nested do statements, this information is optional. 
+\end{enumerate}
+
 
 \textbf{Behavior with other directives}\\
-When the loops to be reordered are decorated with additional directives, those directives stay in place during the code transformation. In other words, they are not reordered together with the loops (see example \ref{loop-interchange3}).
+When the do statements to be reordered are decorated with additional directives, those directives stay in place during the code transformation. In other words, they are not reordered together with the do statements iteration ranges (see example \ref{loop-interchange3}).
 
 \textbf{Limitations}\\
-Currently, the loop-interchange directive is limited to 3 level of nested do statements. More nested levels can be declared but the transformation is limited to the first 3 levels from the directive declaration.
+Currently, the \textbf{loop-interchange} directive is limited to 3 level of nested do statements. More nested levels can be declared but the transformation is limited to the first 3 levels from the directive declaration.
 
 \subsection{Loop jamming/fusion}
 \begin{lstlisting}
