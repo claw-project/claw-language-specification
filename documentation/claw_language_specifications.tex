@@ -251,9 +251,10 @@ only when the lower-bound are integer constant.
 
 \textbf{Options and details}
 \begin{enumerate}
+\item \textit{induction\_var}: List of induction variables of the do statements to be hoisted. 
 \item \textit{interchange}: Allow the group of hoisted loops to be reordered.
 Options are identical with the \textbf{loop-interchange} directive.
-\item \textit{reshape}: Reshape arrays to scalar or to array with fewer dimensions. 
+\item \textit{reshape}: Reshape arrays to scalar or to array with fewer dimensions. The original declaration is replaced with the corresponding demoted declaration in the current block (function/module). 
 \end{enumerate}
 
 
