@@ -107,14 +107,23 @@ the \textit{data} clause.
 
 
 
-\subsection{On the fly computation (array access to function call)}
+\subsection{On-the-fly computation (array access to function call)}
 \begin{lstlisting}
 !$claw call array_name=function_call(arg_list)
 \end{lstlisting}
 
-Sometimes, replacing access to pre-computed arrays with computation on the fly
+Sometimes, replacing access to pre-computed arrays with computation on-the-fly
 can increase the performance. It can reduce the memory access for memory-bound
-kernel and exploit some unused resource to execute the computation.
+kernel and exploit some unused resources to execute the computation.
+
+This transformation is local to the current do statement. Array access from the directive will be replaced. 
+
+\textbf{Options and details}
+\begin{itemize}
+\item \textit{array\_name}: Array identifier. References to this array will be replaced by the function call in the current structured block. 
+\item \textit{function\_call}: Name of the function provided by the user to compute the value. Return value must be of the same type as accessed value. 
+\item \textit{arg\_list}: Comma separated list of arguments to be passed to the function call. 
+\end{itemize}
 
 \section{Loop transformation}
 \subsection{Loop interchange/reordering}
