@@ -200,9 +200,9 @@ is created with the corresponding transformation (demotion) for the parameters.
 \textbf{Options and details}
 \begin{enumerate}
 \item \textit{range}: Correspond to the iteration range of the loop to be extracted.
-  Notation \lstinline!i = istart, iend, istep!
+  Notation \lstinline!i = istart, iend, istep!. Step value is optional. 
 \item \textit{map}: Define the mapping of variable that are demoted during the loop
-  extraction. As seen in the example 1, the two parameters (1 dimensional array)
+  extraction. As seen in the example \ref{loop-extract1}, the two parameters (1 dimensional array)
   are mapped to a scalar with the induction variable \textit{i}.
   \begin{enumerate}
     \item The \textit{var} can be defined as two parts variable (e.g. \lstinline!a/a1!). The
