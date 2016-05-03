@@ -16,3 +16,39 @@ during the transformation process.
 If the directive is directly followed by a structured block (\lstinline!IF! or \lstinline!DO!), the
 end directive is not mandatory (see example \ref{remove1}). In any other cases, the end
 directive is mandatory.
+
+\textbf{Code example}
+\label{remove1}
+
+Original code
+\begin{lstlisting}
+DO k=1, kend
+  DO i=1, iend
+    ! loop #1 body here
+  END DO
+
+  !$claw remove
+  IF (k > 1) THEN
+    PRINT*, k
+  END IF
+
+  DO i=1, iend
+    ! loop #2 body here
+  END DO
+END DO
+\end{lstlisting}
+
+Transformed code
+\begin{lstlisting}
+DO k=1, kend
+  DO i=1, iend
+    ! loop #1 body here
+  END DO
+
+  DO i=1, iend
+    ! loop #2 body here
+  END DO
+END DO
+\end{lstlisting}
+
+More code examples in the appendix. Example with block remove (see example \ref{remove2}).

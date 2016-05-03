@@ -63,3 +63,34 @@ are identical with the \textbf{loop-fusion} directive
 \textbf{Behavior with other directives}\\
 Directives declared before the \textbf{array-transform} directive will be kept in the
 generated code.
+
+\textbf{Code example}\\
+\label{array-transform1}
+Example with array notation following the pragma statement. 
+
+Original code
+\begin{lstlisting}
+SUBROUTINE vector_add
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  !$claw array-transform
+  vec1(0:i) = vec1(0:i) + 10;
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+Transformed code
+\begin{lstlisting}
+SUBROUTINE vector_add
+  INTEGER :: claw_i
+  INTEGER :: i = 10
+  INTEGER, DIMENSION(0:9) :: vec1
+
+  ! CLAW transformation array notation to do loop
+  DO claw_i = 0, i
+    vec1(claw_i) = vec1(claw_i) + 10;
+  END DO
+END SUBROUTINE vector_add
+\end{lstlisting}
+
+More code examples in the appendix. Example with the induction and acc (see example \ref{array-transform2}). Example with fusion clause (see example \ref{array-transform3}). Example with 2-dimensional arrays (see example \ref{array-transform4}). 

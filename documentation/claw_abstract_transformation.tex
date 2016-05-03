@@ -23,8 +23,32 @@ for each parallel gang on the accelerator. The list is the one specified on
 the \textit{data} clause.
 \end{itemize}
 
+\textbf{Code example}\\
+\label{kcache1}
+Where caching takes assignment place. 
+
+Original code
+\begin{lstlisting}[language=Fortran]
+DO j3 = ki3sc+1, ki3ec
+  !$claw kcache data(array1) offset(0 -1)
+  array1(j1,ki3sc) = x * y * z
+  var1 = x * y - array1(j1, j3-1)
+  var2 = z * array1(j1, j3-1)
+END DO
+\end{lstlisting}
 
 
+Transformed code
+\begin{lstlisting}[language=Fortran]
+DO j3 = ki3sc+1, ki3ec
+  array1_k_m1 = x * y * z
+  array1(j1,ki3sc) = array1_k_m1
+  var1 = x * y - array1_k_m1
+  var2 = z * array1_k_m1
+END DO
+\end{lstlisting}
+
+More code examples in the appendix. Example with assignment created during the transformation (see example \ref{kcache2}). Example with \lstinline!init! and \lstinline!private! clause (see example \ref{kcache3}). 
 
 \subsection{On-the-fly computation (array access to function call)}
 \begin{lstlisting}
