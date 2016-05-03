@@ -2,7 +2,7 @@
 
 \subsection{K caching (column caching)}
 \begin{lstlisting}
-!$claw kcache data(var_1[,var_2] ...) [offset(offset_1[ offset_2] ...)]] [init] [private]
+!$claw kcache data(var_1[,var_2] ...) [offset(offset_1[,offset_2] ...)]] [init] [private]
 \end{lstlisting}
 
 In memory-bound problem, it might be useful to cache array values used several times during the current do statement iteration or for the next one.
@@ -16,7 +16,7 @@ If the offset values are omitted, there are inferred from the dimension of the v
 \textbf{Options and details}
 \begin{itemize}
 \item \textit{data}: The data clause specifies which array will be impacted by the column caching transformation. List of array identifiers. 
-\item \textit{offset}: Integer value separated by a space that represents the offset at each dimension. 
+\item \textit{offset}: Integer value separated by a comma that represents the offset at each dimension. 
 \item \textit{init}: If the \textit{init} clause is specified, the cache variable will be initialized with the corresponding array value at the given offset during the 1st loop iteration. 
 \item \textit{private}: it declares that a copy of each item on the list will be created
 for each parallel gang on the accelerator. The list is the one specified on
