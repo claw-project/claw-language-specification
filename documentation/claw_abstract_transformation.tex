@@ -25,26 +25,62 @@ the \textit{data} clause.
 
 \textbf{Code example}\\
 \label{kcache1}
-Where caching takes assignment place. 
+Where caching takes assignment place and \lstinline!init! clause. 
 
 Original code
 \begin{lstlisting}[language=Fortran]
-DO j3 = ki3sc+1, ki3ec
-  !$claw kcache data(array1) offset(0 -1)
-  array1(j1,ki3sc) = x * y * z
-  var1 = x * y - array1(j1, j3-1)
-  var2 = z * array1(j1, j3-1)
+DO j1 = k1start, k1end
+  array_u6(j1,k3end) = pc1(j1,kend) * p2(j1)
+ENDDO
+
+DO j3 = k3start + 1, k3end
+  DO j1 = k1start, k1end
+    ! More computation here with others variables  
+  
+    value1 = 1.0_dp / (1.0_dp - p2(j1) * (pc2(j1,j3) * array6(j1,j3-1)  &
+                                     +  pc2(j1,j3) * array8(j1,j3-1) ))
+    value2 = p2(j1) * (pc2(j1,j3) * array6(j1,j3-1)                     &
+                      + pc2(j1,j3) * array8(j1,j3-1))
+    value6 = p1(j1) * (pc2(j1,j3) * array6(j1,j3-1)                     &
+                       +pc2(j1,j3) * array8(j1,j3-1))
+	!$claw kcache data(array6) offset(0 -1) init                        
+    array6(j1,j3) = p2(j1) * pc1(j1,j3)                                 &
+                    + value2 * array8(j1,j3) + value6 * array8(j1,j3)  
+    array8(j1,j3) = p2(j1) * pc1(j1,j3)                                 &
+                    + value6 * array2(j1,j3) + value7 * array4(j1,j3)                  
+  END DO
 END DO
 \end{lstlisting}
 
 
 Transformed code
 \begin{lstlisting}[language=Fortran]
-DO j3 = ki3sc+1, ki3ec
-  array1_k_m1 = x * y * z
-  array1(j1,ki3sc) = array1_k_m1
-  var1 = x * y - array1_k_m1
-  var2 = z * array1_k_m1
+DO j1 = k1start, k1end
+  array_u6(j1,k3end) = pc1(j1,kend) * p2(j1)
+ENDDO
+
+DO j1 = k1start, k1end
+  DO j3 = k3start + 1, k3end
+    IF (j3 = k3start + 1) THEN 
+      array6_k_m1 = array6(j1,j3-1)
+      array8_k_m1 = array8(j1,j3-1)      
+    END IF
+    ! More computation here with others variables  
+  
+    value1 = 1.0_dp / (1.0_dp - p2(j1) * (pc2(j1,j3) * array6_k_m1    &
+                                     +  pc2(j1,j3) * array8_k_m1 ))
+    value2 = p2(j1) * (pc2(j1,j3) * array6_k_m1                       &
+                      + pc2(j1,j3) * array8_k_m1
+    value6 = p1(j1) * (pc2(j1,j3) * array6_k_m1                       &
+                       +pc2(j1,j3) * array8_k_m1
+	!$claw kcache data(array6, array8) offset(0 -1) init  
+	array6_k_m1 = p2(j1) * pc1(j1,j3)                                 &
+                    + value2 * array8(j1,j3) + value6 * array8(j1,j3)                      
+    array6(j1,j3) = array6_k_m1
+    array8_k_m1 = p2(j1) * pc1(j1,j3)                                 &
+                    + value6 * array2(j1,j3) + value7 * array4(j1,j3)                  
+    array8(j1,j3) = array8_k_m1                    
+  END DO
 END DO
 \end{lstlisting}
 
