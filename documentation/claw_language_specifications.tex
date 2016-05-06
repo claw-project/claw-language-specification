@@ -86,6 +86,19 @@ The default interpretation order of the directives is the following:
 Users must be aware that transformations are applied sequentially and
 therefore, a transformation can be performed on code that is already transformed.
 
+\subsection{Accelerator compile guard}
+As CLAW generates accelerator directives, it might be useful sometimes to protect the compilation of source code including accelerator directives as it might be wrong if the CLAW Fortran compiler didn't process it. 
+
+For this reason, the CLAW language has a compile guard that is removed by the CLAW Fortran compiler once it applies the transformations. This compile guard is designed to make the compilation failed when transformations are not applied and accelerator directives are present in the source code. 
+
+This compile guard is shown in the listing below. It uses the target accelerator language with a specific claw directive. Example for OpenACC on line 2 and OpenMP on line 3. 
+
+\begin{lstlisting}
+!$<accelerator language prefix> claw-guard 
+!$acc claw-guard
+!$omp claw-guard
+\end{lstlisting}
+
 \input{claw_abstract_transformation.tex}
 \input{claw_loop_transformation.tex}
 \input{claw_acc_transformation.tex}
