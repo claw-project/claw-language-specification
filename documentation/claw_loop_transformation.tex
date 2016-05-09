@@ -6,13 +6,13 @@
 
 Loop reordering is a common transformation applied on do statements when adding parallelization. This transformation is mainly used to improve the data locality and avoid the need to transpose the arrays.
 
-The \textbf{loop-interchange} directive must be placed just before the first do statement composing the nested do statements group. With a group of two nested do statements, the induction variable and iteration range of the first statement is swap with the information of the second statement (see example \ref{loop-interchange1}). 
+The \textbf{loop-interchange} directive must be placed just before the first do statement composing the nested do statements group. With a group of two nested do statements, the induction variable and iteration range of the first statement is swap with the information of the second statement (see example \ref{loop-interchange1}).
 
 If the list of induction variables is specified, the do statements are reordered according to the order defined in the list (see example \ref{loop-interchange2}).
 
 \textbf{Options and details}
 \begin{enumerate}
-\item \textit{induction\_var}: induction variable of the do statement. The list gives the new order of the do statement after the transformation. For group of 2 nested do statements, this information is optional. 
+\item \textit{induction\_var}: induction variable of the do statement. The list gives the new order of the do statement after the transformation. For group of 2 nested do statements, this information is optional.
 \end{enumerate}
 
 
@@ -23,7 +23,7 @@ When the do statements to be reordered are decorated with additional directives,
 Currently, the \textbf{loop-interchange} directive is limited to 3 level of nested do statements. More nested levels can be declared but the transformation is limited to the first 3 levels from the directive declaration.
 
 \textbf{Code example}\\\label{loop-interchange1}
-Example with 2 levels of loop. 
+Example with 2 levels of loop.
 
 Original code
 \begin{lstlisting}[language=Fortran]
@@ -45,7 +45,7 @@ DO k=1, kend
 END DO
 \end{lstlisting}
 
-More code examples in the appendix. Example with 3 nested statements (see example \ref{loop-interchange2}). Example with others directives (see example \ref{loop-interchange3}). 
+More code examples in the appendix. Example with 3 nested statements (see example \ref{loop-interchange2}). Example with others directives (see example \ref{loop-interchange3}).
 
 \subsection{Loop jamming/fusion}
 \begin{lstlisting}
@@ -60,7 +60,7 @@ blocks (kernels) to be parallelized.
 If the \textit{group} clause is not specified, all the do statements decorated with the directive in the
 same structured block will be merged together as a single do statement (see code example in this section).
 
-If the \textit{group} clause is specified, the loops are merged in-order with do statements sharing 
+If the \textit{group} clause is specified, the loops are merged in-order with do statements sharing
 the same group in the current structured block (see example \ref{loop-fusion2}).
 
 The \textit{collapse} clause is used to specify how many tightly nested do statements are
@@ -70,7 +70,7 @@ is not specified, only the do statement that follows immediately the directive i
 
 \textbf{Options and details}
 \begin{itemize}
-\item \textit{group\_id}: An identifier that represents a group of do statement in a structured block (see example \ref{loop-fusion2}). 
+\item \textit{group\_id}: An identifier that represents a group of do statement in a structured block (see example \ref{loop-fusion2}).
 \item \textit{n}: A constant positive integer.
 \end{itemize}
 
@@ -86,7 +86,7 @@ corresponding depth (see example \ref{loop-fusion4}).
 
 \textbf{Code example}\\
 \label{loop-fusion-1}
-Example without clauses. 
+Example without clauses.
 
 Original code
 \begin{lstlisting}[language=Fortran]
@@ -114,7 +114,7 @@ DO k=1, iend
 END DO
 \end{lstlisting}
 
-More code examples in the appendix. Example with the \lstinline!group! clause (see example \ref{loop-fusion2}). Example with others directives (see example \ref{loop-fusion3}). Example with the \lstinline!collapse! clause (see example \ref{loop-fusion4}). 
+More code examples in the appendix. Example with the \lstinline!group! clause (see example \ref{loop-fusion2}). Example with others directives (see example \ref{loop-fusion3}). Example with the \lstinline!collapse! clause (see example \ref{loop-fusion4}).
 
 \subsection{Loop extraction}
 \begin{lstlisting}
@@ -130,7 +130,7 @@ is created with the corresponding transformation (demotion) for the parameters.
 \textbf{Options and details}
 \begin{enumerate}
 \item \textit{range}: Correspond to the iteration range of the loop to be extracted.
-  Notation \lstinline!i = istart, iend, istep!. Step value is optional. 
+  Notation \lstinline!i = istart, iend, istep!. Step value is optional.
 \item \textit{map}: Define the mapping of variable that are demoted during the loop
   extraction. As seen in the example \ref{loop-extract1}, the two parameters (1 dimensional array)
   are mapped to a scalar with the induction variable \textit{i}.
@@ -152,7 +152,10 @@ is created with the corresponding transformation (demotion) for the parameters.
     \end{enumerate}
 \item \textit{fusion}: Allow the extracted loop to be merged with other loops.
 Options are identical with the \lstinline!loop-fusion! directive.
-\item \textit{parallel}: Wrap the extracted loop in a parallel region.
+\item \textit{parallel}: Wrap the extracted loop in a parallel region. If the
+\lstinline!parallel! clause is defined, extracted subroutine/function will
+include the corresponding accelerator directive to be able to execute the
+subroutine/function on the accelerator. 
 \item \textit{acc}: Add the accelerator directives to the extracted loop.
 \end{enumerate}
 
@@ -160,12 +163,12 @@ If the directive \textbf{loop-extract} is used for more than one call to the sam
 subroutine, the extraction can generate 1 to N dedicated subroutines.
 
 \textbf{Behavior with other directives}\\
-Accelerator directives are generated by the transformation. If the function call was decorated 
-with accelerator directives prior to the transformation, those directives stay in place. 
+Accelerator directives are generated by the transformation. If the function call was decorated
+with accelerator directives prior to the transformation, those directives stay in place.
 
 \textbf{Code example}\\
 \label{loop-extract1}
-Example without additional clauses. 
+Example without additional clauses.
 
 Original code
 \begin{lstlisting}[language=Fortran]
@@ -208,35 +211,35 @@ SUBROUTINE xyz_claw(value1, value2)
 END SUBROUTINE xyz_claw
 \end{lstlisting}
 
-More code examples in the appendix. Example with the \lstinline!fusion! clause (see example \ref{loop-extract2}). Example with a more complicated mapping (see example \ref{loop-extract3}). 
+More code examples in the appendix. Example with the \lstinline!fusion! clause (see example \ref{loop-extract2}). Example with a more complicated mapping (see example \ref{loop-extract3}).
 
 \subsection{Loop hoisting}
 \begin{lstlisting}
 !$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimension]))] [interchange [(induction_var[[, induction_var] ...])]]
 
   ! structured block of code
-  
+
 !$claw end loop-hoist
 \end{lstlisting}
 
 The \textbf{loop-hoist} directive allows nested loops in a defined structured block to
 be merged together and to hoist the beginning of those nested loop just after
 the directive declaration. Loops with different lower-bound indexes
-can also be merged with the addition of an \lstinline!IF! statement. This feature works 
-only when the lower-bound are integer constant. 
+can also be merged with the addition of an \lstinline!IF! statement. This feature works
+only when the lower-bound are integer constant.
 
 
 \textbf{Options and details}
 \begin{enumerate}
-\item \textit{induction\_var}: List of induction variables of the do statements to be hoisted. 
+\item \textit{induction\_var}: List of induction variables of the do statements to be hoisted.
 \item \textit{interchange}: Allow the group of hoisted loops to be reordered.
 Options are identical with the \textbf{loop-interchange} directive.
-\item \textit{reshape}: Reshape arrays to scalar or to array with fewer dimensions. The original declaration is replaced with the corresponding demoted declaration in the current block (function/module). 
+\item \textit{reshape}: Reshape arrays to scalar or to array with fewer dimensions. The original declaration is replaced with the corresponding demoted declaration in the current block (function/module).
 \end{enumerate}
 
 \textbf{Code example}\\
 \label{loop-hoist1}
-Example without clauses. 
+Example without clauses.
 
 Original code
 \begin{lstlisting}[language=Fortran]
