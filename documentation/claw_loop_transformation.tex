@@ -212,7 +212,7 @@ More code examples in the appendix. Example with the \lstinline!fusion! clause (
 
 \subsection{Loop hoisting}
 \begin{lstlisting}
-!$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimension]))] [interchange [(induction_var[[, induction_var] ...])]]
+!$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimensions]))] [interchange [(induction_var[[, induction_var] ...])]]
 
   ! structured block of code
 
@@ -231,7 +231,17 @@ only when the lower-bound are integer constant.
 \item \textit{induction\_var}: List of induction variables of the do statements to be hoisted.
 \item \textit{interchange}: Allow the group of hoisted loops to be reordered.
 Options are identical with the \textbf{loop-interchange} directive.
-\item \textit{reshape}: Reshape arrays to scalar or to array with fewer dimensions. The original declaration is replaced with the corresponding demoted declaration in the current block (function/module).
+\item \textit{reshape}: Reshape arrays to scalar or to array with fewer
+dimensions. The original declaration is replaced with the corresponding demoted
+declaration in the current block (function/module).
+\begin{enumerate}
+  \item \textit{array\_name}: Name of the array type to be reshapped.
+  \item \textit{target\_dimension}: Number of dimension after reshapaing. 0
+  indicates that the type is reshapped to a scalar.
+  \item \textit{kept\_dimension}: comma separated list of integer that indicates
+  which dimensions are kept when the array is not totally demoted to scalar.
+  Dimension index starts at 1.
+\end{enumerate}
 \end{enumerate}
 
 \textbf{Code example}\\
