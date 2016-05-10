@@ -152,10 +152,7 @@ is created with the corresponding transformation (demotion) for the parameters.
     \end{enumerate}
 \item \textit{fusion}: Allow the extracted loop to be merged with other loops.
 Options are identical with the \lstinline!loop-fusion! directive.
-\item \textit{parallel}: Wrap the extracted loop in a parallel region. If the
-\lstinline!parallel! clause is defined, extracted subroutine/function will
-include the corresponding accelerator directive to be able to execute the
-subroutine/function on the accelerator. 
+\item \textit{parallel}: Wrap the extracted loop in a parallel region.
 \item \textit{acc}: Add the accelerator directives to the extracted loop.
 \end{enumerate}
 
