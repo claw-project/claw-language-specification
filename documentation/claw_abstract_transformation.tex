@@ -3,14 +3,21 @@
 
 \subsection{Column model abstraction}
 
-
-
 \begin{lstlisting}
 !$claw define dimension dim_id(lower_bound:upper_bound) &
 [!$claw define dimension dim_id(lower_bound:upper_bound) &] ...
 !$claw parallelize [data(data(var_1[,var_2] ...)] [over (dim_id|:[,dim_id|:] ...)]
 \end{lstlisting}
 
+\textbf{Options and details}
+\begin{itemize}
+\item \textit{define dimension}: Define a new dimension on which the column
+model will be parallelized.
+\end{itemize}
+
+Data declared with the \lstinline!INOUT! intent will be automatically promoted
+with the define dimensions. The dimensions are added on the left-side with
+the definition order. 
 
 \textbf{Code example}\\
 \label{parallelize1}
