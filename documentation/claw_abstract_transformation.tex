@@ -17,7 +17,7 @@ model will be parallelized.
 
 Data declared with the \lstinline!INOUT! intent will be automatically promoted
 with the define dimensions. The dimensions are added on the left-side with
-the definition order. 
+the definition order.
 
 \textbf{Code example}\\
 \label{parallelize1}
@@ -42,22 +42,31 @@ CLAW generated code for CPU target with no accelerator directive language.
 !$claw kcache data(var_1[,var_2] ...) [offset(offset_1[,offset_2] ...)]] [init] [private]
 \end{lstlisting}
 
-In memory-bound problem, it might be useful to cache array values used several times during the current do statement iteration or for the next one.
+In memory-bound problem, it might be useful to cache array values used several
+times during the current do statement iteration or for the next one.
 
-The \textbf{kcache} directive is applied in a limited do statement block. It will cache the corresponding assigned value and update
-the array index in the block according to the given plus/minus offsets. If the array referenced in the data clause is assigned in the block,
-the caching will take its place (see example \ref{kcache1}). Otherwise, an assignment statement is created to start the caching (see example \ref{kcache2}).
+The \textbf{kcache} directive is applied in a limited do statement block. It
+will cache the corresponding assigned value and update the array index in the
+block according to the given plus/minus offsets. If the array referenced in the
+data clause is assigned in the block, the caching will take its place (see
+example \ref{kcache1}). Otherwise, an assignment statement is created to start
+the caching (see example \ref{kcache2}).
 
-If the offset values are omitted, there are inferred from the dimension of the variable to be cached and set to 0.
+If the offset values are omitted, there are inferred from the dimension of the
+variable to be cached and set to 0.
 
 \textbf{Options and details}
 \begin{itemize}
-\item \textit{data}: The data clause specifies which array will be impacted by the column caching transformation. List of array identifiers.
-\item \textit{offset}: Integer value separated by a comma that represents the offset at each dimension.
-\item \textit{init}: If the \textit{init} clause is specified, the cache variable will be initialized with the corresponding array value at the given offset during the 1st loop iteration.
-\item \textit{private}: it declares that a copy of each item on the list will be created
-for each parallel gang on the accelerator. The list is the one specified on
-the \textit{data} clause.
+\item \textit{data}: The data clause specifies which array will be impacted by
+the column caching transformation. List of array identifiers.
+\item \textit{offset}: Integer value separated by a comma that represents the
+offset at each dimension.
+\item \textit{init}: If the \textit{init} clause is specified, the cache
+variable will be initialized with the corresponding array value at the given
+offset during the 1st loop iteration.
+\item \textit{private}: it declares that a copy of each item on the list will
+be created for each parallel gang on the accelerator. The list is the one
+specified on the \textit{data} clause.
 \end{itemize}
 
 \textbf{Code example}\\
@@ -121,7 +130,9 @@ DO j1 = k1start, k1end
 END DO
 \end{lstlisting}
 
-More code examples in the appendix. Example with assignment created during the transformation (see example \ref{kcache2}). Example with \lstinline!init! and \lstinline!private! clause (see example \ref{kcache3}).
+More code examples in the appendix. Example with assignment created during the
+transformation (see example \ref{kcache2}). Example with \lstinline!init! and
+\lstinline!private! clause (see example \ref{kcache3}).
 
 \subsection{On-the-fly computation (array access to function call)}
 \begin{lstlisting}
@@ -132,11 +143,15 @@ Sometimes, replacing access to pre-computed arrays with computation on-the-fly
 can increase the performance. It can reduce the memory access for memory-bound
 kernel and exploit some unused resources to execute the computation.
 
-This transformation is local to the current do statement. Array access from the directive will be replaced.
+This transformation is local to the current do statement. Array access from the
+directive will be replaced.
 
 \textbf{Options and details}
 \begin{itemize}
-\item \textit{array\_name}: Array identifier. References to this array will be replaced by the function call in the current structured block.
-\item \textit{function\_call}: Name of the function provided by the user to compute the value. Return value must be of the same type as accessed value.
-\item \textit{arg\_list}: Comma separated list of arguments to be passed to the function call.
+\item \textit{array\_name}: Array identifier. References to this array will be
+replaced by the function call in the current structured block.
+\item \textit{function\_call}: Name of the function provided by the user to
+compute the value. Return value must be of the same type as accessed value.
+\item \textit{arg\_list}: Comma separated list of arguments to be passed to
+the function call.
 \end{itemize}
