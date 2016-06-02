@@ -9,11 +9,15 @@ CONTAINS
   REAL :: c
   INTEGER , INTENT(IN) :: nproma
   INTEGER :: proma
+  REAL :: d ( 1 : nproma )
 
   c = 5.345
   DO k = 2 , nz , 1
    DO proma = 1 , nproma , 1
     t ( proma , k ) = c * k
+   END DO
+   DO proma = 1 , nproma , 1
+    d ( proma ) = t ( proma , k ) ** 2
    END DO
    DO proma = 1 , nproma , 1
     q ( proma , k ) = q ( proma , k - 1 ) + t ( proma , k ) * c

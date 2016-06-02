@@ -16,6 +16,7 @@ CONTAINS
    c = 5.345
    DO k = 2 , nz , 1
     t ( proma , k ) = c * k
+    d = t ( proma , k ) ** 2
     q ( proma , k ) = q ( proma , k - 1 ) + t ( proma , k ) * c
    END DO
    q ( proma , nz ) = q ( proma , nz ) * c
