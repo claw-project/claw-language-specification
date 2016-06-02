@@ -8,7 +8,7 @@ algorithm. In weather prediction model, the physical parametrization is column
 independent. This means that the algorithm to compute the different outputs, can
 be defined with a single do statement iterating over the level of the column.
 To parallelize efficiently this column computation over the domain, use this
-directive. 
+directive.
 
 \begin{lstlisting}
 !$claw define dimension dim_id(lower_bound:upper_bound) &
@@ -22,8 +22,11 @@ directive.
 model will be parallelized.
 \end{itemize}
 
-Array variable declared with the \lstinline!INOUT! or \lstinline!OUT! intent
-will be automatically promoted with the define dimensions. The dimensions are
+
+If the \lstinline!data! clause is omitted, the promotion of variables is done as
+follows:
+Array variables declared with the \lstinline!INOUT! or \lstinline!OUT! intent
+will be automatically promoted with the defined dimensions. The dimensions are
 added on the left-side with the definition order.
 In function of the target, intermediate scalar variable may also be promoted.
 Scalar variable placed on the lhs of an assignment statement will be promoted
