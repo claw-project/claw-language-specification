@@ -26,6 +26,8 @@ model will be parallelized. The lower bound and upper bound of the defined
 dimension can be either an integer constant or an integer variable. If a
 variable if given, it will be added in order to the signature of the subroutine
 as an \lstinline!INTENT(IN)! parameter.
+\item \textit{data}:
+\item \textit{over}:
 \end{itemize}
 
 If the \lstinline!data! clause is omitted, the promotion of variables is done as
@@ -36,6 +38,7 @@ added on the left-side with the definition order.
 In function of the target, intermediate scalar variable may also be promoted.
 Scalar variable placed on the lhs of an assignment statement will be promoted
 if the rhs references any variables (not a constant).
+
 
 
 
