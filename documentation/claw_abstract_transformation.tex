@@ -38,7 +38,11 @@ added on the left-side with the definition order.
 In function of the target, intermediate scalar variable may also be promoted.
 Scalar variable placed on the lhs of an assignment statement will be promoted
 if the rhs references any variables (not a constant).
-
+All the array references in the subroutine are promoted as well. If the
+\lstinline!over! clause is omitted, the references are promotted with the
+defined dimensions added at the beginning from left to right. The
+\lstinline!over! clause allows to change this behavior and to place the new
+dimensions where needed.
 
 
 
