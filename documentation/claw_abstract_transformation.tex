@@ -27,7 +27,9 @@ dimension can be either an integer constant or an integer variable. If a
 variable if given, it will be added in order to the signature of the subroutine
 as an \lstinline!INTENT(IN)! parameter.
 \item \textit{data}:
-\item \textit{over}:
+\item \textit{over}: Define the place of the new dimensions for the promotion of
+the variables. The \lstinline!:! sign reflects the position of the current
+dimensions.
 \end{itemize}
 
 If the \lstinline!data! clause is omitted, the promotion of variables is done as
