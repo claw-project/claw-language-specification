@@ -15,9 +15,12 @@
 model will be parallelized.
 \end{itemize}
 
-Data declared with the \lstinline!INOUT! intent will be automatically promoted
-with the define dimensions. The dimensions are added on the left-side with
-the definition order.
+Array variable declared with the \lstinline!INOUT! or \lstinline!OUT! intent
+will be automatically promoted with the define dimensions. The dimensions are
+added on the left-side with the definition order.
+In function of the target, intermediate scalar variable may also be promoted.
+Scalar variable placed on the lhs of an assignment statement will be promoted
+if the rhs references any variables (not a constant). 
 
 \textbf{Code example}\\
 \label{parallelize1}
