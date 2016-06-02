@@ -26,7 +26,8 @@ model will be parallelized. The lower bound and upper bound of the defined
 dimension can be either an integer constant or an integer variable. If a
 variable if given, it will be added in order to the signature of the subroutine
 as an \lstinline!INTENT(IN)! parameter.
-\item \textit{data}:
+\item \textit{data}: Define a list of variable to be promoted and bypass the
+automatic deduction.
 \item \textit{over}: Define the place of the new dimensions for the promotion of
 the variables. The \lstinline!:! sign reflects the position of the current
 dimensions.
