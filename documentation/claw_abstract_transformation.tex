@@ -22,7 +22,10 @@ for the column computation must be enclosed in a subroutine.
 \textbf{Options and details}
 \begin{itemize}
 \item \textit{define dimension}: Define a new dimension on which the column
-model will be parallelized.
+model will be parallelized. The lower bound and upper bound of the defined
+dimension can be either an integer constant or an integer variable. If a
+variable if given, it will be added in order to the signature of the subroutine
+as an \lstinline!INTENT(IN)! parameter.
 \end{itemize}
 
 If the \lstinline!data! clause is omitted, the promotion of variables is done as
