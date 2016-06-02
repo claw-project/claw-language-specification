@@ -9,6 +9,9 @@ independent. This means that the algorithm to compute the different outputs, can
 be defined with a single do statement iterating over the level of the column.
 To parallelize efficiently this column computation over the domain, use this
 directive.
+The \lstinline!parallelize! directive is local to a subroutine. The algorithm
+for the column computation must be enclosed in a subroutine.
+
 
 \begin{lstlisting}
 !$claw define dimension dim_id(lower_bound:upper_bound) &
@@ -22,7 +25,6 @@ directive.
 model will be parallelized.
 \end{itemize}
 
-
 If the \lstinline!data! clause is omitted, the promotion of variables is done as
 follows:
 Array variables declared with the \lstinline!INOUT! or \lstinline!OUT! intent
@@ -31,6 +33,8 @@ added on the left-side with the definition order.
 In function of the target, intermediate scalar variable may also be promoted.
 Scalar variable placed on the lhs of an assignment statement will be promoted
 if the rhs references any variables (not a constant).
+
+
 
 \textbf{Code example}\\
 \label{parallelize1}
