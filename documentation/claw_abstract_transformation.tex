@@ -4,9 +4,10 @@
 \subsection{Column model abstraction}
 
 The \lstinline!parallelize! directive is used to parallelize a column based
-algorithm. In weather prediction model, the physical parametrization is column
-independent. This means that the algorithm to compute the different outputs, can
-be defined with a single do statement iterating over the level of the column.
+algorithm. In weather prediction models, the physical parametrization are column
+independent problem. This means that the algorithm to compute the different
+outputs, can be defined with a single do statement iterating over the level of
+the column.
 To parallelize efficiently this column computation over the domain, use this
 directive.
 The \lstinline!parallelize! directive is local to a subroutine. The algorithm
