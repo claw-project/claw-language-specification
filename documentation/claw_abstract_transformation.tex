@@ -13,7 +13,6 @@ directive.
 The \lstinline!parallelize! directive is local to a subroutine. The algorithm
 for the column computation must be enclosed in a subroutine.
 
-
 \begin{lstlisting}
 !$claw define dimension dim_id(lower_bound:upper_bound) &
 [!$claw define dimension dim_id(lower_bound:upper_bound) &] ...
@@ -47,6 +46,25 @@ All the array references in the subroutine are promoted as well. If the
 defined dimensions added at the beginning from left to right. The
 \lstinline!over! clause allows to change this behavior and to place the new
 dimensions where needed.
+
+As the subroutine/function signature is updated by the \lstinline!parallelize! 
+directive with new dimensions, the call graph that leads to this 
+subroutine/function must be updated as well. For this purpose, the clause 
+\lstinline!forward! allows to replicated the change along the call graph. 
+Each subroutine/function along the call graph must be decorated with this
+directive.
+
+\begin{lstlisting}
+!$claw parallelize forward
+CALL one_columne_fct(x,y,z)
+\end{lstlisting}
+
+The first function call in the call graph might be an iteration over several
+column to reproduce the algorithm on the grid. If the directive with the 
+\lstinline!forward! clause is placed just before one or several nested do
+statements with a function call, the corresponding do statements will be 
+removed and the function call updated accordingly. 
+
 
 
 
