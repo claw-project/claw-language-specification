@@ -13,13 +13,10 @@ PROGRAM model
     t(p,1) = 0.0
   END DO
 
-#ifdef _CLAW
-  CALL compute_column(nz, q, t, nproma)
-#else
+  !$claw parallelize forward
   DO p = 1, nproma
     CALL compute_column(nz, q(p,:), t(p,:))
   END DO
-#endif
 
   PRINT*,SUM(q)
   PRINT*,SUM(t)
