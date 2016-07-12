@@ -65,6 +65,15 @@ column to reproduce the algorithm on the grid. If the directive with the
 statements with a function call, the corresponding do statements will be 
 removed and the function call updated accordingly. 
 
+\begin{lstlisting}
+!$claw parallelize forward
+DO i=istart, iend
+  CALL one_columne_fct(x,y(i,:),z(i,:))
+END DO
+\end{lstlisting}
+
+
+
 
 
 
