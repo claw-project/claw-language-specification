@@ -55,9 +55,18 @@ Each subroutine/function along the call graph must be decorated with this
 directive.
 
 \begin{lstlisting}
+! Call of a parallelized subroutine
 !$claw parallelize forward
-CALL one_columne_fct(x,y,z)
+CALL one_column_fct(x,y,z)
+
+! Call of a prallelized function
+!$claw parallelize forward
+result = one_column_fct(x,y,z)
 \end{lstlisting}
+
+The different variables declared in the current function/subroutine might be
+promoted if the call requires it. In this case, the array references in 
+the function/subroutine are updated accordingly.
 
 The first function call in the call graph might be an iteration over several
 column to reproduce the algorithm on the grid. If the directive with the 
