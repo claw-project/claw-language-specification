@@ -32,6 +32,8 @@ in the `master` branch.
     * Add claw transformation `call` for on the fly computation (array acess to
       function call).
   * Start to abstract low-level transformation.
+    * Introduction of the `parallelize` directive with the `define dimension`
+      and `forward` clauses
 * **Next iterations**:
   * Refine previous iterations
   * Getting higher abstraction
