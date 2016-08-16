@@ -9,8 +9,9 @@
 [!$claw end remove]
 \end{lstlisting}
 
-The \textbf{remove} directive allows the user to discard section of code
-during the transformation process. 
+The \textbf{remove} directive allows the user to remove section of code
+during the transformation process. This code section is lost in the 
+transformed code.
 
 \textbf{Options and details}\\
 If the directive is directly followed by a structured block (\lstinline!IF! or \lstinline!DO!), the
@@ -52,3 +53,59 @@ END DO
 \end{lstlisting}
 
 More code examples in the appendix. Example with block remove (see example \ref{remove2}).
+
+
+\subsection{Ignore}
+\begin{lstlisting}
+!$claw ignore
+
+  ! code block
+  
+!$claw end ignore
+\end{lstlisting}
+
+The \lstinline!ignore! directive allows the user to ignore section of code
+for the transformation process. This code section is retrieved in the 
+transformed code. Any CLAW directives in an ignored code section is also
+ignored.
+
+\textbf{Code example}\\
+\label{ignore1}
+In the example below, the first remove block is ignored and the second is not.
+
+Original code
+\begin{lstlisting}
+PROGRAM testignore
+
+  !$claw ignore
+  !$claw remove
+  PRINT*,'These lines'
+  PRINT*,'are ignored'
+  PRINT*,'by the CLAW compiler'
+  PRINT*,'but kept in the final transformed code'
+  PRINT*,'with the remove directives.'
+  !$claw end remove
+  !$claw end ignore
+
+  !$claw remove
+  PRINT*,'These lines'
+  PRINT*,'are not ignored.'
+  !$claw end remove
+
+END PROGRAM testignore
+\end{lstlisting}
+
+Transformed code
+\begin{lstlisting}
+PROGRAM testignore
+
+  !$claw remove
+  PRINT*,'These lines'
+  PRINT*,'are ignored'
+  PRINT*,'by the CLAW compiler'
+  PRINT*,'but kept in the final transformed code'
+  PRINT*,'with the remove directives.'
+  !$claw end remove
+
+END PROGRAM testignore
+\end{lstlisting}
