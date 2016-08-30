@@ -72,13 +72,16 @@ The CLAW transformations can be combined together. For example, \lstinline!loop-
 The default interpretation order of the directives is the following:
 
 \begin{enumerate}
+\item \lstinline!ignore!
 \item \lstinline!remove!
+\item \lstinline!parallelize!
+\item \lstinline!parallelize forward!
 \item \lstinline!array-transform!
 \item \lstinline!loop-extract!
 \item \lstinline!loop-fusion!
 \item \lstinline!loop-hoist!
 \item \lstinline!loop-interchange!
-\item \lstinline!call!
+\item \lstinline!on-the-fly!
 \item \lstinline!kcache!
 \item formatting transformation (internal use transformation)
 \end{enumerate}
