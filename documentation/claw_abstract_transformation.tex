@@ -4,14 +4,14 @@
 \subsection{Column model abstraction}
 
 The \lstinline!parallelize! directive is used to parallelize a column based
-algorithm. In weather prediction models, the physical parametrization are column
-independent problem. This means that the algorithm to compute the different
-outputs, can be defined with a single do statement iterating over the level of
+algorithm. In weather prediction models, the physical parametrizations are column
+independent problems. This means that the algorithm to compute the different
+output fields, can be defined with a single do statement iterating over the level of
 the column.
-To parallelize efficiently this column computation over the domain, use this
-directive.
-The \lstinline!parallelize! directive is local to a subroutine. The algorithm
-for the column computation must be enclosed in a subroutine.
+To parallelize efficiently this column computation over the domain (horizontal 
+dimension), use this directive.
+The \lstinline!parallelize! directive is local to a subroutine. Therefore, 
+the algorithm for the column computation must be enclosed in a subroutine.
 
 \begin{lstlisting}
 !$claw define dimension dim_id(lower_bound:upper_bound) &
@@ -24,7 +24,7 @@ for the column computation must be enclosed in a subroutine.
 \item \textit{define dimension}: Define a new dimension on which the column
 model will be parallelized. The lower bound and upper bound of the defined
 dimension can be either an integer constant or an integer variable. If a
-variable if given, it will be added in order to the signature of the subroutine
+variable is given, it will be added in-order to the signature of the subroutine
 as an \lstinline!INTENT(IN)! parameter.
 \item \textit{data}: Define a list of variable to be promoted and bypass the
 automatic deduction.
@@ -69,10 +69,10 @@ promoted if the call requires it. In this case, the array references in
 the function/subroutine are updated accordingly.
 
 The first function call in the call graph might be an iteration over several
-column to reproduce the algorithm on the grid. If the directive with the 
-\lstinline!forward! clause is placed just before one or several nested do
-statements with a function call, the corresponding do statements will be 
-removed and the function call updated accordingly. 
+column to reproduce the algorithm on the grid for testing purpose. If the 
+directive with the \lstinline!forward! clause is placed just before one or 
+several nested do statements with a function call, the corresponding do 
+statements will be removed and the function call updated accordingly. 
 
 \begin{lstlisting}
 !$claw parallelize forward
