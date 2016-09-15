@@ -109,3 +109,47 @@ PROGRAM testignore
 
 END PROGRAM testignore
 \end{lstlisting}
+
+\subsection{Verbatim}
+\begin{lstlisting}
+!$claw verbatim IF (i > 5) THEN
+
+  ! code block
+  
+!$claw verbatim END IF
+\end{lstlisting}
+
+The \lstinline!verbatim! directive allows the user to insert code after the
+transformation process. This code is not analyzed by the compiler. 
+
+\textbf{Code example}\\
+\label{verbatim1}
+In the example below, the first remove block is ignored and the second is not.
+
+Original code
+\begin{lstlisting}
+PROGRAM testverbatim
+
+  !$claw verbatim IF (.FALSE.) THEN
+  PRINT*,'These lines'
+  PRINT*,'are not printed'
+  PRINT*,'if the the CLAW compiler has processed'
+  PRINT*,'the file.'
+  !$claw verbatim END IF
+
+END PROGRAM testverbatim
+\end{lstlisting}
+
+Transformed code
+\begin{lstlisting}
+PROGRAM testverbatim
+
+IF (.FALSE.) THEN
+PRINT*,'These lines'
+PRINT*,'are not printed'
+PRINT*,'if the the CLAW compiler has processed'
+PRINT*,'the file.'
+END IF
+
+END PROGRAM testverbatim
+\end{lstlisting}
