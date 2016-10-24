@@ -68,7 +68,8 @@ result = one_column_fct(x,y,z)
 
 The different variables declared in the current function/subroutine might be
 promoted if the call requires it. In this case, the array references in 
-the function/subroutine are updated accordingly.
+the function/subroutine are updated accordingly. This can lead to extra 
+promotion of local scalar variables or arrays when needed.
 
 The first function call in the call graph might be an iteration over several
 column to reproduce the algorithm on the grid for testing purpose. If the 
@@ -82,10 +83,6 @@ DO i=istart, iend
   CALL one_columne_fct(x,y(i,:),z(i,:))
 END DO
 \end{lstlisting}
-
-
-
-
 
 
 \textbf{Code example}\\
@@ -103,12 +100,17 @@ Only the code of the module is shown as it is the only one which changes.\\
 CLAW generated code for GPU target with OpenACC accelerator directive language.
 \lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/mo_column_gpu_openacc.f90}
 
-CLAW generated code for CPU target with no accelerator directive language.
-\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/mo_column_cpu_none.f90}
+CLAW generated code for CPU target with OpenMP accelerator directive language.
+\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/mo_column_cpu_openmp.f90}
 
 Compilation with the CLAW Fortran Compiler
-\begin{lstlisting}
-clawfc --target=gpu --directive=openacc -o mo_column.claw.f90 mo_column.f90
+\begin{lstlisting}[language=bash]
+# For GPU target with OpenACC directive
+clawfc --target=gpu --directive=openacc -o mo_column.gpu_acc.f90 mo_column.f90
+clawfc -o main.claw.f90 main.f90
+
+# For CPU target with OpenMP directive
+clawfc --target=gpu --directive=openmp -o mo_column.cpu_omp.f90 mo_column.f90
 clawfc -o main.claw.f90 main.f90
 \end{lstlisting}
 
