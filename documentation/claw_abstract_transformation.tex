@@ -34,16 +34,17 @@ the promotion of the variables. The \lstinline!:! sign reflects the position
 of the current dimensions before the promotion.
 \end{itemize}
 
-If the \lstinline!data! clause is omitted, the promotion of variables is done as
-follows:
-Array variables declared with the \lstinline!INOUT! or \lstinline!OUT! intent
-will be automatically promoted with the defined dimensions. The dimensions are
-added on the left-side with the definition order.
-In function of the target, intermediate scalar variable may also be promoted.
-Scalar variable placed on the lhs of an assignment statement will be promoted
-if the rhs references any variables (not a constant).
-All the array references in the subroutine are promoted as well. If the
-\lstinline!over! clause is omitted, the references are promotted with the
+If the \lstinline!data! clause is omitted, the automatic promotion of variables 
+is done as follows:
+Array variables declared with the \lstinline!INOUT! or \lstinline!OUT! intents
+are automatically promoted with the defined dimensions. The dimensions are
+added on the left-side following the the definition order if there is more 
+than one.
+In function of the target, intermediate scalar or array variables may also be 
+promoted.
+Scalar/array variables placed on the left hand-side of an assignment statement 
+will be promoted if the right hand-side references any variables already promoted.
+If the \lstinline!over! clause is omitted, the references are promoted with the
 defined dimensions added at the beginning from left to right. The
 \lstinline!over! clause allows to change this behavior and to place the new
 dimensions where needed.
@@ -51,7 +52,7 @@ dimensions where needed.
 As the subroutine/function signature is updated by the \lstinline!parallelize! 
 directive with new dimensions, the call graph that leads to this 
 subroutine/function must be updated as well. For this purpose, the clause 
-\lstinline!forward! allows to replicated the change along the call graph. 
+\lstinline!forward! allows to replicated the changes along the call graph. 
 Each subroutine/function along the call graph must be decorated with this
 directive.
 
@@ -60,7 +61,7 @@ directive.
 !$claw parallelize forward
 CALL one_column_fct(x,y,z)
 
-! Call of a prallelized function
+! Call of a parallelized function
 !$claw parallelize forward
 result = one_column_fct(x,y,z)
 \end{lstlisting}
