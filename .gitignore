@@ -3,8 +3,6 @@
 
 *.log
 
-*.pdf
-
 *.gz
 
 *.toc
