@@ -2,8 +2,8 @@
 
 #### Versions
 ##### Stable
-The current stable version is the version 0.1 and can be find in the branch
-`v0.1` or as a packaged release in the releases tab.
+The current stable version is the version 0.2 and can be find in the branch
+`v0.2` or as a packaged release in the releases tab.
 
 ##### Generating the specification document
 The specification is written using LaTeX. To generate the PDF document, you
