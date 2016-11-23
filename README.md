@@ -14,7 +14,7 @@ pdflatex ./documentation/claw_language_specifications.tex
 ```
 
 ##### On going
-Currently designing version 0.2 of the language specification. This work is done
+Currently designing version 0.3a of the language specification. This work is done
 in the `master` branch.
 
 ##### History
@@ -34,9 +34,8 @@ in the `master` branch.
   * Start to abstract low-level transformation.
     * Introduction of the `parallelize` directive with the `define dimension`
       and `forward` clauses
-* **Next iterations**:
-  * Refine previous iterations
-  * Getting higher abstraction
+* **Iteration 0.3**:      
+  * Refine previous iterations, especially `parallelize` directive.
 
 #### General information about the CLAW language
 The directives are either local or global.
