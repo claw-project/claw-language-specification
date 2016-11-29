@@ -1,5 +1,5 @@
-\section{Loop transformation}
-\subsection{Loop interchange/reordering}
+\subsection{Loop transformation}
+\subsubsection{Loop interchange/reordering}
 \begin{lstlisting}
 !$claw loop-interchange [(induction_var[, induction_var] ...)]
 \end{lstlisting}
@@ -47,7 +47,7 @@ END DO
 
 More code examples in the appendix. Example with 3 nested statements (see example \ref{loop-interchange2}). Example with others directives (see example \ref{loop-interchange3}).
 
-\subsection{Loop jamming/fusion}
+\subsubsection{Loop jamming/fusion}
 \begin{lstlisting}
 !$claw loop-fusion [group(group_id)] [collapse(n)]
 \end{lstlisting}
@@ -116,7 +116,7 @@ END DO
 
 More code examples in the appendix. Example with the \lstinline!group! clause (see example \ref{loop-fusion2}). Example with others directives (see example \ref{loop-fusion3}). Example with the \lstinline!collapse! clause (see example \ref{loop-fusion4}).
 
-\subsection{Loop extraction}
+\subsubsection{Loop extraction}
 \begin{lstlisting}
 !$claw loop-extract range(range) [map(var[,var]...:mapping[,mapping]...) [map(var[,var]...:mapping[,mapping]...)] ...] [fusion [group(group_id)]] [parallel] [acc(directives)]
 \end{lstlisting}
@@ -210,7 +210,7 @@ END SUBROUTINE xyz_claw
 
 More code examples in the appendix. Example with the \lstinline!fusion! clause (see example \ref{loop-extract2}). Example with a more complicated mapping (see example \ref{loop-extract3}).
 
-\subsection{Loop hoisting}
+\subsubsection{Loop hoisting}
 \begin{lstlisting}
 !$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimensions]))] [interchange [(induction_var[[, induction_var] ...])]]
 

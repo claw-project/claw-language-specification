@@ -51,10 +51,11 @@ program.
 
 The CLAW transformations are separated in the followings sections:
 \begin{itemize}
-\item CLAW abstraction transformations
-\item Loop transformations
-\item Accelerator abstraction/helper transformations
-\item Utility transformations
+\item CLAW high-level abstraction transformations
+\item CLAW low-level directive transformations
+\subitem Loop transformations
+\subitem Accelerator abstraction/helper transformations
+\subitem Utility transformations
 \end{itemize}
 
 \subsection{Line continuation}
@@ -102,7 +103,10 @@ This compile guard is shown in the listing below. It uses the target accelerator
 !$omp claw-guard
 \end{lstlisting}
 
+\section{CLAW high-level abstraction transformations}
 \input{claw_abstract_transformation.tex}
+
+\section{CLAW low-level directive transformations}
 \input{claw_loop_transformation.tex}
 \input{claw_acc_transformation.tex}
 \input{claw_utility_transformation.tex}
