@@ -53,9 +53,10 @@ The CLAW transformations are separated in two sections:
 \begin{itemize}
 \item CLAW high-level abstraction transformations: perform transformations based on abstraction based on domain science. 
 \item CLAW low-level directive transformations: perform basic transformations based on the code structure.
-\subitem Loop transformations
-\subitem Accelerator abstraction/helper transformations
-\subitem Utility transformations
+\subitem Loop transformation
+\subitem Specific transformation
+\subitem Accelerator abstraction/helper transformation
+\subitem Utility transformation
 \end{itemize}
 
 \subsection{Line continuation}
@@ -111,6 +112,7 @@ This line is then removed once the transformations are applied.
 
 \section{CLAW low-level directive transformations}
 \input{claw_loop_transformation.tex}
+\input{claw_specific_transformation.tex}
 \input{claw_acc_transformation.tex}
 \input{claw_utility_transformation.tex}
 
