@@ -1,5 +1,6 @@
 \subsection{Loop transformation}
 \subsubsection{Loop interchange/reordering}
+\lstset{emph={induction_var}, emphstyle=\itshape}
 \begin{lstlisting}
 !$claw loop-interchange [(induction_var[, induction_var] ...)]
 \end{lstlisting}
@@ -47,6 +48,7 @@ END DO
 
 More code examples in the appendix. Example with 3 nested statements (see example \ref{loop-interchange2}). Example with others directives (see example \ref{loop-interchange3}).
 
+\lstset{emph={group_id,n}, emphstyle=\itshape}
 \subsubsection{Loop jamming/fusion}
 \begin{lstlisting}
 !$claw loop-fusion [group(group_id)] [collapse(n)]
@@ -117,8 +119,9 @@ END DO
 More code examples in the appendix. Example with the \lstinline!group! clause (see example \ref{loop-fusion2}). Example with others directives (see example \ref{loop-fusion3}). Example with the \lstinline!collapse! clause (see example \ref{loop-fusion4}).
 
 \subsubsection{Loop extraction}
+\lstset{emph={range_info,var,mapping,group_id,directives}, emphstyle=\itshape}
 \begin{lstlisting}
-!$claw loop-extract range(range) [map(var[,var]...:mapping[,mapping]...) [map(var[,var]...:mapping[,mapping]...)] ...] [fusion [group(group_id)]] [parallel] [acc(directives)]
+!$claw loop-extract range(range_info) [map(var[,var]...:mapping[,mapping]...) [map(var[,var]...:mapping[,mapping]...)] ...] [fusion [group(group_id)]] [parallel] [acc(directives)]
 \end{lstlisting}
 
 Loop extraction can be performed on a subroutine/function call. The do statement corresponding
@@ -211,6 +214,7 @@ END SUBROUTINE xyz_claw
 More code examples in the appendix. Example with the \lstinline!fusion! clause (see example \ref{loop-extract2}). Example with a more complicated mapping (see example \ref{loop-extract3}).
 
 \subsubsection{Loop hoisting}
+\lstset{emph={induction_var,array_name,target_dimension,kept_dimension}, emphstyle=\itshape}
 \begin{lstlisting}
 !$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimensions]))] [interchange [(induction_var[[, induction_var] ...])]]
 
