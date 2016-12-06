@@ -170,7 +170,7 @@ Example without additional clauses.
 Original code
 \begin{lstlisting}[language=Fortran]
 PROGRAM main
-  !$claw loop-extract(i=istart,iend) map(value1,value2:i)
+  !$claw loop-extract range(i=istart,iend) map(value1,value2:i)
   CALL xyz(value1, value2)
 END PROGRAM main
 
