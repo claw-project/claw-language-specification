@@ -116,12 +116,14 @@ This line is then removed once the transformations are applied.
 The following clauses can be applied to any kind of low-level transformations.
 
 \subsubsection{Target clause}
+The target clause specify for which transformed target the transformation is active. If no target is specified, the transformation is active for any target.
+
 \lstset{emph={directive,specific_target}, emphstyle=\itshape}
 \begin{lstlisting}
 !$claw directive [target(specific_target)]
 \end{lstlisting}
 
-The target clause specify for which transformed target the transformation is active. If no target is specified, the transformation is active for any target.
+The \lstinline|specific_target| is one of the value provided by the compiler.
 
 \input{claw_loop_transformation.tex}
 \input{claw_specific_transformation.tex}
