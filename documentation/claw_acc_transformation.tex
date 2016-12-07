@@ -1,5 +1,19 @@
 \subsection{Accelerator abstraction/helper transformation}
 
+\subsubsection{Conditional primitive directives}
+\lstset{emph={primitive_prefix,primitive_directives}, emphstyle=\itshape}
+\begin{lstlisting}
+!$claw primitive_prefix primitive_directives
+
+! Example for OpenACC
+!$claw acc routine seq
+
+! Example for OpenMP
+!$claw omp target enter data
+\end{lstlisting}
+
+Primitive compiler directive like OpenACC or OpenMP can be enabled conditionally during the transformation. Examples on line 4 and 7 are conditional directives. They will be transformed into standard OpenACC respectively OpenMP directives only if the primitive directive language is specified for the transformation.
+
 \subsubsection{Array notation to do statements}
 \lstset{emph={name,group_id,clause}, emphstyle=\itshape}
 \begin{lstlisting}
