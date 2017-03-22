@@ -121,7 +121,7 @@ More code examples in the appendix. Example with the \lstinline!group! clause (s
 \subsubsection{Loop extraction}
 \lstset{emph={range_info,var,mapping,group_id,directives}, emphstyle=\itshape}
 \begin{lstlisting}
-!$claw loop-extract range(range_info) [map(var[,var]...:mapping[,mapping]...) [map(var[,var]...:mapping[,mapping]...)] ...] [fusion [group(group_id)]] [parallel] [acc(directives)]
+!$claw loop-extract range(range_info) [[map(var[,var]...:mapping[,mapping]...) [map(var[,var]...:mapping[,mapping]...)] ...] [fusion [group(group_id)]] [parallel] [acc(directives)]
 \end{lstlisting}
 
 Loop extraction can be performed on a subroutine/function call. The do statement corresponding
