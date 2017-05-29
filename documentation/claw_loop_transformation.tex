@@ -216,7 +216,7 @@ More code examples in the appendix. Example with the \lstinline!fusion! clause (
 \subsubsection{Loop hoisting}
 \lstset{emph={induction_var,array_name,target_dimension,kept_dimension}, emphstyle=\itshape}
 \begin{lstlisting}
-!$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimensions]))] [interchange [(induction_var[[, induction_var] ...])]]
+!$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimensions]))] [interchange [(induction_var[[, induction_var] ...])]] [fusion [group(group_id)] [collapse(n)]]
 
   ! structured block of code
 
@@ -239,13 +239,15 @@ Options are identical with the \textbf{loop-interchange} directive.
 dimensions. The original declaration is replaced with the corresponding demoted
 declaration in the current block (function/module).
 \begin{enumerate}
-  \item \textit{array\_name}: Name of the array type to be reshapped.
-  \item \textit{target\_dimension}: Number of dimension after reshapaing. 0
+  \item \textit{array\_name}: Name of the array type to be reshaped.
+  \item \textit{target\_dimension}: Number of dimension after reshaping. 0
   indicates that the type is reshapped to a scalar.
   \item \textit{kept\_dimension}: comma separated list of integer that indicates
   which dimensions are kept when the array is not totally demoted to scalar.
   Dimension index starts at 1.
 \end{enumerate}
+\item \textit{fusion}: Allow the extracted loop to be merged with other loops.
+Options are identical with the \lstinline!loop-fusion! directive.
 \end{enumerate}
 
 \textbf{Code example}\\
@@ -293,4 +295,50 @@ DO jt=1,jtend
   END DO
 END DO
 !$acc end parallel
+\end{lstlisting}
+
+
+\subsubsection{Conditional extraction from loop}
+\begin{lstlisting}
+!$claw if-extract
+\end{lstlisting}
+
+Conditional extraction from loop allows to extract a perfectly nested if statement from a do statement. 
+
+\textbf{Options and details}\\
+None.
+
+\textbf{Behavior with other directives}\\
+None.
+
+\textbf{Limitations}\\
+If the condition uses the induction variable, the transformation cannot be performed.
+
+\textbf{Code example}\\
+\label{if-extract-1}
+Example without clauses.
+
+Original code
+\begin{lstlisting}[language=Fortran]
+!$claw if-extract
+DO i = 1, 10
+  IF (test) THEN
+    PRINT *, 'Then body:', i
+  ELSE 
+    PRINT *, 'Else Body', i
+  END IF
+END DO
+\end{lstlisting}
+
+Transformed code
+\begin{lstlisting}[language=Fortran]
+IF (test) THEN
+  DO i = 1, 10
+    PRINT *, 'Then body:', i
+  END DO
+ELSE 
+  DO i = 1, 10
+    PRINT *, 'Else Body', i
+  END DO
+END IF
 \end{lstlisting}
