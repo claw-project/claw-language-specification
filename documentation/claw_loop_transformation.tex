@@ -296,3 +296,49 @@ DO jt=1,jtend
 END DO
 !$acc end parallel
 \end{lstlisting}
+
+
+\subsubsection{Conditional extraction from loop}
+\begin{lstlisting}
+!$claw if-extract
+\end{lstlisting}
+
+Conditional extraction from loop allows to extract a perfectly nested if statement from a do statement. 
+
+\textbf{Options and details}\\
+None.
+
+\textbf{Behavior with other directives}\\
+None.
+
+\textbf{Limitations}\\
+If the condition uses the induction variable, the transformation cannot be performed.
+
+\textbf{Code example}\\
+\label{if-extract-1}
+Example without clauses.
+
+Original code
+\begin{lstlisting}[language=Fortran]
+!$claw if-extract
+DO i = 1, 10
+  IF (test) THEN
+    PRINT *, 'Then body:', i
+  ELSE 
+    PRINT *, 'Else Body', i
+  END IF
+END DO
+\end{lstlisting}
+
+Transformed code
+\begin{lstlisting}[language=Fortran]
+IF (test) THEN
+  DO i = 1, 10
+    PRINT *, 'Then body:', i
+  END DO
+ELSE 
+  DO i = 1, 10
+    PRINT *, 'Else Body', i
+  END DO
+END IF
+\end{lstlisting}
