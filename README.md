@@ -5,7 +5,7 @@ The CLAW FORTRAN Compiler is the reference compiler for the claw directive langu
 
 #### Versions
 ##### Specification document
-The current specification can be found here: 
+The current specification can be found here: [CLAW Specification](./claw_language_specifications.pdf)
 
 ##### Generating the specification document
 The specification is written using LaTeX. To generate the PDF document, you
