@@ -1,9 +1,11 @@
 # CLAW language specification
 
+#### Reference compiler
+The CLAW FORTRAN Compiler is the reference compiler for the claw directive language. The project can be found here: [claw-compiler](https://github.com/C2SM-RCM/claw-compiler)
+
 #### Versions
-##### Stable
-The current stable version is the version 0.2 and can be find in the branch
-`v0.2` or as a packaged release in the releases tab.
+##### Specification document
+The current specification can be found here: 
 
 ##### Generating the specification document
 The specification is written using LaTeX. To generate the PDF document, you
