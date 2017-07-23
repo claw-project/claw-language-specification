@@ -12,22 +12,25 @@
 !$claw omp target enter data
 \end{lstlisting}
 
-Primitive compiler directive like OpenACC or OpenMP can be enabled conditionally during the transformation. Examples on line 4 and 7 are conditional directives. They will be transformed into standard OpenACC respectively OpenMP directives only if the primitive directive language is specified for the transformation.
+Primitive compiler directive like OpenACC or OpenMP can be enabled conditionally
+during the transformation. Examples on line 4 and 7 are conditional directives.
+They will be transformed into standard OpenACC respectively OpenMP directives
+only if the primitive directive language is specified for the transformation.
 
 \subsubsection{Array notation to do statements}
 \lstset{emph={name,group_id,clause}, emphstyle=\itshape}
 \begin{lstlisting}
 !$claw array-transform [induction(name [[,] name]...)] [fusion [group(group_id)]] [parallel] [acc([clause [[,] clause]...])]
 
-  ! array notation assignment(s) 
-  
+  ! array notation assignment(s)
+
 [!$claw end array-transform]
 \end{lstlisting}
 
 Computations using the array notation are not suitable to be parallelized with
-language like OpenACC. The \textbf{array-transform} directive allows to transform those
-notation with the corresponding do statements which are more suitable for
-parallelization.
+language like OpenACC. The \textbf{array-transform} directive allows to
+transform those notation with the corresponding do statements which are more
+suitable for parallelization.
 
 The goal of this directive is to pass from an array notation assignment like
 this:
@@ -67,20 +70,23 @@ END DO
 
 \textbf{Options and details}
 \begin{enumerate}
-\item \textit{induction}: Allow to name the induction variable created for the do statement.
-\item \textit{fusion}: Allow the extracted loop to be merged with other loops. Options 
+\item \textit{induction}: Allow to name the induction variable created for the
+do statement.
+\item \textit{fusion}: Allow the create do statement to be merged with other
+loops. Options
 are identical with the \textbf{loop-fusion} directive
 \item \textit{parallel}: Wrap the extracted loop in a parallel region.
-\item \textit{acc}: Define accelerator clauses that will be applied to the generated loops.
+\item \textit{acc}: Define accelerator clauses that will be applied to the
+generated loops.
 \end{enumerate}
 
 \textbf{Behavior with other directives}\\
-Directives declared before the \textbf{array-transform} directive will be kept in the
-generated code.
+Directives declared before the \textbf{array-transform} directive will be kept
+in the generated code.
 
 \textbf{Code example}\\
 \label{array-transform1}
-Example with array notation following the pragma statement. 
+Example with array notation following the pragma statement.
 
 Original code
 \begin{lstlisting}
@@ -107,4 +113,7 @@ SUBROUTINE vector_add
 END SUBROUTINE vector_add
 \end{lstlisting}
 
-More code examples in the appendix. Example with the induction and acc (see example \ref{array-transform2}). Example with fusion clause (see example \ref{array-transform3}). Example with 2-dimensional arrays (see example \ref{array-transform4}). 
+More code examples in the appendix. Example with the induction and acc clauses
+(see example \ref{array-transform2}). Example with fusion clause (see example
+\ref{array-transform3}). Example with 2-dimensional arrayx (see example
+\ref{array-transform4}).

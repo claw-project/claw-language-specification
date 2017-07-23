@@ -1,5 +1,6 @@
 \subsection{Specific transformation}
 \subsubsection{K caching (column caching)}
+\lstset{emph={var_1,var_2,offset_1,offset_2}, emphstyle=\itshape}
 \begin{lstlisting}
 !$claw kcache data(var_1[,var_2] ...) [offset(offset_1[,offset_2] ...)]] [init] [private]
 \end{lstlisting}
@@ -54,6 +55,7 @@ DO j3 = k3start + 1, k3end
 	!$claw kcache data(array6) offset(0 -1) init
     array6(j1,j3) = p2(j1) * pc1(j1,j3)                                 &
                     + value2 * array8(j1,j3) + value6 * array8(j1,j3)
+    	!$claw kcache data(array6, array8) offset(0 -1) init
     array8(j1,j3) = p2(j1) * pc1(j1,j3)                                 &
                     + value6 * array2(j1,j3) + value7 * array4(j1,j3)
   END DO
@@ -81,7 +83,6 @@ DO j1 = k1start, k1end
                       + pc2(j1,j3) * array8_k_m1
     value6 = p1(j1) * (pc2(j1,j3) * array6_k_m1                       &
                        +pc2(j1,j3) * array8_k_m1
-	!$claw kcache data(array6, array8) offset(0 -1) init
 	array6_k_m1 = p2(j1) * pc1(j1,j3)                                 &
                     + value2 * array8(j1,j3) + value6 * array8(j1,j3)
     array6(j1,j3) = array6_k_m1
@@ -97,13 +98,14 @@ transformation (see example \ref{kcache2}). Example with \lstinline!init! and
 \lstinline!private! clause (see example \ref{kcache3}).
 
 \subsubsection{On-the-fly computation (array access to function call)}
+\lstset{emph={array_name,function_call,arg_list}, emphstyle=\itshape}
 \begin{lstlisting}
 !$claw call array_name=function_call(arg_list)
 \end{lstlisting}
 
 Sometimes, replacing access to pre-computed arrays with computation on-the-fly
 can increase the performance. It can reduce the memory access for memory-bound
-kernel and exploit some unused resources to execute the computation.
+kernels and exploit some unused resources to execute the computation.
 
 This transformation is local to the current do statement. Array access from the
 directive will be replaced.
