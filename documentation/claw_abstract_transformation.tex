@@ -1,19 +1,20 @@
 \subsection{Column model abstraction}
 
 The \lstinline!parallelize! directive is used to parallelize a column based
-algorithm. In weather prediction models, the physical parametrizations are column
-independent problems. This means that the algorithm to compute the different
-output fields, can be defined with as a single do statement iterating over the vertical dimension and there is no horizontal dependency.
-The \lstinline!parallelize! directive is then used to parallelize efficiently this 
-column algorithm over the domain (horizontal 
-dimensions).
-The directive is local to a subroutine. Therefore, as a pre-condition, the column algorithm 
-must be enclosed in a module subroutine.
+algorithm. In weather prediction models, the physical parametrizations are
+column independent problems. This means that the algorithm to compute the
+different output fields, can be defined with as a single do statement
+iterating over the vertical dimension and there is no horizontal dependency.
+The \lstinline!parallelize! directive is then used to parallelize efficiently
+this column algorithm over the domain (horizontal dimensions).
+The directive is local to a subroutine. Therefore, as a pre-condition, the
+column algorithm must be enclosed in a module subroutine.
 
+\lstset{emph={dim_id,lower_bound,upper_bound,var_1,var_2}, emphstyle=\itshape}
 \begin{lstlisting}
 !$claw define dimension dim_id(lower_bound:upper_bound) &
 [!$claw define dimension dim_id(lower_bound:upper_bound) &] ...
-!$claw parallelize [data(data(var_1[,var_2] ...)] [over (dim_id|:[,dim_id|:] ...)]
+!$claw parallelize [data(var_1[,var_2] ...)] [over (dim_id|:[,dim_id|:] ...)]
 \end{lstlisting}
 
 \textbf{Options and details}
@@ -23,28 +24,32 @@ model will be parallelized. The lower bound and upper bound of the defined
 dimension can be either an integer constant or an integer variable. If a
 variable is given, it will be added in-order to the signature of the subroutine
 as an \lstinline!INTENT(IN)! parameter.
-\item \textit{data (optional)}: Define a list of variables to be promoted and 
+\item \textit{data (optional)}: Define a list of variables to be promoted and
 bypass the automatic promotion deduction.
-\item \textit{over (optional)}: Define the location of the new dimensions in promoted variables. The \lstinline!:! symbol reflects the position 
-of the current dimensions before the promotion.
+\item \textit{over (optional)}: Define the location of the new dimensions in
+promoted variables. The \lstinline!:! symbol reflects the position of the
+current dimensions before the promotion.
 \end{itemize}
 
-If the \lstinline!data! clause is omitted, the automatic promotion of variables 
+If the \lstinline!data! clause is omitted, the automatic promotion of variables
 is done as follows:
-Array variables declared with the \lstinline!INOUT! or \lstinline!OUT! intents
-are automatically promoted with the defined dimensions.
-In function of the target, intermediate scalar or array variables may also be 
+\begin{itemize}
+\item Array variables declared with the \lstinline!INOUT! or \lstinline!OUT!
+intents are automatically promoted with the defined dimensions.
+In function of the target, intermediate scalar or array variables may also be
 promoted.
-Scalar/array variables placed on the left hand-side of an assignment statement 
-will be promoted if the right hand-side references any variables already promoted.
-If the \lstinline!over! clause is omitted, the dimensions are
-added on the left-side following the the definition order if there is multiple new dimensions. The \lstinline!over! clause allows to change this behavior and to place 
-the new dimensions where needed.
+\item Scalar/array variables placed on the left hand-side of an assignment
+statement will be promoted if the right hand-side references any variables
+already promoted. If the \lstinline!over! clause is omitted, the dimensions are
+added on the left-side following the the definition order if there is multiple
+new dimensions. The \lstinline!over! clause allows to change this behavior and
+to place the new dimensions where needed.
+\end{itemize}
 
-As the subroutine/function signature is updated by the \lstinline!parallelize! 
-directive with new dimensions, the call graph that leads to this 
-subroutine/function must be updated as well. For this purpose, the clause 
-\lstinline!forward! allows to replicated the changes along the call graph. 
+As the subroutine/function signature is updated by the \lstinline!parallelize!
+directive with new dimensions, the call graph that leads to this
+subroutine/function must be updated as well. For this purpose, the clause
+\lstinline!forward! allows to replicated the changes along the call graph.
 Each subroutine/function along the call graph must be decorated with this
 directive.
 
@@ -59,15 +64,15 @@ result = one_column_fct(x,y,z)
 \end{lstlisting}
 
 The different variables declared in the current function/subroutine might be
-promoted if the call requires it. In this case, the array references in 
-the function/subroutine are updated accordingly. This can lead to extra 
+promoted if the call requires it. In this case, the array references in
+the function/subroutine are updated accordingly. This can lead to extra
 promotion of local scalar variables or arrays when needed.
 
-The first function call in the call graph might be an iteration over several
-column to reproduce the algorithm on the grid for testing purpose. If the 
-directive with the \lstinline!forward! clause is placed just before one or 
-several nested do statements with a function call, the corresponding do 
-statements will be removed and the function call updated accordingly. 
+The root function call in the call graph might be an iteration over several
+column to reproduce the algorithm on the grid for testing purpose. If the
+directive with the \lstinline!forward! clause is placed just before one or
+several nested do statements with a function call, the corresponding do
+statements will be removed and the function call updated accordingly.
 
 \begin{lstlisting}
 !$claw parallelize forward
@@ -79,7 +84,7 @@ END DO
 
 \textbf{Code example}\\
 \label{parallelize1}
-Simple example of a column model wrapped into a subroutine and parallelize with
+Simple example of a column model wrapped into a subroutine and parallelized with
 CLAW.
 
 Original code

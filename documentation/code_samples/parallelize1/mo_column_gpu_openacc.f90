@@ -8,10 +8,12 @@ CONTAINS
   INTEGER :: k
   REAL :: c
   REAL :: d
+
   INTEGER , INTENT(IN) :: nproma
   INTEGER :: proma
 
-!$acc data present(t,q,nproma,nz)
+
+!$acc data present(q,nproma,nz,t)
 !$acc parallel private(k,proma,d,c)
 !$acc loop
   DO proma = 1 , nproma , 1

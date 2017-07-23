@@ -8,3 +8,6 @@
 *.toc
 
 *.out
+*.bbl
+*.blg
+*.xmod

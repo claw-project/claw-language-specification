@@ -8,8 +8,10 @@ CONTAINS
   INTEGER :: k
   REAL :: c
   REAL :: d ( 1 : nproma )
+
   INTEGER , INTENT(IN) :: nproma
   INTEGER :: proma
+
 
 !$omp parallel
   c = 5.345

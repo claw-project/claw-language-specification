@@ -13,11 +13,9 @@ CONTAINS
     REAL :: d                     ! Intermediate variable
 
     ! CLAW definition
-
-    ! Define one dimension that will be added to the variables defined in the
-    ! data clause.
-    ! Apply the parallelization transformation on this subroutine.
-
+    ! Define the new dimension on which the transformation parallelize the one
+    ! column abstraction. In this case, the automatic promotion deduction will
+    ! be activated as the data/over clauses are not present.
     !$claw define dimension proma(1:nproma) &
     !$claw parallelize
 

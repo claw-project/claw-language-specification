@@ -5,18 +5,18 @@
 !$claw remove
 
   ! code block
-  
+
 [!$claw end remove]
 \end{lstlisting}
 
 The \textbf{remove} directive allows the user to remove section of code
-during the transformation process. This code section is lost in the 
+during the transformation process. This code section is lost in the
 transformed code.
 
 \textbf{Options and details}\\
-If the directive is directly followed by a structured block (\lstinline!IF! or \lstinline!DO!), the
-end directive is not mandatory (see example \ref{remove1}). In any other cases, the end
-directive is mandatory.
+If the directive is directly followed by a structured block (\lstinline!IF! or
+\lstinline!DO!), the end directive is not mandatory (see example
+\ref{remove1}). In any other cases, the end directive is mandatory.
 
 \textbf{Code example}
 \label{remove1}
@@ -52,7 +52,8 @@ DO k=1, kend
 END DO
 \end{lstlisting}
 
-More code examples in the appendix. Example with block remove (see example \ref{remove2}).
+More code examples in the appendix. Example with block remove (see example
+\ref{remove2}).
 
 
 \subsubsection{Ignore}
@@ -60,14 +61,14 @@ More code examples in the appendix. Example with block remove (see example \ref{
 !$claw ignore
 
   ! code block
-  
+
 !$claw end ignore
 \end{lstlisting}
 
 The \lstinline!ignore! directive allows the user to ignore section of code
-for the transformation process. This code section is retrieved in the 
+for the transformation process. This code section is retrieved in the
 transformed code. Any CLAW directives in an ignored code section is also
-ignored.
+ignored. This could be useful to workaround any compilers bug and/or problems.
 
 \textbf{Code example}\\
 \label{ignore1}
@@ -115,12 +116,12 @@ END PROGRAM testignore
 !$claw verbatim IF (i > 5) THEN
 
   ! code block
-  
+
 !$claw verbatim END IF
 \end{lstlisting}
 
 The \lstinline!verbatim! directive allows the user to insert code after the
-transformation process. This code is not analyzed by the compiler. 
+transformation process. This code is not analyzed by the compiler.
 
 \textbf{Code example}\\
 \label{verbatim1}
