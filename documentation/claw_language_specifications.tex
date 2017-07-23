@@ -17,7 +17,7 @@
   basicstyle=\small\ttfamily,
   keywordstyle=\small\ttfamily\bfseries,
   commentstyle=\ttfamily,
-  frame=single, 
+  frame=single,
   numbers=left,
   showspaces=false,
   showstringspaces=false
@@ -28,7 +28,7 @@
 
 \title{CLAW language specification}
 \author{Center for Climate System Modeling (C2SM)\\http://www.c2sm.ethz.ch\\Valentin Clement}
-\date{Last updated: \today \\\vspace{1em}v0.3a}
+\date{Last updated: \today \\\vspace{1em}v0.4.0}
 
 \setlength\parindent{0pt}
 \setlength{\parskip}{1em}
@@ -41,7 +41,8 @@
 
 \section*{Conventions used in this document}
 
-Keywords and punctuation that are part of the actual specification will appear in typewriter font: \\
+Keywords and punctuation that are part of the actual specification will appear
+in typewriter font: \\
 
 \lstinline|!$claw|\\
 
@@ -49,25 +50,28 @@ Italic font is used where a keyword or other name must be used: \\
 
 \lstinline|!$claw| \textit{directive-name}\\
 
-Optional syntax is enclosed in square brackets; an option that may be repeated more than once is
-followed by ellipses:\\
+Optional syntax is enclosed in square brackets; an option that may be repeated
+more than once is followed by ellipses:\\
 
-\lstinline|!$claw| \textit{directive-name} [\textit{clause} [[,] \textit{clause}]. . . ]
+\lstinline|!$claw| \textit{directive-name} [\textit{clause}
+[[,] \textit{clause}]. . . ]
 
 \section{General information about the CLAW language}
 The directives are either local or global.
 
 \begin{itemize}
-\item Local directive: those directives have a limited impact on a local block of
-code (for example, only in a subroutine or only in a do statement block)
+\item Local directive: those directives have a limited impact on a local block
+of code (for example, only in a subroutine or only in a do statement block)
 \item Global directive: those directives can have an impact on the whole
 translation unit.
 \end{itemize}
 
 The CLAW transformations are separated in two sections:
 \begin{itemize}
-\item CLAW high-level abstraction transformations: perform transformations based on abstraction based on domain science. 
-\item CLAW low-level directive transformations: perform basic transformations based on the code structure.
+\item CLAW high-level abstraction transformations: perform transformations
+on abstraction based on domain science.
+\item CLAW low-level directive transformations: perform basic transformations
+based on the code structure.
 \subitem Loop transformation
 \subitem Specific transformation
 \subitem Accelerator abstraction/helper transformation
@@ -75,7 +79,8 @@ The CLAW transformations are separated in two sections:
 \end{itemize}
 
 \subsection{Line continuation}
-CLAW directives can be defined on several lines using the continuation line symbol. The syntax is described as follows:
+CLAW directives can be defined on several lines using the continuation line
+symbol. The syntax is described as follows:
 
 \begin{lstlisting}
 !$claw directive clause &
@@ -84,7 +89,9 @@ CLAW directives can be defined on several lines using the continuation line symb
 
 
 \subsection{Interpretation order of the CLAW directives}
-The CLAW transformations can be combined together. For example, \lstinline!loop-fusion! and \lstinline!loop-interchange! can be used together in a group of nested loops.
+The CLAW transformations can be combined together. For example,
+\lstinline!loop-fusion! and \lstinline!loop-interchange! can be used together
+in a group of nested loops.
 
 The default application order of the transformations is defined as follows:
 
@@ -94,33 +101,42 @@ The default application order of the transformations is defined as follows:
 \item \lstinline!primitive!
 \item \lstinline!array-transform!
 \item \lstinline!loop-extract!
-\item \lstinline!loop-fusion!
 \item \lstinline!loop-hoist!
+\item \lstinline!loop-fusion!
 \item \lstinline!loop-interchange!
 \item \lstinline!on-the-fly!
 \item \lstinline!kcache!
+\item \lstinline!if extract!
 \item \lstinline!parallelize!
 \item \lstinline!parallelize forward!
 \item formatting transformation (internal use transformation)
 \end{enumerate}
 
 Users must be aware that transformations are applied sequentially and
-therefore, a transformation can be performed on code that has already been transformed.
+therefore, a transformation can be performed on code that has already been
+transformed.
 
 \subsection{Accelerator compile guard}
-As CLAW generates accelerator directives, it might be useful sometimes to protect the compilation of source code including accelerator directives as it might be wrong if the CLAW FORTRAN compiler didn't process it. 
+As CLAW generates accelerator directives, it might be useful sometimes to
+protect the compilation of source code including accelerator directives as it
+might be wrong if the CLAW FORTRAN Compiler didn't process it.
 
-For this reason, the CLAW language has a compile guard that is removed by the CLAW FORTRAN compiler while it applies the other transformations. This compile guard is designed to make the compilation failed when transformations are not applied and accelerator directives are present in the source code. 
+For this reason, the CLAW language has a compile guard that is removed by the
+CLAW FORTRAN Compiler while it applies the other transformations. This compile
+guard is designed to make the compilation failed when transformations are not
+applied and accelerator directives are present in the source code.
 
-The compile guard is shown in the listing below. It uses the target accelerator language with a specific claw directive. Example for OpenACC on line 2 and OpenMP on line 3. 
+The compile guard is shown in the listing below. It uses the target accelerator
+language with a specific claw directive. Example for OpenACC on line 2 and
+OpenMP on line 3.
 
 \begin{lstlisting}
-!$<accelerator language prefix> claw-guard 
+!$<accelerator language prefix> claw-guard
 !$acc claw-guard
 !$omp claw-guard
 \end{lstlisting}
 
-This line is then removed once the transformations are applied. 
+This line is then removed once the transformations are applied.
 
 \section{CLAW high-level abstraction transformations}
 \input{claw_abstract_transformation.tex}
@@ -131,7 +147,8 @@ This line is then removed once the transformations are applied.
 The following clauses can be applied to any kind of low-level transformations.
 
 \subsubsection{Target clause}
-The target clause specify for which transformed target the transformation is active. If no target is specified, the transformation is active for any target.
+The target clause specify for which transformed target the transformation is
+active. If no target is specified, the transformation is active for any target.
 
 \lstset{emph={directive,specific_target}, emphstyle=\itshape}
 \begin{lstlisting}

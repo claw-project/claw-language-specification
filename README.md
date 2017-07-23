@@ -97,6 +97,7 @@ The interpretation order of the directives is the following:
 8. loop-interchange
 9. on-the-fly
 10. kcache
+11. if-extract
 11. parallelize
 12. parallelize-forward
 13. formatting transformation (internal transformation only)
