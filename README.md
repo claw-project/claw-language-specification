@@ -1,4 +1,4 @@
-# CLAW language specification
+# CLAW Directive Language Specification
 
 #### Reference compiler
 The CLAW FORTRAN Compiler is the reference compiler for the claw directive
