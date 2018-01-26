@@ -1,9 +1,11 @@
-# CLAW Directive Language Specification
+![CLAW Logo](./resources/logo_full_black.png)
+
+# Directive Language Specification
 
 #### Reference compiler
 The CLAW FORTRAN Compiler is the reference compiler for the claw directive
 language. The project can be found here:
-[claw-compiler](https://github.com/C2SM-RCM/claw-compiler)
+[claw-compiler](https://github.com/claw-project/claw-compiler)
 
 #### Versions
 ##### Specification document
@@ -104,3 +106,6 @@ The interpretation order of the directives is the following:
 
 Users must be aware that directives transformation are applied sequentially and
 therefore, a transformation can be performed on already transformed code.
+
+---
+Logo by [adrienbachmann.ch](http://www.adrienbachmann.ch)
