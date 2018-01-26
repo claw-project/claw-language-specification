@@ -1,9 +1,13 @@
 \documentclass{article}
 \usepackage{geometry}
 \usepackage{xcolor}
+\usepackage{graphicx}
 \usepackage{listings}
 \usepackage{courier}
 \usepackage{hyperref}
+\usepackage{titling}
+\usepackage{enumerate}
+
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -11,6 +15,7 @@
     linkcolor=black,
     urlcolor=black
 }
+
 \lstset{%
   backgroundcolor=\color{gray!20},
   breaklines=true,
@@ -22,20 +27,28 @@
   showspaces=false,
   showstringspaces=false
 }
+
 \lstdefinestyle{noumbers}
 {numbers=none}
-\usepackage{enumerate}
 
-\title{CLAW language specification}
+\title{\LARGE Directive Language Specification}
 \author{Center for Climate System Modeling (C2SM)\\http://www.c2sm.ethz.ch\\Valentin Clement}
 \date{Last updated: \today \\\vspace{1em}v0.4.0}
 
 \setlength\parindent{0pt}
 \setlength{\parskip}{1em}
 
-\begin{document}
-\maketitle
+\pretitle{%
+  \begin{center}
+  \begin{center}
+      \includegraphics[width=\textwidth]{../resources/logo_full_black.png}
+  \end{center}
+}
+\posttitle{\end{center}}
 
+\begin{document}
+
+\maketitle
 
 \tableofcontents
 
