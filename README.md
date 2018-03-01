@@ -2,8 +2,8 @@
 
 # Directive Language Specification
 
-#### Reference compiler
-The CLAW FORTRAN Compiler is the reference compiler for the claw directive
+#### Reference Compiler
+The CLAW Compiler is the reference compiler for the claw directive
 language. The project can be found here:
 [claw-compiler](https://github.com/claw-project/claw-compiler)
 
