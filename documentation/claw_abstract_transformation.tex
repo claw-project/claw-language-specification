@@ -1,6 +1,6 @@
-\subsection{Column model abstraction}
+\subsection{Single Column Abstraction (SCA)}
 
-The \lstinline!parallelize! directive is used to parallelize a column based
+The \lstinline!parallelize! directive is used to parallelize a single column based
 algorithm. In weather prediction models, the physical parametrizations are
 column independent problems. This means that the algorithm to compute the
 different output fields, can be defined with as a single do statement
@@ -80,6 +80,12 @@ DO i=istart, iend
   CALL one_columne_fct(x,y(i,:),z(i,:))
 END DO
 \end{lstlisting}
+
+\textbf{SCA in ELEMENTAL function}\\
+Single Column Abstraction can be used within an ELEMENTAL function or
+subroutine. Depending on the desired target, the function/subroutine can be
+transformed to fit the programming paradigm. Once transformed, the
+function/subroutine is not PURE or ELEMENTAL anymore.
 
 
 \textbf{Code example}\\
