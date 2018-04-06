@@ -116,3 +116,22 @@ clawfc -o main.claw.f90 main.f90
 clawfc --target=gpu --directive=openmp -o mo_column.cpu_omp.f90 mo_column.f90
 clawfc -o main.claw.f90 main.f90
 \end{lstlisting}
+
+
+\subsubsection{Automatic Data Movement Managment}
+Some targets need to take care of data movement between an host and a device.
+This data movment can be handled by CLAW using the followings clauses on
+\lstinline|!$claw sca forward| directive.%
+
+\begin{itemize}
+  \item \lstinline|create|: the create clause will generate the appropriate
+        data allocation/deallocation before and after the
+        \lstinline|sca forward| directive.
+  \item \lstinline!update[(in|out)]!: the update clause will generate the appropriate
+        update before and/or after the \lstinline|sca forward| directive. The
+        update clause accepts \lstinline|in| or \lstinline|out| optional
+        options.
+\end{itemize}
+
+This clauses have no effect when the transformation target does not need a
+data movement management.
