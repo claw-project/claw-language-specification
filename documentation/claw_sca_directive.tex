@@ -1,11 +1,11 @@
 \subsection{Single Column Abstraction (SCA)}
 
-The \lstinline!parallelize! directive is used to parallelize a single column based
+The \lstinline!sca! directive is used to parallelize a single column based
 algorithm. In weather prediction models, the physical parametrizations are
 column independent problems. This means that the algorithm to compute the
 different output fields, can be defined with as a single do statement
 iterating over the vertical dimension and there is no horizontal dependency.
-The \lstinline!parallelize! directive is then used to parallelize efficiently
+The \lstinline!sca! directive is then used to parallelize efficiently
 this column algorithm over the domain (horizontal dimensions).
 The directive is local to a subroutine. Therefore, as a pre-condition, the
 column algorithm must be enclosed in a module subroutine.
@@ -14,7 +14,7 @@ column algorithm must be enclosed in a module subroutine.
 \begin{lstlisting}
 !$claw define dimension dim_id(lower_bound:upper_bound) &
 [!$claw define dimension dim_id(lower_bound:upper_bound) &] ...
-!$claw parallelize [data(var_1[,var_2] ...)] [over (dim_id|:[,dim_id|:] ...)]
+!$claw sca [data(var_1[,var_2] ...)] [over (dim_id|:[,dim_id|:] ...)]
 \end{lstlisting}
 
 \textbf{Options and details}
@@ -46,7 +46,7 @@ new dimensions. The \lstinline!over! clause allows to change this behavior and
 to place the new dimensions where needed.
 \end{itemize}
 
-As the subroutine/function signature is updated by the \lstinline!parallelize!
+As the subroutine/function signature is updated by the \lstinline!sca!
 directive with new dimensions, the call graph that leads to this
 subroutine/function must be updated as well. For this purpose, the clause
 \lstinline!forward! allows to replicated the changes along the call graph.
@@ -54,12 +54,12 @@ Each subroutine/function along the call graph must be decorated with this
 directive.
 
 \begin{lstlisting}
-! Call of a parallelized subroutine
-!$claw parallelize forward
+! Call of a sca subroutine
+!$claw sca forward
 CALL one_column_fct(x,y,z)
 
-! Call of a parallelized function
-!$claw parallelize forward
+! Call of a sca function
+!$claw sca forward
 result = one_column_fct(x,y,z)
 \end{lstlisting}
 
@@ -75,7 +75,7 @@ several nested do statements with a function call, the corresponding do
 statements will be removed and the function call updated accordingly.
 
 \begin{lstlisting}
-!$claw parallelize forward
+!$claw sca forward
 DO i=istart, iend
   CALL one_columne_fct(x,y(i,:),z(i,:))
 END DO
