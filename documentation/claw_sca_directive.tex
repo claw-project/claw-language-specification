@@ -81,13 +81,6 @@ DO i=istart, iend
 END DO
 \end{lstlisting}
 
-\textbf{SCA in ELEMENTAL function}\\
-Single Column Abstraction can be used within an ELEMENTAL function or
-subroutine. Depending on the desired target, the function/subroutine can be
-transformed to fit the programming paradigm. Once transformed, the
-function/subroutine is not PURE or ELEMENTAL anymore.
-
-
 \textbf{Code example}\\
 \label{parallelize1}
 Simple example of a column model wrapped into a subroutine and parallelized with
@@ -116,6 +109,12 @@ clawfc -o main.claw.f90 main.f90
 clawfc --target=gpu --directive=openmp -o mo_column.cpu_omp.f90 mo_column.f90
 clawfc -o main.claw.f90 main.f90
 \end{lstlisting}
+
+\subsubsection{SCA directive in ELEMENTAL function}
+Single Column Abstraction can be used within an ELEMENTAL function or
+subroutine. Depending on the desired target, the function/subroutine can be
+transformed to fit the programming paradigm. Once transformed, the
+function/subroutine is not garuanteed to be PURE or ELEMENTAL anymore.
 
 
 \subsubsection{Automatic Data Movement Managment}
