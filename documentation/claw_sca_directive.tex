@@ -1,11 +1,11 @@
-\subsection{Column model abstraction}
+\subsection{Single Column Abstraction (SCA)}
 
-The \lstinline!parallelize! directive is used to parallelize a column based
+The \lstinline!sca! directive is used to parallelize a single column based
 algorithm. In weather prediction models, the physical parametrizations are
 column independent problems. This means that the algorithm to compute the
 different output fields, can be defined with as a single do statement
 iterating over the vertical dimension and there is no horizontal dependency.
-The \lstinline!parallelize! directive is then used to parallelize efficiently
+The \lstinline!sca! directive is then used to parallelize efficiently
 this column algorithm over the domain (horizontal dimensions).
 The directive is local to a subroutine. Therefore, as a pre-condition, the
 column algorithm must be enclosed in a module subroutine.
@@ -14,7 +14,7 @@ column algorithm must be enclosed in a module subroutine.
 \begin{lstlisting}
 !$claw define dimension dim_id(lower_bound:upper_bound) &
 [!$claw define dimension dim_id(lower_bound:upper_bound) &] ...
-!$claw parallelize [data(var_1[,var_2] ...)] [over (dim_id|:[,dim_id|:] ...)]
+!$claw sca [data(var_1[,var_2] ...)] [over (dim_id|:[,dim_id|:] ...)]
 \end{lstlisting}
 
 \textbf{Options and details}
@@ -46,7 +46,7 @@ new dimensions. The \lstinline!over! clause allows to change this behavior and
 to place the new dimensions where needed.
 \end{itemize}
 
-As the subroutine/function signature is updated by the \lstinline!parallelize!
+As the subroutine/function signature is updated by the \lstinline!sca!
 directive with new dimensions, the call graph that leads to this
 subroutine/function must be updated as well. For this purpose, the clause
 \lstinline!forward! allows to replicated the changes along the call graph.
@@ -54,12 +54,12 @@ Each subroutine/function along the call graph must be decorated with this
 directive.
 
 \begin{lstlisting}
-! Call of a parallelized subroutine
-!$claw parallelize forward
+! Call of a sca subroutine
+!$claw sca forward
 CALL one_column_fct(x,y,z)
 
-! Call of a parallelized function
-!$claw parallelize forward
+! Call of a sca function
+!$claw sca forward
 result = one_column_fct(x,y,z)
 \end{lstlisting}
 
@@ -75,12 +75,11 @@ several nested do statements with a function call, the corresponding do
 statements will be removed and the function call updated accordingly.
 
 \begin{lstlisting}
-!$claw parallelize forward
+!$claw sca forward
 DO i=istart, iend
   CALL one_columne_fct(x,y(i,:),z(i,:))
 END DO
 \end{lstlisting}
-
 
 \textbf{Code example}\\
 \label{parallelize1}
@@ -110,3 +109,28 @@ clawfc -o main.claw.f90 main.f90
 clawfc --target=gpu --directive=openmp -o mo_column.cpu_omp.f90 mo_column.f90
 clawfc -o main.claw.f90 main.f90
 \end{lstlisting}
+
+\subsubsection{SCA directive in ELEMENTAL function}
+Single Column Abstraction can be used within an ELEMENTAL function or
+subroutine. Depending on the desired target, the function/subroutine can be
+transformed to fit the programming paradigm. Once transformed, the
+function/subroutine is not garuanteed to be PURE or ELEMENTAL anymore.
+
+
+\subsubsection{Automatic Data Movement Managment}
+Some targets need to take care of data movement between an host and a device.
+This data movment can be handled by CLAW using the followings clauses on
+\lstinline|!$claw sca forward| directive.%
+
+\begin{itemize}
+  \item \lstinline|create|: the create clause will generate the appropriate
+        data allocation/deallocation before and after the
+        \lstinline|sca forward| directive.
+  \item \lstinline!update[(in|out)]!: the update clause will generate the appropriate
+        update before and/or after the \lstinline|sca forward| directive. The
+        update clause accepts \lstinline|in| or \lstinline|out| optional
+        options.
+\end{itemize}
+
+This clauses have no effect when the transformation target does not need a
+data movement management.
