@@ -40,7 +40,7 @@ pdflatex claw_language_specifications.tex
       and `forward` clauses
 * **Iteration 0.3**:      
   * Refine previous iterations, especially `parallelize` directive.
-  **Iteration 0.4**:      
+* **Iteration 0.4**:      
     * Refine previous iterations, especially `parallelize` directive.
     * Add conditional extraction `if-extract`
 
