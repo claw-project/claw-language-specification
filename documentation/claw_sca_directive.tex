@@ -87,17 +87,21 @@ Simple example of a column model wrapped into a subroutine and parallelized with
 CLAW.
 
 Original code
-\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/main.f90}
-\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/mo_column.f90}
+\lstinputlisting[frame=rlbt,language=Fortran]
+  {./code_samples/parallelize1/main.f90}
+\lstinputlisting[frame=rlbt,language=Fortran]
+  {./code_samples/parallelize1/mo_column.f90}
 
 Transformed code\\
 Only the code of the module is shown as it is the only one which changes.\\
 
 CLAW generated code for GPU target with OpenACC accelerator directive language.
-\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/mo_column_gpu_openacc.f90}
+\lstinputlisting[frame=rlbt,language=Fortran]
+  {./code_samples/parallelize1/mo_column_gpu_openacc.f90}
 
 CLAW generated code for CPU target with OpenMP accelerator directive language.
-\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/mo_column_cpu_openmp.f90}
+\lstinputlisting[frame=rlbt,language=Fortran]
+  {./code_samples/parallelize1/mo_column_cpu_openmp.f90}
 
 Compilation with the CLAW FORTRAN Compiler
 \begin{lstlisting}[language=bash]
@@ -116,7 +120,6 @@ subroutine. Depending on the desired target, the function/subroutine can be
 transformed to fit the programming paradigm. Once transformed, the
 function/subroutine is not garuanteed to be PURE or ELEMENTAL anymore.
 
-
 \subsubsection{Automatic Data Movement Managment}
 Some targets need to take care of data movement between an host and a device.
 This data movment can be handled by CLAW using the followings clauses on
@@ -126,11 +129,58 @@ This data movment can be handled by CLAW using the followings clauses on
   \item \lstinline|create|: the create clause will generate the appropriate
         data allocation/deallocation before and after the
         \lstinline|sca forward| directive.
-  \item \lstinline!update[(in|out)]!: the update clause will generate the appropriate
-        update before and/or after the \lstinline|sca forward| directive. The
-        update clause accepts \lstinline|in| or \lstinline|out| optional
-        options.
+  \item \lstinline!update[(in|out)]!: the update clause will generate the 
+        appropriate update before and/or after the \lstinline|sca forward| 
+        directive. The update clause accepts \lstinline|in| or \lstinline|out| 
+        optional options.
 \end{itemize}
 
 This clauses have no effect when the transformation target does not need a
 data movement management.
+
+\subsubsection{SCA model configuration}
+Instead of defining dimension per subroutine, one can define them for the whole 
+model. These definitions have to be done in a specific configuration file as 
+detailled in this section.
+  
+The specification of this configuration file are listed below:
+\begin{itemize}
+  \item The model configuration file follows the TOML file format. 
+  \item The configuration is spearated in three tables: model, dimensions, 
+        layouts.
+\end{itemize}
+
+\textbf{Model table}\\
+The model table contains all global information about the model and its 
+configuration.
+
+\textbf{Dimensions table}\\
+The dimensions table contains all dimension definitions. Each definition can 
+have the information listed here: 
+\begin{itemize}
+  \item \textit{name}: the identifier of the dimension definition. It is unique 
+        in the model configuration.
+  \item \textit{size}: the size of the dimension as a lower and upper bound. 
+        The lower bound can be omitted and the default value 1 will be assigned. 
+        Upper bound is mandatory.
+  \item \textit{iteration}: iteration information of the dimension defined with 
+        a lower and upper bound as well as a step. All information are optional. 
+        If omitted, lower and upper bound are copied from size information and 
+        the default value 1 is assigned to the step.      
+\end{itemize}
+
+
+\textbf{Layouts table}\\
+The layout table contains all the different layout that can be applied for a 
+specific target or a specific subroutine/function.
+\begin{itemize}
+  \item \textit{name}: the identifier of the layout definition. It is unique in 
+        the model configuration. \lstinline|default| is the only mandatory 
+        layout definiton.
+  \item \textit{position}: list of dimension definition that defined the layout. 
+        The semi-colon (:) define already existing definition.
+\end{itemize}
+
+\lstinputlisting[frame=rlbt,language=python,
+      caption={Example of SCA model configuration file.}]
+      {./code_samples/sca/model.toml}
