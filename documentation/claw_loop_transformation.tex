@@ -251,7 +251,7 @@ More code examples in the appendix. Example with the \lstinline!fusion! clause
 \subsubsection{Loop hoisting}
 \lstset{emph={induction_var,array_name,target_dimension,kept_dimension}, emphstyle=\itshape}
 \begin{lstlisting}
-!$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimensions]))] [interchange [(induction_var[[, induction_var] ...])]] [fusion [group(group_id)] [collapse(n)]]
+!$claw loop-hoist(induction_var[[, induction_var] ...]) [reshape(array_name(target_dimension[,kept_dimensions]))] [interchange [(induction_var[[, induction_var] ...])]] [fusion [group(group_id)] [collapse(n)]] [cleanup[(acc|omp)]]
 
   ! structured block of code
 
@@ -275,6 +275,10 @@ Options are identical with the \textbf{loop-interchange} directive.
 \item \textit{reshape}: Reshape arrays to scalar or to array with fewer
 dimensions. The original declaration is replaced with the corresponding demoted
 declaration in the current block (function/module).
+\item \textit{cleanup}: The cleanup clause will remove any OpenACC or OpenMP pragmas
+already present in the hoit block. If OpenACC or OpenMP is not specified, both are
+removed.
+
 \begin{enumerate}
   \item \textit{array\_name}: Name of the array type to be reshaped.
   \item \textit{target\_dimension}: Number of dimension after reshaping. 0
