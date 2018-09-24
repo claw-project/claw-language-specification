@@ -2,7 +2,7 @@
 
 # Directive Language Specification
 
-<a target="_blank" href="http://semver.org">![Version](https://img.shields.io/badge/Version-0.4.0-lightgray.svg)</a>
+<a target="_blank" href="http://semver.org">![Version](https://img.shields.io/badge/Version-2.0-lightgray.svg)</a>
 
 #### Reference Compiler
 The CLAW Compiler is the reference compiler for the claw directive
@@ -46,8 +46,12 @@ pdflatex claw_language_specifications.tex
   * Refine previous iterations, especially `parallelize` directive.
   * Add conditional extraction `if-extract`
 * **Iteration 1.1**:
-  * Specify how `ELEMENTAL` function behave with SCA.
   * Clause `cleanup` added to `loop-hoist` directive
+* **Iteration 2.0**
+  * Specify how `ELEMENTAL` function behave with SCA.
+  * Introducing **Model Configuration**
+  * Introducing `model-data` clause for SCA
+  * `parallelize` clause is replaced by `sca`
 
 #### General information about the CLAW language
 The directives are either local or global.
