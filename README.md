@@ -2,7 +2,7 @@
 
 # Directive Language Specification
 
-<a target="_blank" href="http://semver.org">![Version](https://img.shields.io/badge/Version-0.4.0-lightgray.svg)</a>
+<a target="_blank" href="http://semver.org">![Version](https://img.shields.io/badge/Version-1.1-lightgray.svg)</a>
 
 #### Reference Compiler
 The CLAW Compiler is the reference compiler for the claw directive
