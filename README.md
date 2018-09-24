@@ -1,7 +1,6 @@
 ![CLAW Logo](./resources/logo_full_black.png)
 
 # Directive Language Specification
-
 <a target="_blank" href="http://semver.org">![Version](https://img.shields.io/badge/Version-2.0-lightgray.svg)</a>
 
 #### Reference Compiler
