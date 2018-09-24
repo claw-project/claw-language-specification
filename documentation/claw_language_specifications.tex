@@ -33,7 +33,7 @@
 
 \title{\LARGE Directive Language Specification}
 \author{Center for Climate System Modeling (C2SM)\\http://www.c2sm.ethz.ch\\Valentin Clement}
-\date{Last updated: \today \\\vspace{1em}v1.1.0}
+\date{Last updated: \today \\\vspace{1em}v0.4.0}
 
 \setlength\parindent{0pt}
 \setlength{\parskip}{1em}
@@ -151,10 +151,10 @@ OpenMP on line 3.
 
 This line is then removed once the transformations are applied.
 
-\section{CLAW high-level directives}
-\input{claw_sca_directive}
+\section{CLAW high-level abstraction transformations}
+\input{claw_abstract_transformation.tex}
 
-\section{CLAW low-level directives}
+\section{CLAW low-level directive transformations}
 
 \subsection{Global clauses}
 The following clauses can be applied to any kind of low-level transformations.
