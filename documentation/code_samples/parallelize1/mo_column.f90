@@ -18,7 +18,7 @@ CONTAINS
     ! deduction will be activated as the data/over clauses are not present.
 
     !$claw define dimension proma(1:nproma) &
-    !$claw parallelize
+    !$claw sca
 
     c = 5.345
     DO k = 2, nz
