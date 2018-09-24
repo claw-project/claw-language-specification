@@ -1,11 +1,11 @@
-\subsection{Single Column Abstraction (SCA)}
+\subsection{Column model abstraction}
 
-The \lstinline!sca! directive is used to parallelize a single column based
+The \lstinline!parallelize! directive is used to parallelize a column based
 algorithm. In weather prediction models, the physical parametrizations are
 column independent problems. This means that the algorithm to compute the
 different output fields, can be defined with as a single do statement
 iterating over the vertical dimension and there is no horizontal dependency.
-The \lstinline!sca! directive is then used to parallelize efficiently
+The \lstinline!parallelize! directive is then used to parallelize efficiently
 this column algorithm over the domain (horizontal dimensions).
 The directive is local to a subroutine. Therefore, as a pre-condition, the
 column algorithm must be enclosed in a module subroutine.
@@ -46,7 +46,7 @@ new dimensions. The \lstinline!over! clause allows to change this behavior and
 to place the new dimensions where needed.
 \end{itemize}
 
-As the subroutine/function signature is updated by the \lstinline!sca!
+As the subroutine/function signature is updated by the \lstinline!parallelize!
 directive with new dimensions, the call graph that leads to this
 subroutine/function must be updated as well. For this purpose, the clause
 \lstinline!forward! allows to replicated the changes along the call graph.
@@ -54,11 +54,11 @@ Each subroutine/function along the call graph must be decorated with this
 directive.
 
 \begin{lstlisting}
-! Call of a sca subroutine
+! Call of a parallelized subroutine
 !$claw parallelize forward
 CALL one_column_fct(x,y,z)
 
-! Call of a sca function
+! Call of a parallelized function
 !$claw parallelize forward
 result = one_column_fct(x,y,z)
 \end{lstlisting}
@@ -81,27 +81,24 @@ DO i=istart, iend
 END DO
 \end{lstlisting}
 
+
 \textbf{Code example}\\
 \label{parallelize1}
 Simple example of a column model wrapped into a subroutine and parallelized with
 CLAW.
 
 Original code
-\lstinputlisting[frame=rlbt,language=Fortran]
-  {./code_samples/parallelize1/main.f90}
-\lstinputlisting[frame=rlbt,language=Fortran]
-  {./code_samples/parallelize1/mo_column.f90}
+\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/main.f90}
+\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/mo_column.f90}
 
 Transformed code\\
 Only the code of the module is shown as it is the only one which changes.\\
 
 CLAW generated code for GPU target with OpenACC accelerator directive language.
-\lstinputlisting[frame=rlbt,language=Fortran]
-  {./code_samples/parallelize1/mo_column_gpu_openacc.f90}
+\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/mo_column_gpu_openacc.f90}
 
 CLAW generated code for CPU target with OpenMP accelerator directive language.
-\lstinputlisting[frame=rlbt,language=Fortran]
-  {./code_samples/parallelize1/mo_column_cpu_openmp.f90}
+\lstinputlisting[frame=rlbt,language=Fortran]{./code_samples/parallelize1/mo_column_cpu_openmp.f90}
 
 Compilation with the CLAW FORTRAN Compiler
 \begin{lstlisting}[language=bash]
