@@ -46,7 +46,6 @@ pdflatex claw_language_specifications.tex
   * Refine previous iterations, especially `parallelize` directive.
   * Add conditional extraction `if-extract`
 * **Iteration 1.1**:
-  * Specify how `ELEMENTAL` function behave with SCA.
   * Clause `cleanup` added to `loop-hoist` directive
 
 #### General information about the CLAW language

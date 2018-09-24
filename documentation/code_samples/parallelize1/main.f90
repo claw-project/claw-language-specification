@@ -15,7 +15,7 @@ PROGRAM model
 
   ! Root call to the parallelized subroutine will be transformed as well. Arrays
   ! q and t will be passed entierly and the do statement will be removed.
-  !$claw sca forward
+  !$claw parallelize forward
   DO p = 1, nproma
     CALL compute_column(nz, q(p,:), t(p,:))
   END DO
