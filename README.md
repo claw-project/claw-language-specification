@@ -40,11 +40,13 @@ pdflatex claw_language_specifications.tex
   * Start to abstract low-level transformation.
     * Introduction of the `parallelize` directive with the `define dimension`
       and `forward` clauses
-* **Iteration 0.3**:      
+* **Iteration 0.3**:
   * Refine previous iterations, especially `parallelize` directive.
-* **Iteration 0.4**:      
-    * Refine previous iterations, especially `parallelize` directive.
-    * Add conditional extraction `if-extract`
+* **Iteration 0.4**:
+  * Refine previous iterations, especially `parallelize` directive.
+  * Add conditional extraction `if-extract`
+* **Iteration 1.1**:
+  * Clause `cleanup` added to `loop-hoist` directive
 
 #### General information about the CLAW language
 The directives are either local or global.
