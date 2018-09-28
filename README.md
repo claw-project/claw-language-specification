@@ -1,9 +1,7 @@
 ![CLAW Logo](./resources/logo_full_black.png)
 
 # Directive Language Specification
-<a target="_blank" href="http://semver.org">
-  ![Version](https://img.shields.io/badge/Version-2.0-lightgray.svg)
-</a>
+<a target="_blank" href="http://semver.org">![Version](https://img.shields.io/badge/Version-2.0-lightgray.svg)</a>
 
 #### Reference Compiler
 The CLAW Compiler is the reference compiler for the claw directive
@@ -51,7 +49,7 @@ pdflatex claw_language_specifications.tex
 * **Version 2.0**
   * Specify how `ELEMENTAL` function behave with SCA.
   * Introducing **Model Configuration**
-  * Introducing `model-data` clause for SCA
+  * Introducing `model-data` directive for SCA
   * `parallelize` clause is renamed by `sca`
   * New low-level directive `loop-fission`
 
