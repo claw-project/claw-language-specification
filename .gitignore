@@ -1,13 +1,9 @@
-
 *.aux
-
 *.log
-
 *.gz
-
 *.toc
-
 *.out
 *.bbl
 *.blg
 *.xmod
+.DS_Store
