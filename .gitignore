@@ -5,5 +5,8 @@
 *.out
 *.bbl
 *.blg
+*.mod
 *.xmod
 .DS_Store
+*.fls
+*.fdb_latexmk
