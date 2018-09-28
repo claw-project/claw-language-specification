@@ -1,4 +1,10 @@
 \subsection{Loop transformation}
+
+% ------------------------------------------------------------------------------
+%
+% LOOP INTERCHANGE
+%
+% ------------------------------------------------------------------------------
 \subsubsection{Loop interchange/reordering}
 \lstset{emph={induction_var}, emphstyle=\itshape}
 \begin{lstlisting}
@@ -65,6 +71,11 @@ More code examples in the appendix. Example with 3 nested do statements (see
 example \ref{loop-interchange2}). Example with others directives (see example
 \ref{loop-interchange3}).
 
+% ------------------------------------------------------------------------------
+%
+% LOOP FUSION
+%
+% ------------------------------------------------------------------------------
 \lstset{emph={group_id,n}, emphstyle=\itshape}
 \subsubsection{Loop jamming/fusion}
 \begin{lstlisting}
@@ -144,6 +155,11 @@ More code examples in the appendix. Example with the \lstinline!group! clause
 \ref{loop-fusion3}). Example with the \lstinline!collapse! clause (see example
 \ref{loop-fusion4}).
 
+% ------------------------------------------------------------------------------
+%
+% LOOP EXTRACT
+%
+% ------------------------------------------------------------------------------
 \subsubsection{Loop extraction}
 \lstset{emph={range_info,var,mapping,group_id,directives}, emphstyle=\itshape}
 \begin{lstlisting}
@@ -248,6 +264,11 @@ More code examples in the appendix. Example with the \lstinline!fusion! clause
 (see example \ref{loop-extract2}). Example with a more complicated mapping
 (see example \ref{loop-extract3}).
 
+% ------------------------------------------------------------------------------
+%
+% LOOP HOISTING
+%
+% ------------------------------------------------------------------------------
 \subsubsection{Loop hoisting}
 \lstset{emph={induction_var,array_name,target_dimension,kept_dimension}, emphstyle=\itshape}
 \begin{lstlisting}
@@ -343,7 +364,11 @@ END DO
 !$acc end parallel
 \end{lstlisting}
 
-
+% ------------------------------------------------------------------------------
+%
+% IF EXTRACT
+%
+% ------------------------------------------------------------------------------
 \subsubsection{Conditional extraction from loop}
 \begin{lstlisting}
 !$claw if-extract
@@ -389,4 +414,57 @@ ELSE
     PRINT *, 'Else Body', i
   END DO
 END IF
+\end{lstlisting}
+
+
+% ------------------------------------------------------------------------------
+%
+% LOOP FISSION
+%
+% ------------------------------------------------------------------------------
+\subsubsection{Loop fission/splitting}
+\begin{lstlisting}
+!$claw loop-fission
+\end{lstlisting}
+
+Loop fission is used to split a do statement into multiple loops over the same 
+iteration range with each taking only a part of the original loop's body. 
+The goal is to break down a large loop body into smaller ones to achieve 
+better utilization of locality of reference or also reduce pressure on 
+the register usage.
+
+\textbf{Options and details}
+None.
+
+\textbf{Behavior with other directives}\\
+None.
+
+\textbf{Code example}\\\label{loop-fission1}
+
+Original code
+\begin{lstlisting}[language=Fortran]
+DO k = 1, kend
+
+  !  Part 1 of the loop body 
+
+  !$claw loop-fission
+
+  !  Part 2 of the loop body 
+
+END DO
+\end{lstlisting}
+
+Transformed code
+\begin{lstlisting}[language=Fortran]
+DO k = 1, kend
+
+  !  Part 1 of the loop body 
+
+END DO
+
+DO k = 1, kend
+
+  !  Part 2 of the loop body 
+
+END DO
 \end{lstlisting}
