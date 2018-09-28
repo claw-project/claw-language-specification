@@ -107,11 +107,11 @@ Compilation with the CLAW FORTRAN Compiler
 \begin{lstlisting}[language=bash]
 # For GPU target with OpenACC directive
 clawfc --target=gpu --directive=openacc -o mo_column.gpu_acc.f90 mo_column.f90
-clawfc -o main.claw.f90 main.f90
+clawfc --target=gpu --directove=openacc -o main.claw.f90 main.f90
 
-# For CPU target with OpenMP directive
-clawfc --target=gpu --directive=openmp -o mo_column.cpu_omp.f90 mo_column.f90
-clawfc -o main.claw.f90 main.f90
+# For CPU target without directive
+clawfc -t=cpu -d=none -o mo_column.cpu_omp.f90 mo_column.f90
+clawfc -t=cpu -d=none -o main.claw.f90 main.f90
 \end{lstlisting}
 
 \subsubsection{SCA directive in ELEMENTAL function}
@@ -139,11 +139,35 @@ This clauses have no effect when the transformation target does not need a
 data movement management.
 
 \subsubsection{SCA model configuration}
-Instead of defining dimension per subroutine, one can define them for the whole 
-model. These definitions have to be done in a specific configuration file as 
-detailled in this section.
+Instead of defining dimension per subroutine or function, one can define them 
+for the whole model. These definitions have to be done in a specific 
+configuration file as detailled in this section. The promotion of variables are 
+based on defined layout also specified in the same configuration file.
+
+When using a model configuration file, the is simplified to the minimum required
+as shown below:
+\lstset{emph={layout_id}, emphstyle=\itshape}
+\begin{lstlisting}
+!$claw sca [layout(layout_id)]
+\end{lstlisting}
+
+In addition to the \lstinline|sca| directive, a new directive is used to specify
+which variables are "model data".
+Model data are variables that will be promoted during the transformation. The 
+\lstinline|model-data| directive is a block directive and has to be placed in 
+the declaration section of the subroutine/function. One or more 
+\lstinline|model-data| block can be declared in a subroutine/function.
+
+\begin{lstlisting}
+!$claw model-data
+
+! Variable declaration
+
+!$claw end model-data
+\end{lstlisting}
+
   
-The specification of this configuration file are listed below:
+The specification of the model configuration file are listed below:
 \begin{itemize}
   \item The model configuration file follows the TOML file format. 
   \item The configuration is spearated in three tables: model, dimensions, 
@@ -158,7 +182,7 @@ configuration.
 The dimensions table contains all dimension definitions. Each definition can 
 have the information listed here: 
 \begin{itemize}
-  \item \textit{name}: the identifier of the dimension definition. It is unique 
+  \item \textit{id}: the identifier of the dimension definition. It is unique 
         in the model configuration.
   \item \textit{size}: the size of the dimension as a lower and upper bound. 
         The lower bound can be omitted and the default value 1 will be assigned. 
