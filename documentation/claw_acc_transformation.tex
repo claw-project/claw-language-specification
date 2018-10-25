@@ -22,17 +22,17 @@ only if the primitive directive language is specified for the transformation.
 \begin{lstlisting}
 !$claw expand [induction(name [[,] name]...)] [fusion [group(group_id)]] [parallel] [acc([clause [[,] clause]...])]
 
-  ! array notation assignment(s)
+  ! vector notation assignment(s)
 
 [!$claw end expand]
 \end{lstlisting}
 
-Computations using the array notation are not suitable to be parallelized with
+Computations using the vector notation are not suitable to be parallelized with
 language like OpenACC. The \textbf{expand} directive allows to
 transform those notation with the corresponding do statements which are more
 suitable for parallelization.
 
-The goal of this directive is to pass from an array notation assignment like
+The goal of this directive is to pass from an vector notation assignment like
 this:
 
 \begin{lstlisting}
@@ -86,7 +86,7 @@ in the generated code.
 
 \textbf{Code example}\\
 \label{expand1}
-Example with array notation following the pragma statement.
+Example with vector notation following the pragma statement.
 
 Original code
 \begin{lstlisting}
@@ -106,7 +106,7 @@ SUBROUTINE vector_add
   INTEGER :: i = 10
   INTEGER, DIMENSION(0:9) :: vec1
 
-  ! CLAW transformation array notation to do loop
+  ! CLAW transformation vector notation to do statement
   DO claw_i = 0, i
     vec1(claw_i) = vec1(claw_i) + 10;
   END DO
