@@ -17,18 +17,18 @@ during the transformation. Examples on line 4 and 7 are conditional directives.
 They will be transformed into standard OpenACC respectively OpenMP directives
 only if the primitive directive language is specified for the transformation.
 
-\subsubsection{Array notation to do statements}
+\subsubsection{Vector notation expansion}
 \lstset{emph={name,group_id,clause}, emphstyle=\itshape}
 \begin{lstlisting}
-!$claw array-transform [induction(name [[,] name]...)] [fusion [group(group_id)]] [parallel] [acc([clause [[,] clause]...])]
+!$claw expand [induction(name [[,] name]...)] [fusion [group(group_id)]] [parallel] [acc([clause [[,] clause]...])]
 
   ! array notation assignment(s)
 
-[!$claw end array-transform]
+[!$claw end expand]
 \end{lstlisting}
 
 Computations using the array notation are not suitable to be parallelized with
-language like OpenACC. The \textbf{array-transform} directive allows to
+language like OpenACC. The \textbf{expand} directive allows to
 transform those notation with the corresponding do statements which are more
 suitable for parallelization.
 
@@ -36,7 +36,7 @@ The goal of this directive is to pass from an array notation assignment like
 this:
 
 \begin{lstlisting}
-!$claw array-transform
+!$claw expand
 A(1:n) = A(1+m:n+m) + B(1:n) * C(n+1:n+n)
 \end{lstlisting}
 
@@ -52,10 +52,10 @@ If the directive is used as a block directive, the assignments are wrapped in
 a single do statement if their induction range match.
 
 \begin{lstlisting}
-!$claw array-transform
+!$claw expand
 A(1:n) = A(1+m:n+m) + B(1:n) * C(n+1:n+n)
 B(1:n) = B(1:n) * 0.5
-!$claw end array-transform
+!$claw end expand
 \end{lstlisting}
 
 To
@@ -81,11 +81,11 @@ generated loops.
 \end{enumerate}
 
 \textbf{Behavior with other directives}\\
-Directives declared before the \textbf{array-transform} directive will be kept
+Directives declared before the \textbf{expand} directive will be kept
 in the generated code.
 
 \textbf{Code example}\\
-\label{array-transform1}
+\label{expand1}
 Example with array notation following the pragma statement.
 
 Original code
@@ -94,7 +94,7 @@ SUBROUTINE vector_add
   INTEGER :: i = 10
   INTEGER, DIMENSION(0:9) :: vec1
 
-  !$claw array-transform
+  !$claw expand
   vec1(0:i) = vec1(0:i) + 10;
 END SUBROUTINE vector_add
 \end{lstlisting}
@@ -114,6 +114,6 @@ END SUBROUTINE vector_add
 \end{lstlisting}
 
 More code examples in the appendix. Example with the induction and acc clauses
-(see example \ref{array-transform2}). Example with fusion clause (see example
-\ref{array-transform3}). Example with 2-dimensional arrayx (see example
-\ref{array-transform4}).
+(see example \ref{expand2}). Example with fusion clause (see example
+\ref{expand3}). Example with 2-dimensional arrayx (see example
+\ref{expand4}).
