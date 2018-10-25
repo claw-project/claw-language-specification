@@ -30,7 +30,7 @@ pdflatex claw_language_specifications.tex
 * **Version 0.2**:
   * Refine low-level transformation from 0.1 if needed.
     * Add `collapse` clause to loop-fusion directive.
-  * Add missing low-level transformation from the requirements.  
+  * Add missing low-level transformation from the requirements.
     * Add loop transformation `loop-hoist`.
     * Add array notation transformation `array-transform`.
     * Add claw transformation `kcache` for column caching.
@@ -52,6 +52,7 @@ pdflatex claw_language_specifications.tex
   * Introducing `model-data` directive for SCA
   * `parallelize` clause is renamed by `sca`
   * New low-level directive `loop-fission`
+  * Directive `array-transform` is renamed `expand`
 
 #### General information about the CLAW language
 The directives are either local or global.
