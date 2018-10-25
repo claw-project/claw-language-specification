@@ -53,6 +53,7 @@ pdflatex claw_language_specifications.tex
   * `parallelize` clause is renamed by `sca`
   * New low-level directive `loop-fission`
   * Directive `array-transform` is renamed `expand`
+  * New clause `blocked` and `block-fct` added to `sca foward`
 
 #### General information about the CLAW language
 The directives are either local or global.
