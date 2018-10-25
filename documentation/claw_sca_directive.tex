@@ -81,6 +81,38 @@ DO i=istart, iend
 END DO
 \end{lstlisting}
 
+The root function call can also introduce blocking. For this, 
+the \lstinline|blocked| clause must be added to the directive. 
+The \lstinline|blocked| clause takes an argument that can be a positive integer
+or an \lstinline|INTEGER| variable.
+
+
+\begin{lstlisting}
+!$claw parallelize forward blocked(bsize)
+DO p = 1, nproma     
+  CALL compute_column(nz, q(p,:), t(p,:), z(p,:))                                                                                             
+END DO 
+\end{lstlisting}
+
+The transformed code will automatically compute block sizes and split the 
+horizontal dimension accordingly.
+\begin{lstlisting}
+p_blocks = <number of blocks as a function of "bsize">                                                                                                                                                                                                                                                 
+DO p_i = 1, p_blocks                                                                                                                                                                                                                                                          
+   p0 = <first index of block in global array>                                                                                                                                                                                                                                
+   p1 = <final index of block in global array>                                                                                                                                                                                                                                
+   CALL compute_column ( nz , q (p0:p1 , : ) , t (p0:p1, : ) , z (p0:p1, : ), &
+     nproma=p1-p0 )   
+END DO
+\end{lstlisting}
+
+Computation of the number of blocks is given by the implementation. User can 
+also provide a function to perform this computation. This function must takes an
+\lstinline|INTEGER| argument and return an \lstinline|INTEGER| value.  
+
+To provide this function, the user can use the 
+\lstinline|block-fct(<function-name>)| clause.
+
 \textbf{Code example}\\
 \label{parallelize1}
 Simple example of a column model wrapped into a subroutine and parallelized with
