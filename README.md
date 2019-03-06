@@ -4,8 +4,8 @@
 <a target="_blank" href="http://semver.org">![Version](https://img.shields.io/badge/Version-2.0-lightgray.svg)</a>
 
 #### Reference Compiler
-The CLAW Compiler is the reference compiler for the claw directive
-language. The project can be found here:
+The CLAW Compiler is the reference compiler for the CLAW Directive
+Language. The project can be found here:
 [claw-compiler](https://github.com/claw-project/claw-compiler)
 
 #### Versions
