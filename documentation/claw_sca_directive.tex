@@ -68,6 +68,9 @@ promoted if the call requires it. In this case, the array references in
 the function/subroutine are updated accordingly. This can lead to extra
 promotion of local scalar variables or arrays when needed.
 
+The root function can be encapsulated in a parallel region if the 
+\lstinline|parallel| clause is added to the \lstinline|sca forward| directive.
+
 The root function call in the call graph might be an iteration over several
 column to reproduce the algorithm on the grid for testing purpose. If the
 directive with the \lstinline!forward! clause is placed just before one or
@@ -88,7 +91,7 @@ or an \lstinline|INTEGER| variable.
 
 
 \begin{lstlisting}
-!$claw parallelize forward blocked(bsize)
+!$claw sca forward blocked(bsize)
 DO p = 1, nproma     
   CALL compute_column(nz, q(p,:), t(p,:), z(p,:))                                                                                             
 END DO 
