@@ -68,7 +68,7 @@ promoted if the call requires it. In this case, the array references in
 the function/subroutine are updated accordingly. This can lead to extra
 promotion of local scalar variables or arrays when needed.
 
-The root function can be encapsulated in a parallel region if the 
+The root function can be encapsulated in a parallel region if the
 \lstinline|parallel| clause is added to the \lstinline|sca forward| directive.
 
 The root function call in the call graph might be an iteration over several
@@ -84,36 +84,36 @@ DO i=istart, iend
 END DO
 \end{lstlisting}
 
-The root function call can also introduce blocking. For this, 
-the \lstinline|blocked| clause must be added to the directive. 
+The root function call can also introduce blocking. For this,
+the \lstinline|blocked| clause must be added to the directive.
 The \lstinline|blocked| clause takes an argument that can be a positive integer
 or an \lstinline|INTEGER| variable.
 
 
 \begin{lstlisting}
 !$claw sca forward blocked(bsize)
-DO p = 1, nproma     
-  CALL compute_column(nz, q(p,:), t(p,:), z(p,:))                                                                                             
-END DO 
-\end{lstlisting}
-
-The transformed code will automatically compute block sizes and split the 
-horizontal dimension accordingly.
-\begin{lstlisting}
-p_blocks = <number of blocks as a function of "bsize">                                                                                                                                                                                                                                                 
-DO p_i = 1, p_blocks                                                                                                                                                                                                                                                          
-   p0 = <first index of block in global array>                                                                                                                                                                                                                                
-   p1 = <final index of block in global array>                                                                                                                                                                                                                                
-   CALL compute_column ( nz , q (p0:p1 , : ) , t (p0:p1, : ) , z (p0:p1, : ), &
-     nproma=p1-p0 )   
+DO p = 1, nproma
+  CALL compute_column(nz, q(p,:), t(p,:), z(p,:))
 END DO
 \end{lstlisting}
 
-Computation of the number of blocks is given by the implementation. User can 
-also provide a function to perform this computation. This function must takes an
-\lstinline|INTEGER| argument and return an \lstinline|INTEGER| value.  
+The transformed code will automatically compute block sizes and split the
+horizontal dimension accordingly.
+\begin{lstlisting}
+p_blocks = <number of blocks as a function of "bsize">
+DO p_i = 1, p_blocks
+   p0 = <first index of block in global array>
+   p1 = <final index of block in global array>
+   CALL compute_column ( nz , q (p0:p1 , : ) , t (p0:p1, : ) , z (p0:p1, : ), &
+     nproma=p1-p0 )
+END DO
+\end{lstlisting}
 
-To provide this function, the user can use the 
+Computation of the number of blocks is given by the implementation. User can
+also provide a function to perform this computation. This function must takes an
+\lstinline|INTEGER| argument and return an \lstinline|INTEGER| value.
+
+To provide this function, the user can use the
 \lstinline|block-fct(<function-name>)| clause.
 
 \textbf{Code example}\\
@@ -164,9 +164,9 @@ This data movment can be handled by CLAW using the followings clauses on
   \item \lstinline|create|: the create clause will generate the appropriate
         data allocation/deallocation before and after the
         \lstinline|sca forward| directive.
-  \item \lstinline!update[(in|out)]!: the update clause will generate the 
-        appropriate update before and/or after the \lstinline|sca forward| 
-        directive. The update clause accepts \lstinline|in| or \lstinline|out| 
+  \item \lstinline!update[(in|out)]!: the update clause will generate the
+        appropriate update before and/or after the \lstinline|sca forward|
+        directive. The update clause accepts \lstinline|in| or \lstinline|out|
         optional options.
 \end{itemize}
 
@@ -174,69 +174,70 @@ This clauses have no effect when the transformation target does not need a
 data movement management.
 
 \subsubsection{SCA model configuration}
-Instead of defining dimension per subroutine or function, one can define them 
-for the whole model. These definitions have to be done in a specific 
-configuration file as detailled in this section. The promotion of variables are 
+Instead of defining dimension per subroutine or function, one can define them
+for the whole model. These definitions have to be done in a specific
+configuration file as detailled in this section. The promotion of variables are
 based on defined layout also specified in the same configuration file.
 
-When using a model configuration file, the is simplified to the minimum required
-as shown below:
-\lstset{emph={layout_id}, emphstyle=\itshape}
+When using a model configuration file, the directive is simplified to the
+minimum required as shown below:
 \begin{lstlisting}
-!$claw sca [layout(layout_id)]
+!$claw sca
 \end{lstlisting}
 
 In addition to the \lstinline|sca| directive, a new directive is used to specify
 which variables are "model data".
-Model data are variables that will be promoted during the transformation. The 
-\lstinline|model-data| directive is a block directive and has to be placed in 
-the declaration section of the subroutine/function. One or more 
-\lstinline|model-data| block can be declared in a subroutine/function.
+Model data are variables that will be promoted during the transformation. The
+\lstinline|model-data| directive is a block directive and has to be placed in
+the declaration section of the subroutine/function. One or more
+\lstinline|model-data| block can be declared in a subroutine/function. The
+\lstinline|model-data| can optionally have a \lstinline|layout| clause.
 
+\lstset{emph={layout_id}, emphstyle=\itshape}
 \begin{lstlisting}
-!$claw model-data
+!$claw model-data [layout(layout_id)]
 
 ! Variable declaration
 
 !$claw end model-data
 \end{lstlisting}
 
-  
+
 The specification of the model configuration file are listed below:
 \begin{itemize}
-  \item The model configuration file follows the TOML file format. 
-  \item The configuration is spearated in three tables: model, dimensions, 
+  \item The model configuration file follows the TOML file format.
+  \item The configuration is spearated in three tables: model, dimensions,
         layouts.
 \end{itemize}
 
 \textbf{Model table}\\
-The model table contains all global information about the model and its 
+The model table contains all global information about the model and its
 configuration.
 
 \textbf{Dimensions table}\\
-The dimensions table contains all dimension definitions. Each definition can 
-have the information listed here: 
+The dimensions table contains all dimension definitions. Each definition can
+have the information listed here:
 \begin{itemize}
-  \item \textit{id}: the identifier of the dimension definition. It is unique 
+  \item \textit{id}: the identifier of the dimension definition. It is unique
         in the model configuration.
-  \item \textit{size}: the size of the dimension as a lower and upper bound. 
-        The lower bound can be omitted and the default value 1 will be assigned. 
+  \item \textit{size}: the size of the dimension as a lower and upper bound.
+        The lower bound can be omitted and the default value 1 will be assigned.
         Upper bound is mandatory.
-  \item \textit{iteration}: iteration information of the dimension defined with 
-        a lower and upper bound as well as a step. All information are optional. 
-        If omitted, lower and upper bound are copied from size information and 
-        the default value 1 is assigned to the step.      
+  \item \textit{iteration}: iteration information of the dimension defined with
+        a lower and upper bound as well as a step. All information are optional.
+        If omitted, lower and upper bound are copied from size information and
+        the default value 1 is assigned to the step.
 \end{itemize}
 
 
 \textbf{Layouts table}\\
-The layout table contains all the different layout that can be applied for a 
+The layout table contains all the different layout that can be applied for a
 specific target or a specific subroutine/function.
 \begin{itemize}
-  \item \textit{name}: the identifier of the layout definition. It is unique in 
-        the model configuration. \lstinline|default| is the only mandatory 
+  \item \textit{name}: the identifier of the layout definition. It is unique in
+        the model configuration. \lstinline|default| is the only mandatory
         layout definiton.
-  \item \textit{position}: list of dimension definition that defined the layout. 
+  \item \textit{position}: list of dimension definition that defined the layout.
         The semi-colon (:) define already existing definition.
 \end{itemize}
 
